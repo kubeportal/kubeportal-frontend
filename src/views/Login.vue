@@ -22,7 +22,7 @@
           Continue with Google
         </b-button>
         </div>
-        <div v-show="login_status">Login failed</div>
+        <div v-if="!login_status">Login failed</div>
       </b-card-body>
     </b-card>
 </template>
@@ -34,19 +34,28 @@ export default {
   data () {
     return {
       username: '',
-      password: '',
-      login_status: this.$store.getters['get_login_status']
+      password: ''
     }
   },
   methods: {
     async login () {
       const request_body = { username: this.username, password: this.password }
       const response = await this.$store.dispatch('post_login_data', request_body)
-      response === undefined ? this.$router.push({ name: 'Login' }) && this.$store.commit('set_login_status') : this.$router.push({ name: 'Kubeportal' })
-      await this.set_user_data()
+      if(response === undefined) {
+        this.$store.commit('set_login_status', false)
+        this.$router.push({ name: 'Login' })
+      } else {
+        await this.set_user_data()
+        this.$router.push({ name: 'Kubeportal' })
+      }
     },
     async set_user_data () {
       await this.$store.dispatch('get_current_user', this.username)
+    }
+  },
+  computed: {
+    login_status () {
+      return this.$store.getters['get_login_status']
     }
   }
 

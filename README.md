@@ -2,6 +2,10 @@
 
 https://kubeportal-dev.app.datexis.com/
 
+### testlogin:
+- username: s12345
+- password: test
+
 ## Project setup
 ```
 npm install
