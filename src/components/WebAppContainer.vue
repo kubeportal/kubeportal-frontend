@@ -1,6 +1,6 @@
 <template>
   <div class="ma-8 container-sm align-content-between">
-    <b-button v-for="app in webapps" :key="app.index" class="app-button blue-grey darken-3">
+    <b-button v-for="app in webapps" :key="app.index" class="app-button">
       {{ app.name }}
     </b-button>
   </div>
@@ -31,6 +31,7 @@ export default {
     opacity: 0.8;
     transform: translate(0, 0);
     -ms-transform: translate(0, 0%);
+    background-color: #757575;
   }
   .app-button:hover {
     opacity: 1;
