@@ -1,7 +1,18 @@
 import axios from 'axios'
 
+const API_BASE_URL = setBaseURLWithDefaultOrEnvValue()
+
+function canReadURLFromEnv () {
+  return !!process.env['API_BASE_URL']
+}
+
+export function setBaseURLWithDefaultOrEnvValue () {
+  const defaultUrl = 'https://kubeportal-dev.api.datexis.com/'
+  return canReadURLFromEnv() ? process.env['VUE_APP_BASE_URL'] : defaultUrl
+}
+
 const config = {
-  baseURL: 'https://kubeportal-dev.api.datexis.com/',
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json'
   }
@@ -32,8 +43,7 @@ export async function readByField (collection, id, jwt) {
 
 export async function create (collection, payload) {
   try {
-    const response = await axiosInstance.post(collection, payload)
-    return response
+    return await axiosInstance.post(collection, payload)
   } catch (e) {
     console.log(e)
     return e
