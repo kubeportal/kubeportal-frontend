@@ -118,7 +118,8 @@ export default {
   .sidenav {
     height: 100vh;
     position: absolute;
-    right: 0;
+    left: -2px;
+    top: -2px;
     min-width: 100px;
   }
   .toolbar {
