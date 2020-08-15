@@ -1,10 +1,5 @@
 <template>
   <v-card class="app">
-    <v-toolbar flat class="blue-grey darken-4 toolbar">
-      <v-icon class="icon">mdi-view-dashboard-variant</v-icon>
-      <v-toolbar-title class="title">Data Science Cluster</v-toolbar-title>
-    </v-toolbar>
-
     <v-tabs vertical dark class="sidenav">
       <v-tab>
         <v-icon class="icon" left>mdi-home-heart</v-icon>
@@ -120,9 +115,6 @@ export default {
     position: absolute;
     right: 0;
     min-width: 100px;
-  }
-  .toolbar {
-    color: floralwhite;
   }
   .title {
     padding: 0 1rem 0 3rem;

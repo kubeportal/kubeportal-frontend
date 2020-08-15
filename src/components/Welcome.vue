@@ -27,17 +27,26 @@ export default {
   components: { WebAppContainer },
   data () {
     return {
-      current_user: {},
       metrics: this.$store.getters['get_metrics']
     }
   },
   methods: {
-    async fetch_userdata () {
-      this.current_user = await this.$store.dispatch('get_current_user', 's77518')
+    get_all_statistic_values () {
+      this.metrics.map(this.request_metric_value)
+    },
+    async request_metric_value (metric) {
+      let request_metric = metric.replace(/_/i, '')
+      await this.$store.dispatch('get_statistic_metric', request_metric)
+    }
+
+  },
+  computed: {
+    current_user () {
+      return this.$store.getters['get_current_user']
     }
   },
   created () {
-    this.fetch_userdata()
+    this.get_all_statistic_values()
   }
 }
 </script>
