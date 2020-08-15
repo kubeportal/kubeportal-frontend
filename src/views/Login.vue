@@ -4,8 +4,10 @@
         <v-icon class="icon" left>mdi-login-variant</v-icon>
         Kubeportal
       </b-card-header>
+
       <b-card-body>
-      <b-card-text>
+        <v-alert class="alert" dense outlined type="error" v-if="is_authenticated"> Login Failed.</v-alert>
+        <b-card-text>
         <v-text-field label="user name" v-model="username" required></v-text-field>
         <v-text-field type="password" v-model="password" label="password" requires></v-text-field>
       </b-card-text>
@@ -22,7 +24,6 @@
           Continue with Google
         </b-button>
         </div>
-        <div v-if="!login_status">Login failed</div>
       </b-card-body>
     </b-card>
 </template>
@@ -41,21 +42,23 @@ export default {
     async login () {
       const request_body = { username: this.username, password: this.password }
       const response = await this.$store.dispatch('post_login_data', request_body)
-      if(response === undefined) {
-        this.$store.commit('set_login_status', false)
+      if(response === 'failed') {
+        this.$store.commit('set_is_authenticated', false)
         this.$router.push({ name: 'Login' })
       } else {
         await this.set_user_data()
+        this.$store.commit('set_is_authenticated', true)
         this.$router.push({ name: 'Kubeportal' })
       }
     },
     async set_user_data () {
+      console.log(this.username)
       await this.$store.dispatch('get_current_user', this.username)
     }
   },
   computed: {
-    login_status () {
-      return this.$store.getters['get_login_status']
+    is_authenticated () {
+      return this.$store.getters['get_is_authenticated']
     }
   }
 
@@ -77,5 +80,8 @@ export default {
   }
   .card-header {
     margin-bottom: 1vh;
+  }
+  .alert {
+    margin: 1vw 0 1vw 0;
   }
 </style>

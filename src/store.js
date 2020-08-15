@@ -11,7 +11,7 @@ export default new Vuex.Store({
     statistics : [],
     webapps: [],
     jwt: '',
-    login_status: ''
+    is_authenticated: ''
   },
 
   getters: {
@@ -20,7 +20,7 @@ export default new Vuex.Store({
     get_webapps (state) { return state.webapps },
     get_current_user (state) { return state.user },
     get_jwt (state) { return state.jwt },
-    get_login_status (state) { return state.login_status }
+    get_is_authenticated (state) { return state.is_authenticated }
   },
 
   mutations: {
@@ -28,7 +28,7 @@ export default new Vuex.Store({
     update_statistics (state, metric) { state.statistics.push(metric) },
     update_webapps (state, webapps) { state.webapps = webapps },
     update_token (state, token) { state.jwt = token },
-    set_login_status (state, status) { state.login_status = status }
+    set_is_authenticated (state, status) { state.is_authenticated = status }
   },
   actions: {
     async get_current_user (context, field) {
@@ -48,8 +48,14 @@ export default new Vuex.Store({
     },
     async post_login_data (context, request_body) {
       const response = await backend.create('/login', request_body)
-      response !== undefined ? context.commit('update_token', response['token']) : console.log('login failed')
-      return response
+      console.log('PSOT' + response.status)
+      if(response.status === 200) {
+        context.commit('update_token', response.data['token'])
+        return response.data
+      } else {
+        console.log('login failed')
+        return 'failed'
+      }
     }
   }
 })

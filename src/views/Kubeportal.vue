@@ -99,7 +99,11 @@ export default {
     }
   },
   created () {
-    this.get_all_statistic_values()
+    if(this.$store.getters['get_is_authenticated'] === '') {
+      this.$router.push({ name: 'Home' })
+    } else {
+      this.get_all_statistic_values()
+    }
   }
 }
 </script>
