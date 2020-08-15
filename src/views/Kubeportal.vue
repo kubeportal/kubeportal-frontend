@@ -19,7 +19,7 @@
           <div class="title"><small>Statistics</small></div>
         </show-at>
       </v-tab>
-      <v-tab v-if="userIsAdmin">
+      <v-tab @click="openAdmin" v-if="userIsAdmin">
         <v-icon class="icon" left>mdi-tools</v-icon>
         <show-at breakpoint="mediumAndAbove">
           <div class="title"><small>Admin</small></div>
@@ -89,6 +89,9 @@ export default {
       this.$store.commit('update_webapps', [])
       this.$store.commit('set_is_authenticated', '')
       this.$router.push({ name: 'Home' })
+    },
+    openAdmin () {
+      window.location.href = 'https://cluster.datexis.com/admin/'
     }
   },
   computed: {
