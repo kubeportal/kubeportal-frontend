@@ -6,7 +6,7 @@
       </b-card-header>
 
       <b-card-body>
-        <v-alert class="alert" dense outlined type="error" v-if="is_authenticated"> Login Failed.</v-alert>
+        <v-alert class="alert" dense outlined type="error" v-if="is_authenticated==='failed'"> Login Failed.</v-alert>
         <b-card-text>
         <v-text-field label="user name" v-model="username" required></v-text-field>
         <v-text-field type="password" v-model="password" label="password" requires></v-text-field>
@@ -43,11 +43,11 @@ export default {
       const request_body = { username: this.username, password: this.password }
       const response = await this.$store.dispatch('post_login_data', request_body)
       if(response === 'failed') {
-        this.$store.commit('set_is_authenticated', false)
+        this.$store.commit('set_is_authenticated', 'failed')
         this.$router.push({ name: 'Login' })
       } else {
         await this.set_user_data()
-        this.$store.commit('set_is_authenticated', true)
+        this.$store.commit('set_is_authenticated', 'true')
         this.$router.push({ name: 'Kubeportal' })
       }
     },

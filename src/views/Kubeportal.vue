@@ -4,31 +4,31 @@
       <v-tab>
         <v-icon class="icon" left>mdi-home-heart</v-icon>
         <show-at breakpoint="mediumAndAbove">
-          <div class="title" ><small>Welcome</small></div>
+          <div class="title"><small>Welcome</small></div>
         </show-at>
       </v-tab>
       <v-tab>
         <v-icon class="icon" left>mdi-file-document-outline</v-icon>
         <show-at breakpoint="mediumAndAbove">
-          <div class="title" ><small>Config</small></div>
+          <div class="title"><small>Config</small></div>
         </show-at>
       </v-tab>
       <v-tab>
         <v-icon class="icon" left>mdi-chart-pie</v-icon>
         <show-at breakpoint="mediumAndAbove">
-          <div class="title" ><small>Statistics</small></div>
+          <div class="title"><small>Statistics</small></div>
         </show-at>
       </v-tab>
-      <v-tab>
+      <v-tab v-if="userIsAdmin">
         <v-icon class="icon" left>mdi-tools</v-icon>
         <show-at breakpoint="mediumAndAbove">
-          <div class="title" ><small>Admin</small></div>
+          <div class="title"><small>Admin</small></div>
         </show-at>
       </v-tab>
-      <v-tab>
+      <v-tab @click="logout">
         <v-icon class="icon" left>mdi-logout-variant</v-icon>
         <show-at breakpoint="mediumAndAbove">
-          <div class="title" ><small>Logout</small></div>
+          <div class="title"><small>Logout</small></div>
         </show-at>
       </v-tab>
 
@@ -54,21 +54,6 @@
           </v-card-text>
         </v-card>
       </v-tab-item>
-      <v-tab-item class="items">
-        <v-card flat>
-          <v-card-text>
-            <Welcome />
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item class="items">
-        <v-card flat>
-          <v-card-text>
-            <Welcome />
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-
     </v-tabs>
   </v-card>
 </template>
@@ -96,12 +81,26 @@ export default {
     async request_metric_value (metric) {
       let request_metric = metric.replace(/_/i, '')
       await this.$store.dispatch('get_statistic_metric', request_metric)
+    },
+    logout () {
+      this.$store.commit('set_user', {})
+      this.$store.commit('update_statistics', [])
+      this.$store.commit('update_token', '')
+      this.$store.commit('update_webapps', [])
+      this.$store.commit('set_is_authenticated', '')
+      this.$router.push({ name: 'Home' })
+    }
+  },
+  computed: {
+    userIsAdmin () {
+      let current_user = this.$store.getters['get_current_user']
+      return current_user['role'] === 'admin'
     }
   },
   created () {
     if(this.$store.getters['get_is_authenticated'] === '') {
       this.$router.push({ name: 'Home' })
-    } else {
+    } else if (this.$store.getters['get_is_authenticated'] === true) {
       this.get_all_statistic_values()
     }
   }
