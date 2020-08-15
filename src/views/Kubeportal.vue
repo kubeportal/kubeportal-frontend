@@ -8,23 +8,33 @@
     <v-tabs vertical dark class="sidenav">
       <v-tab>
         <v-icon class="icon" left>mdi-home-heart</v-icon>
-        <div class="title"><small>Welcome</small></div>
+        <show-at breakpoint="mediumAndAbove">
+          <div class="title" ><small>Welcome</small></div>
+        </show-at>
       </v-tab>
       <v-tab>
         <v-icon class="icon" left>mdi-file-document-outline</v-icon>
-        <div class="title"><small>Config</small></div>
+        <show-at breakpoint="mediumAndAbove">
+          <div class="title" ><small>Config</small></div>
+        </show-at>
       </v-tab>
       <v-tab>
         <v-icon class="icon" left>mdi-chart-pie</v-icon>
-        <div class="title"><small>Statistics</small></div>
+        <show-at breakpoint="mediumAndAbove">
+          <div class="title" ><small>Statistics</small></div>
+        </show-at>
       </v-tab>
       <v-tab>
         <v-icon class="icon" left>mdi-tools</v-icon>
-        <div class="title"><small>Admin</small></div>
+        <show-at breakpoint="mediumAndAbove">
+          <div class="title" ><small>Admin</small></div>
+        </show-at>
       </v-tab>
       <v-tab>
         <v-icon class="icon" left>mdi-logout-variant</v-icon>
-        <div class="title"><small>Logout</small></div>
+        <show-at breakpoint="mediumAndAbove">
+          <div class="title" ><small>Logout</small></div>
+        </show-at>
       </v-tab>
 
       <v-tab-item class="items">
@@ -38,7 +48,7 @@
       <v-tab-item class="items">
         <v-card flat>
           <v-card-text>
-            <Welcome />
+            <Config />
           </v-card-text>
         </v-card>
       </v-tab-item>
@@ -72,11 +82,13 @@
 
 import Welcome from '@/components/Welcome'
 import Statistics from '@/components/Statistics'
+import Config from '@/components/Config/Config'
+import {showAt} from 'vue-breakpoints'
 
 export default {
   name: 'App',
 
-  components: { Statistics, Welcome },
+  components: { Statistics, Welcome, Config, showAt },
   data () {
     return {
       metrics: this.$store.getters['get_metrics']

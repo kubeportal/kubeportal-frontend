@@ -15,7 +15,8 @@ export default new Vuex.Store({
   getters: {
     get_all_statistics (state) { return state.statistics },
     get_metrics (state) { return state.metrics },
-    get_webapps (state) { return state.webapps }
+    get_webapps (state) { return state.webapps },
+    get_current_user (state) { return state.user }
   },
 
   mutations: {

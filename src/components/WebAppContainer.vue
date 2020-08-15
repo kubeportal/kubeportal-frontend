@@ -27,5 +27,13 @@ export default {
     min-width: 110px;
     height: 8vh;
     color: white;
+    transition: 0.3s ease;
+    opacity: 0.8;
+    transform: translate(0, 0);
+    -ms-transform: translate(0, 0%);
+  }
+  .app-button:hover {
+    opacity: 1;
+    transform: scale(1.1);
   }
 </style>
