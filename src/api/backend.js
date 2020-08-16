@@ -32,7 +32,6 @@ export async function read (collection, jwt) {
 
 export async function readByField (collection, id, jwt) {
   axiosInstance.defaults.headers.common['Authorization'] = `token ${jwt}`
-  console.log(`${collection}/${id}`)
   try {
     const response = await axiosInstance.get(`${collection}/${id}`)
     return response.data
@@ -44,8 +43,6 @@ export async function readByField (collection, id, jwt) {
 export async function create (collection, payload) {
   try {
     const response = await axiosInstance.post(collection, payload)
-    console.log('BACKEND ' + response.data['user_authorized'])
-    console.log('BACKEND ' + response.data['token'])
     return response
   } catch (e) {
     console.log(e)
