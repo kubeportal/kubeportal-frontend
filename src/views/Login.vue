@@ -1,5 +1,5 @@
 <template>
-    <b-card bg-variant="light" class="w-25 mt-16 logincard">
+    <b-card bg-variant="light" class="mt-16 logincard">
       <b-card-header>
         <v-icon class="icon" left>mdi-login-variant</v-icon>
         Kubeportal
@@ -19,7 +19,7 @@
         </div>
         <div class="row"><p class="my-4 text">or</p></div>
         <div class="row">
-        <b-button v-google-signin-button="clientId" class="signin google-signin-button">
+        <b-button class="signin" @click="signInWithGoogle">
           <v-icon class="icon" left>mdi-google</v-icon>
           Continue with Google
         </b-button>
@@ -29,31 +29,48 @@
 </template>
 
 <script>
-import GoogleSignInButton from 'vue-google-signin-button-directive'
 export default {
   name: 'Login',
   data () {
     return {
       username: '',
-      password: ''
+      password: '',
+      isSignIn: ''
+
     }
   },
   methods: {
     async login () {
       const request_body = { username: this.username, password: this.password }
       const response = await this.$store.dispatch('post_login_data', request_body)
-      if(response === 'failed') {
-        this.$store.commit('set_is_authenticated', 'failed')
-        this.$router.push({ name: 'Login' })
-      } else {
-        await this.set_user_data()
-        this.$store.commit('set_is_authenticated', 'true')
-        this.$router.push({ name: 'Kubeportal' })
+      this.handle_login_response(response)
+    },
+    async signInWithGoogle () {
+      try {
+        const googleUser = await this.$gAuth.signIn()
+        if (!googleUser) {
+          return null
+        }
+        const auth_response = googleUser.getAuthResponse()
+        console.log("getAuthResponse", this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse())
+        this.isSignIn = this.$gAuth.isAuthorized
+        const response = await this.$store.dispatch('authorize_google_user', auth_response)
+        await this.handle_login_response(response)
+      } catch (error) {
+        console.log(error)
       }
     },
-    async set_user_data () {
-      console.log(this.username)
-      await this.$store.dispatch('get_current_user', this.username)
+    async handle_login_response (response) {
+      console.log(response)
+      if (response.status === 200) {
+        this.$store.commit('set_is_authenticated', 'true')
+        await this.$store.commit('update_token', response.data['token'])
+        await this.$store.dispatch('get_current_user', response.data['user_authorized'])
+        this.$router.push({ name: 'Kubeportal' })
+      } else {
+        console.log(response.data)
+        this.$store.commit('set_is_authenticated', 'failed')
+      }
     }
   },
   computed: {
@@ -67,7 +84,9 @@ export default {
 
 <style scoped lang="scss">
   .logincard {
-    margin: auto
+    margin: auto;
+    width: 25%;
+    min-width: 300px;
   }
   .signin {
     width: 75%;

@@ -48,14 +48,11 @@ export default new Vuex.Store({
     },
     async post_login_data (context, request_body) {
       const response = await backend.create('/login', request_body)
-      console.log('PSOT' + response.status)
-      if(response.status === 200) {
-        context.commit('update_token', response.data['token'])
-        return response.data
-      } else {
-        console.log('login failed')
-        return 'failed'
-      }
+      return response
+    },
+    async authorize_google_user (context, auth_response) {
+      const response = await backend.create('/login/authorize_google_user', auth_response)
+      return response
     }
   }
 })
