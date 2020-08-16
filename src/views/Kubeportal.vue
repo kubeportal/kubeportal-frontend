@@ -91,7 +91,7 @@ export default {
       this.$router.push({ name: 'Home' })
     },
     openAdmin () {
-      window.location.href = 'https://cluster.datexis.com/admin/'
+      window.location.href = process.env['DJANGO_ADMIN_LINK']
     }
   },
   computed: {

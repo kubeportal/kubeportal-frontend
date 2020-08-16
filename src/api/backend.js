@@ -43,10 +43,12 @@ export async function readByField (collection, id, jwt) {
 
 export async function create (collection, payload) {
   try {
-    return await axiosInstance.post(collection, payload)
+    const response = await axiosInstance.post(collection, payload)
+    console.log('BACKEND ' + response.data['user_authorized'])
+    console.log('BACKEND ' + response.data['token'])
+    return response
   } catch (e) {
     console.log(e)
     return e
   }
 }
-
