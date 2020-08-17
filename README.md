@@ -3,15 +3,10 @@
 https://kubeportal-dev.app.datexis.com/
 
 ### testlogin:
-role: user
-
-- username: s12345
-- password: test
-
 role: admin
 
-- username: s77518
-- password: test
+- username: peter
+- password: troeger
 
 ## Project setup
 ```
