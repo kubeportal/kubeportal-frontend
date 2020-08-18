@@ -1,5 +1,5 @@
 <template>
-  <b-card class="maincard">
+  <b-card class="maincard-adapt">
   <b-card-body>
     <div class="container-fluid">
     <div class="row">
@@ -7,7 +7,7 @@
         <YamlContainer :yamlfile="yamlfile" />
       </div>
       <div class="col-sm">
-        <KubeInstallation />
+        <KubeInstallation  />
       </div>
     </div>
     </div>
@@ -41,6 +41,23 @@ export default {
 <style scoped lang="scss">
   .config {
     display: inline;
+  }
+  div.card {
+    min-width: 300px;
+    max-width: 100%;
+  }
+
+  .maincard-adapt {
+    max-width: 100%;
+  }
+
+  @media (max-device-width: 1719px) {
+
+    .maincard-adapt {
+      width: 86vw;
+      max-width: 100%
+    }
+
   }
 
 </style>
