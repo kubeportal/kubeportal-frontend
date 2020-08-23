@@ -48,15 +48,35 @@ import EventBus from '../../plugins/eventbus.js'
 export default {
   name: 'Generator',
   components: { Deployment, Service, Ingress, EventBus },
+  data () {
+    return {
+      tab: this.$store.getters['get_current_generator_tab']
+    }
+  },
   methods: {
     SaveDataByOpenDeployment () {
-      EventBus.$emit('SaveDataByOpenDeployment')
+      if(this.tab === 'Service') {
+        EventBus.$emit('SaveServiceData')
+      } else if (this.tab === 'Ingress') {
+        EventBus.$emit('SaveIngressData')
+      }
+      this.$store.commit('set_current_generator_tab', 'Deployment')
     },
     SaveDataByOpenService () {
-      EventBus.$emit('SaveDataByOpenService')
+      if(this.tab === 'Deployment') {
+        EventBus.$emit('SaveDeploymentData')
+      } else if (this.tab === 'Ingress') {
+        EventBus.$emit('SaveIngressData')
+      }
+      this.$store.commit('set_current_generator_tab', 'Service')
     },
     SaveDataByOpenIngress () {
-      EventBus.$emit('SaveDataByOpenIngress')
+      if(this.tab === 'Service') {
+        EventBus.$emit('SaveServiceData')
+      } else if (this.tab === 'Deployment') {
+        EventBus.$emit('SaveDeploymentData')
+      }
+      this.$store.commit('set_current_generator_tab', 'Ingress')
     }
   }
 }

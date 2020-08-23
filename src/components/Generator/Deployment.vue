@@ -141,9 +141,9 @@ export default {
       return string
     }
   },
-  beforeMount () {
-    EventBus.$on('SaveDataByOpenDeployment', (() => {
-      console.log('COMMIT DATA')
+  created () {
+    EventBus.$on('SaveDeploymentData', (() => {
+      console.log('COMMIT DATA DEPLOYMENT')
       this.$store.commit('setAppName', this.form.deploymentname)
       this.$store.commit('setTargetPort', this.form.containerport)
       this.$store.commit('setContainerPort', this.form.containerport)

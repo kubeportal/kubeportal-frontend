@@ -84,9 +84,9 @@ export default {
       return string
     }
   },
-  beforeMount () {
-    EventBus.$on('SaveDataByOpenService', (() => {
-      console.log('COMMIT DATA')
+  created () {
+    EventBus.$on('SaveServiceData', (() => {
+      console.log('COMMIT DATA SERVICE')
       this.$store.commit('setServiceName', this.form.servicename)
       this.$store.commit('setServicePort', this.form.serviceport)
       this.$store.commit('setContainerPort', this.form.targetPort)

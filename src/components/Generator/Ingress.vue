@@ -139,9 +139,9 @@ export default {
       return validation
     }
   },
-  beforeMount () {
-    EventBus.$on('SaveDataByOpenIngress', (() => {
-      console.log('COMMIT DATA')
+  created () {
+    EventBus.$on('SaveIngressData', (() => {
+      console.log('COMMIT DATA INGRESS')
       this.$store.commit('setIngressName', this.form.ingressname)
       this.$store.commit('setDomainName', this.form.domainname)
       this.$store.commit('setSubdomain', this.form.subdomain)
