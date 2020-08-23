@@ -76,7 +76,6 @@ export default {
         imagename: this.$store.getters['get_imagename'],
         deploymentname: this.$store.getters['get_deploymentname'],
         containername: this.$store.getters['get_containername'],
-        targetport: this.$store.getters['get_containerport'],
         namespace: this.$store.getters['get_namespace'],
         containerport: this.$store.getters['get_containerport']
       },
@@ -145,8 +144,10 @@ export default {
     EventBus.$on('SaveDeploymentData', (() => {
       console.log('COMMIT DATA DEPLOYMENT')
       this.$store.commit('setAppName', this.form.deploymentname)
-      this.$store.commit('setTargetPort', this.form.containerport)
       this.$store.commit('setContainerPort', this.form.containerport)
+      this.$store.commit('setServicePort', this.form.containerport)
+      this.$store.commit('setServiceName', this.form.deploymentname + '-service')
+      this.$store.commit('setIngressName', this.form.deploymentname + '-ingress')
       this.$store.commit('setContainerName', this.form.containername)
       this.$store.commit('setNamespace', this.form.namespace)
       this.$store.commit('setImageName', this.form.imagename)

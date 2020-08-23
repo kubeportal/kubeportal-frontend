@@ -46,8 +46,7 @@ export default {
   data () {
     return {
       form: {
-        serviceport: this.$store.getters['get_serviceport'],
-        targetport: this.$store.getters['get_targetport'],
+        serviceport: this.$store.getters['get_containerport'],
         servicename: this.$store.getters['get_servicename'],
         namespace: this.$store.getters['get_namespace'],
         deploymentname: this.$store.getters['get_deploymentname']
@@ -89,8 +88,6 @@ export default {
       console.log('COMMIT DATA SERVICE')
       this.$store.commit('setServiceName', this.form.servicename)
       this.$store.commit('setServicePort', this.form.serviceport)
-      this.$store.commit('setContainerPort', this.form.targetPort)
-      this.$store.commit('setTargetPort', this.form.targetPort)
       this.$store.commit('setNamespace', this.form.namespace)
       this.$store.commit('setAppName', this.form.deploymentname)
     }))
