@@ -142,23 +142,25 @@ export default {
   },
   created () {
     EventBus.$on('SaveDeploymentData', (() => {
-      console.log('COMMIT DATA DEPLOYMENT')
-      this.$store.commit('setAppName', this.form.deploymentname)
-      this.$store.commit('setContainerPort', this.form.containerport)
-      this.$store.commit('setServicePort', this.form.containerport)
-      this.$store.commit('setServiceName', this.form.deploymentname + '-service')
-      this.$store.commit('setIngressName', this.form.deploymentname + '-ingress')
-      this.$store.commit('setContainerName', this.form.containername)
-      this.$store.commit('setNamespace', this.form.namespace)
-      this.$store.commit('setImageName', this.form.imagename)
+      this.$store.commit('set_deployment_name', this.form.deploymentname)
+      this.$store.commit('set_container_port', this.form.containerport)
+      this.$store.commit('set_service_port', this.form.containerport)
+      this.$store.commit('set_servicename', this.form.deploymentname + '-service')
+      this.$store.commit('set_ingressname', this.form.deploymentname + '-ingress')
+      this.$store.commit('set_container_name', this.form.containername)
+      this.$store.commit('set_namespace', this.form.namespace)
+      this.$store.commit('set_image_name', this.form.imagename)
     }))
   }
 }
 </script>
 
 <style scoped>
+  .card {
+    margin-top: 1vw;
+  }
   .main {
-    padding: 0vw 3vw 0vw 3vw;
+    padding: 2vw 0vw 0vw 0vw;
   }
 
 </style>

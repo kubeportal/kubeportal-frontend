@@ -17,17 +17,5 @@ export default {
 </script>
 
 <style scoped>
-  .btn {
-    color: white;
-    width: 120px;
-    margin-bottom: 2vw;
-  }
-  .btn:hover {
-    color: white;
-    text-decoration: none;
-    background-color: #343a40;
-  }
-  .mr-2 {
-    height: 17px;
-  }
+
 </style>

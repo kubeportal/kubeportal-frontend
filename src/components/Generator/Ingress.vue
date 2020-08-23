@@ -141,30 +141,23 @@ export default {
   },
   created () {
     EventBus.$on('SaveIngressData', (() => {
-      console.log('COMMIT DATA INGRESS')
-      this.$store.commit('setIngressName', this.form.ingressname)
-      this.$store.commit('setDomainName', this.form.domainname)
-      this.$store.commit('setSubdomain', this.form.subdomain)
-      this.$store.commit('setNamespace', this.form.namespace)
-      this.$store.commit('setServiceName', this.form.servicename)
-      this.$store.commit('setServicePort', this.form.serviceport)
+      this.$store.commit('set_ingressname', this.form.ingressname)
+      this.$store.commit('set_domainname', this.form.domainname)
+      this.$store.commit('set_subdomain', this.form.subdomain)
+      this.$store.commit('set_namespace', this.form.namespace)
+      this.$store.commit('set_servicename', this.form.servicename)
+      this.$store.commit('set_service_port', this.form.serviceport)
     }))
   }
 }
 </script>
 
 <style scoped>
-.row, .col {
-  margin: 0;
-  padding: 0;
-}
-.card {
-  margin-top: 1.88vh
-}
-.heading {
-  margin: 3vw 0vw 0vw 0vw;
-}
-.main {
-  padding: 0vw 3vw 0vw 3vw;
-}
+  .main {
+    padding: 2vw 0vw 0vw 0vw;
+  }
+  .card {
+    margin-top: 1vw;
+  }
+
 </style>

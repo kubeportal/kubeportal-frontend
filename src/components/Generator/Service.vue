@@ -85,28 +85,20 @@ export default {
   },
   created () {
     EventBus.$on('SaveServiceData', (() => {
-      console.log('COMMIT DATA SERVICE')
-      this.$store.commit('setServiceName', this.form.servicename)
-      this.$store.commit('setServicePort', this.form.serviceport)
-      this.$store.commit('setNamespace', this.form.namespace)
-      this.$store.commit('setAppName', this.form.deploymentname)
+      this.$store.commit('set_servicename', this.form.servicename)
+      this.$store.commit('set_service_port', this.form.serviceport)
+      this.$store.commit('set_namespace', this.form.namespace)
+      this.$store.commit('set_deployment_name', this.form.deploymentname)
     }))
   }
 }
 </script>
 
 <style scoped>
-.row, .col {
-  margin: 0;
-  padding: 0;
-}
-.heading {
-  margin: 3vw 0vw 0vw 0vw;
-}
-.card {
-  margin-top: 1.88vh
-}
-.main {
-  padding: 0vw 3vw 0vw 3vw;
-}
+  .card {
+    margin-top: 1vw;
+  }
+  .main {
+    padding: 2vw 0vw 0vw 0vw;
+  }
 </style>
