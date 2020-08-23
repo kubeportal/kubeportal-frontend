@@ -2,25 +2,25 @@
   <div class="text-left main">
       <b-row no-gutters>
         <b-col>
-                <b-card-body class="card">
-                  <b-form>
-                    <b-form-group label="custom service name:">
-                      <b-form-input v-model="form.servicename" required></b-form-input>
-                    </b-form-group>
+            <b-card-body class="card">
+              <b-form>
+                <b-form-group label="custom service name:">
+                  <b-form-input v-model="form.servicename" required></b-form-input>
+                </b-form-group>
 
-                    <b-form-group small label="service port">
-                      <b-form-input v-model="form.serviceport" required></b-form-input>
-                   </b-form-group>
+                <b-form-group small label="service port">
+                  <b-form-input v-model="form.serviceport" required></b-form-input>
+               </b-form-group>
 
-                    <b-form-group label="namespace:">
-                      <b-form-input v-model="form.namespace" required></b-form-input>
-                    </b-form-group>
+                <b-form-group label="namespace:">
+                  <b-form-input v-model="form.namespace" required></b-form-input>
+                </b-form-group>
 
-                    <b-form-group label="deployment name">
-                      <b-form-input v-model="form.deploymentname" required></b-form-input>
-                    </b-form-group>
-                  </b-form>
-                </b-card-body>
+                <b-form-group label="deployment name">
+                  <b-form-input v-model="form.deploymentname" required></b-form-input>
+                </b-form-group>
+              </b-form>
+            </b-card-body>
         </b-col>
         <b-col>
           <YamlContainer :yamlfile="yamlfile"/>
@@ -37,6 +37,7 @@
 
 <script>
 import YamlContainer from './YamlContainer'
+import EventBus from '../../plugins/eventbus.js'
 
 export default {
   name: 'Service',
@@ -45,11 +46,11 @@ export default {
   data () {
     return {
       form: {
-        serviceport: this.$store.state.serviceport,
-        targetport: this.$store.state.containerport,
-        servicename: this.$store.state.servicename,
-        namespace: this.$store.state.namespace,
-        deploymentname: this.$store.state.deploymentname
+        serviceport: this.$store.getters['get_serviceport'],
+        targetport: this.$store.getters['get_targetport'],
+        servicename: this.$store.getters['get_servicename'],
+        namespace: this.$store.getters['get_namespace'],
+        deploymentname: this.$store.getters['get_deploymentname']
       }
     }
   },
@@ -83,23 +84,16 @@ export default {
       return string
     }
   },
-  methods: {
-    commitChanges () {
+  beforeMount () {
+    EventBus.$on('SaveDataByOpenService', (() => {
+      console.log('COMMIT DATA')
       this.$store.commit('setServiceName', this.form.servicename)
       this.$store.commit('setServicePort', this.form.serviceport)
       this.$store.commit('setContainerPort', this.form.targetPort)
       this.$store.commit('setTargetPort', this.form.targetPort)
       this.$store.commit('setNamespace', this.form.namespace)
       this.$store.commit('setAppName', this.form.deploymentname)
-    },
-    openIngress () {
-      this.commitChanges()
-      this.$router.push({ name: 'Ingress' })
-    },
-    openDeployment () {
-      this.commitChanges()
-      this.$router.push({ name: 'Deployment' })
-    }
+    }))
   }
 }
 </script>

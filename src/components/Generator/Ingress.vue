@@ -2,42 +2,42 @@
   <div class="text-left main">
         <b-row no-gutters>
         <b-col>
-                <b-card-body class="card">
-                  <b-form>
-                    <b-form-group label="custom ingress name:">
-                      <b-form-input v-model="form.ingressname" required></b-form-input>
-                    </b-form-group>
+            <b-card-body class="card">
+              <b-form>
+                <b-form-group label="custom ingress name:">
+                  <b-form-input v-model="form.ingressname" required></b-form-input>
+                </b-form-group>
 
-                    <b-form-group small label="domain:">
-                      <b-form-select v-model="form.domainname" :options="domains" required></b-form-select>
-                   </b-form-group>
+                <b-form-group small label="domain:">
+                  <b-form-select v-model="form.domainname" :options="domains" required></b-form-select>
+               </b-form-group>
 
-                    <b-form-group label="subdomain:">
-                      <b-form-input v-model="form.subdomain" required></b-form-input>
-                    </b-form-group>
+                <b-form-group label="subdomain:">
+                  <b-form-input v-model="form.subdomain" required></b-form-input>
+                </b-form-group>
 
-                    <b-form-group label="service name:">
-                      <b-form-input v-model="form.servicename" required></b-form-input>
-                    </b-form-group>
+                <b-form-group label="service name:">
+                  <b-form-input v-model="form.servicename" required></b-form-input>
+                </b-form-group>
 
-                    <b-form-group label="service port:">
-                      <b-form-input v-model="form.serviceport" required></b-form-input>
-                    </b-form-group>
+                <b-form-group label="service port:">
+                  <b-form-input v-model="form.serviceport" required></b-form-input>
+                </b-form-group>
 
-                    <b-form-group label="namespace:">
-                      <b-form-input v-model="form.namespace" required></b-form-input>
-                    </b-form-group>
+                <b-form-group label="namespace:">
+                  <b-form-input v-model="form.namespace" required></b-form-input>
+                </b-form-group>
 
-                    <b-form-group label="choose more annotations:" class="annotations">
-                      <b-form-checkbox-group
-                        v-model="selected"
-                        :options="options"
-                        name="flavour-2a"
-                        stacked>
-                      </b-form-checkbox-group>
-                    </b-form-group>
-                  </b-form>
-                </b-card-body>
+                <b-form-group label="choose more annotations:" class="annotations">
+                  <b-form-checkbox-group
+                    v-model="selected"
+                    :options="options"
+                    name="flavour-2a"
+                    stacked>
+                  </b-form-checkbox-group>
+                </b-form-group>
+              </b-form>
+            </b-card-body>
         </b-col>
         <b-col>
           <YamlContainer :yamlfile="yamlfile"/>
@@ -48,6 +48,7 @@
 
 <script>
 import YamlContainer from './YamlContainer'
+import EventBus from '../../plugins/eventbus.js'
 
 export default {
   name: 'Ingress',
@@ -56,12 +57,12 @@ export default {
   data () {
     return {
       form: {
-        ingressname: this.$store.state.ingressname,
-        serviceport: this.$store.state.serviceport,
-        servicename: this.$store.state.servicename,
-        domainname: this.$store.state.domainname,
-        subdomain: this.$store.state.subdomain,
-        namespace: this.$store.state.namespace
+        ingressname: this.$store.getters['get_ingressname'],
+        serviceport: this.$store.getters['get_serviceport'],
+        servicename: this.$store.getters['get_servicename'],
+        domainname: this.$store.getters['get_domainname'],
+        subdomain: this.$store.getters['get_subdomain'],
+        namespace: this.$store.getters['get_namespace']
       },
       domains: [{ text: 'choose...', value: '' }, 'demo.datexis.com', 'app.datexis.com', 'internal.datexis.com', 'api.datexis.com'],
       options: ['enable CORS', 'restriction to beuth network', 'cors-allow-origin'],
@@ -118,25 +119,16 @@ export default {
     }
   },
   methods: {
-    commitChanges () {
-      this.$store.commit('setIngressName', this.form.ingressname)
-      this.$store.commit('setDomainName', this.form.domainname)
-      this.$store.commit('setSubdomain', this.form.subdomain)
-      this.$store.commit('setNamespace', this.form.namespace)
-      this.$store.commit('setServiceName', this.form.servicename)
-      this.$store.commit('setServicePort', this.form.serviceport)
-    },
-    openService () {
-      this.commitChanges()
-      this.$router.push({ name: 'Service' })
+    commitData () {
+
     },
     async viewAll () {
       console.log('view all clicked')
       let hostname = this.form.subdomain + '.' + this.form.domainname
       console.log(hostname)
-      this.commitChanges()
+      this.commitData()
       if(await this.checkHostName()) {
-        this.$router.push({ name: 'Overview' })
+        console.log('check ok')
       } else {
         console.log('Hostname already exists')
       }
@@ -146,6 +138,17 @@ export default {
       const validation = await this.$store.dispatch('validate_hostname', hostname)
       return validation
     }
+  },
+  beforeMount () {
+    EventBus.$on('SaveDataByOpenIngress', (() => {
+      console.log('COMMIT DATA')
+      this.$store.commit('setIngressName', this.form.ingressname)
+      this.$store.commit('setDomainName', this.form.domainname)
+      this.$store.commit('setSubdomain', this.form.subdomain)
+      this.$store.commit('setNamespace', this.form.namespace)
+      this.$store.commit('setServiceName', this.form.servicename)
+      this.$store.commit('setServicePort', this.form.serviceport)
+    }))
   }
 }
 </script>

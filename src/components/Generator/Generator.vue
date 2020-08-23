@@ -1,15 +1,15 @@
 <template>
   <b-card class="maincard">
     <v-tabs >
-      <v-tab @click="openDeployment">
+      <v-tab @click="SaveDataByOpenDeployment">
         <v-icon class="icon" left>mdi-hexagon-multiple-outline</v-icon>
           <div class="title"><small>Deployment</small></div>
       </v-tab>
-      <v-tab @click="openService">
+      <v-tab @click="SaveDataByOpenService">
         <v-icon class="icon" left>mdi-transit-connection-horizontal</v-icon>
           <div class="title"><small>Service</small></div>
       </v-tab>
-      <v-tab @click="openIngress">
+      <v-tab @click="SaveDataByOpenIngress">
         <v-icon class="icon" left>mdi-arrow-decision-outline</v-icon>
           <div class="title"><small>Ingress</small></div>
       </v-tab>
@@ -17,14 +17,14 @@
       <v-tab-item class="items">
         <v-card flat>
           <v-card-text>
-            <Deployment />
+            <Deployment ref="Deployment" />
           </v-card-text>
         </v-card>
       </v-tab-item>
       <v-tab-item class="items">
         <v-card flat>
           <v-card-text>
-            <Service />
+            <Service ref="Service" />
           </v-card-text>
         </v-card>
       </v-tab-item>
@@ -43,11 +43,22 @@
 import Deployment from './Deployment'
 import Service from './Service'
 import Ingress from './Ingress'
+import EventBus from '../../plugins/eventbus.js'
 
 export default {
   name: 'Generator',
-  components: { Deployment, Service, Ingress }
-
+  components: { Deployment, Service, Ingress, EventBus },
+  methods: {
+    SaveDataByOpenDeployment () {
+      EventBus.$emit('SaveDataByOpenDeployment')
+    },
+    SaveDataByOpenService () {
+      EventBus.$emit('SaveDataByOpenService')
+    },
+    SaveDataByOpenIngress () {
+      EventBus.$emit('SaveDataByOpenIngress')
+    }
+  }
 }
 </script>
 

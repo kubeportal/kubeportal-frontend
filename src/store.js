@@ -33,7 +33,18 @@ export default new Vuex.Store({
     get_webapps (state) { return state.webapps },
     get_current_user (state) { return state.user },
     get_jwt (state) { return state.jwt },
-    get_is_authenticated (state) { return state.is_authenticated }
+    get_is_authenticated (state) { return state.is_authenticated },
+    get_deploymentname (state) { return state.deploymentname },
+    get_imagename (state) { return state.imagename },
+    get_containername (state) { return state.containername },
+    get_targetport (state) { return state.containerport },
+    get_serviceport (state) { return state.serviceport },
+    get_namespace (state) { return state.namespace },
+    get_servicename (state) { return state.servicename },
+    get_domainname (state) { return state.domainname },
+    get_subdomain (state) { return state.subdomain },
+    get_hostname_valid (state) { return state.hostname_valid },
+    get_current_generator_tab (state) { return state.current_generator_tab }
   },
 
   mutations: {
