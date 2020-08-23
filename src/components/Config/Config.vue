@@ -4,7 +4,7 @@
     <div class="container-fluid">
     <div class="row">
       <div class="col-sm">
-        <YamlContainer :yamlfile="yamlfile" />
+        <KubeConfig :yamlfile="yamlfile" />
       </div>
       <div class="col-sm">
         <KubeInstallation  />
@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import YamlContainer from './YamlContainer'
+import KubeConfig from './KubeConfig'
 import KubeInstallation from './KubeInstallation'
 
 export default {
   name: 'Config',
-  components: { KubeInstallation, YamlContainer },
+  components: { KubeInstallation, KubeConfig },
   data () {
     return {
       current_user: this.$store.getters['get_current_user']
@@ -51,7 +51,7 @@ export default {
     max-width: 100%;
   }
 
-  @media (max-device-width: 1719px) {
+  @media (max-device-width: 1519px) {
 
     .maincard-adapt {
       width: 86vw;

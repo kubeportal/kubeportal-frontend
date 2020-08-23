@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: 'YamlContainer',
+  name: 'KubeConfig',
   props: ['yamlfile']
 }
 </script>
@@ -22,19 +22,19 @@ export default {
     max-width: 100%
   }
   .yaml-card {
-    width: 40vw;
+    width: 35vw;
   }
   .yaml-body {
-    width: 37vw;
+    width: 32vw;
   }
 
-  @media (max-device-width: 1719px) {
+  @media (max-device-width: 1519px) {
 
     .yaml-card {
       width: 86vw
     }
     .yaml-body {
-      width: 60vw;
+      width: 75vw;
     }
   }
 

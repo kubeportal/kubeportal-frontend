@@ -57,7 +57,7 @@ export default {
 
 <style scoped lang="scss">
   .kubeinstallation {
-    width: 40vw
+    width: 30vw
   }
   .btn {
     margin: 2vw 0vw 1vw 0vw;
@@ -68,9 +68,8 @@ export default {
   }
   .content {
     max-width: 80%;
-    padding-right: 4vw;
   }
-  @media (max-device-width: 1719px) {
+  @media (max-device-width: 1519px) {
     .kubeinstallation {
       width: 80vw
     }
