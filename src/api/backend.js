@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 const API_BASE_URL = setBaseURLWithDefaultOrEnvValue()
+const API_VERSION = 'v1.0.0'
 
 function canReadURLFromEnv () {
   return !!process.env['API_BASE_URL']
@@ -8,7 +9,8 @@ function canReadURLFromEnv () {
 
 export function setBaseURLWithDefaultOrEnvValue () {
   const defaultUrl = 'https://kubeportal-dev.api.datexis.com/'
-  return canReadURLFromEnv() ? process.env['VUE_APP_BASE_URL'] : defaultUrl
+  const baseUrl = canReadURLFromEnv() ? process.env['VUE_APP_BASE_URL'] : defaultUrl
+  return baseUrl + settings.apiVersion + '/'
 }
 
 const config = {
