@@ -27,8 +27,8 @@ export default {
   components: { WebAppContainer },
   data () {
     return {
-      metrics: this.$store.getters['get_metrics'],
-      current_user: this.$store.getters['get_current_user']
+      metrics: this.$store.getters['statistics/get_metrics'],
+      current_user: this.$store.getters['users/get_current_user']
     }
   },
   methods: {
@@ -37,7 +37,7 @@ export default {
     },
     async request_metric_value (metric) {
       let request_metric = metric.replace(/_/i, '')
-      await this.$store.dispatch('get_statistic_metric', request_metric)
+      await this.$store.dispatch('statistics/get_statistic_metric', request_metric)
     }
   },
   created () {

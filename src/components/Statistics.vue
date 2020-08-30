@@ -31,8 +31,8 @@ export default {
   name: 'Statistics',
   computed: {
     all_statistics () {
-      console.log(this.$store.getters['get_all_statistics'])
-      return this.$store.getters['get_all_statistics']
+      console.log(this.$store.getters['generator/get_all_statistics'])
+      return this.$store.getters['generator/get_all_statistics']
     }
   }
 }

@@ -42,6 +42,7 @@ export async function readByField (collection, id, jwt) {
 
 export async function create (collection, payload) {
   try {
+    console.log('create')
     const response = await axiosInstance.post(collection, payload)
     return response
   } catch (e) {

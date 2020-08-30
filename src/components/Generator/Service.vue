@@ -46,10 +46,10 @@ export default {
   data () {
     return {
       form: {
-        serviceport: this.$store.getters['get_containerport'],
-        servicename: this.$store.getters['get_servicename'],
-        namespace: this.$store.getters['get_namespace'],
-        deploymentname: this.$store.getters['get_deploymentname']
+        serviceport: this.$store.getters['generator/get_containerport'],
+        servicename: this.$store.getters['generator/get_servicename'],
+        namespace: this.$store.getters['generator/get_namespace'],
+        deploymentname: this.$store.getters['generator/get_deploymentname']
       }
     }
   },

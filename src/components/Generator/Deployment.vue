@@ -73,11 +73,11 @@ export default {
   data () {
     return {
       form: {
-        imagename: this.$store.getters['get_imagename'],
-        deploymentname: this.$store.getters['get_deploymentname'],
-        containername: this.$store.getters['get_containername'],
-        namespace: this.$store.getters['get_namespace'],
-        containerport: this.$store.getters['get_containerport']
+        imagename: this.$store.getters['generator/get_imagename'],
+        deploymentname: this.$store.getters['generator/get_deploymentname'],
+        containername: this.$store.getters['generator/get_containername'],
+        namespace: this.$store.getters['generator/get_namespace'],
+        containerport: this.$store.getters['generator/get_containerport']
       },
       options: ['', 'restriction to beuth network', 'cors-allow-origin'],
       tooltip: 'dasdas'

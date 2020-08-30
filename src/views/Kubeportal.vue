@@ -85,7 +85,7 @@ export default {
   components: { Statistics, Welcome, Config, showAt, Generator },
   data () {
     return {
-      metrics: this.$store.getters['get_metrics']
+      metrics: this.$store.getters['statistics/get_metrics']
     }
   },
   methods: {
@@ -94,14 +94,14 @@ export default {
     },
     async request_metric_value (metric) {
       let request_metric = metric.replace(/_/i, '')
-      await this.$store.dispatch('get_statistic_metric', request_metric)
+      await this.$store.dispatch('statistics/get_statistic_metric', request_metric)
     },
     logout () {
-      this.$store.commit('set_user', {})
-      this.$store.commit('update_statistics', [])
-      this.$store.commit('update_token', '')
-      this.$store.commit('update_webapps', [])
-      this.$store.commit('set_is_authenticated', '')
+      this.$store.commit('users/set_user', {})
+      this.$store.commit('statistics/update_statistics', [])
+      this.$store.commit('users/set_token', '')
+      this.$store.commit('statistics/update_webapps', [])
+      this.$store.commit('users/set_is_authenticated', '')
       this.$router.push({ name: 'Home' })
     },
     openAdmin () {
@@ -110,14 +110,14 @@ export default {
   },
   computed: {
     userIsAdmin () {
-      let current_user = this.$store.getters['get_current_user']
+      let current_user = this.$store.getters['users/get_current_user']
       return current_user['role'] === 'admin'
     }
   },
   created () {
-    if(this.$store.getters['get_is_authenticated'] === '') {
+    if(this.$store.getters['users/get_is_authenticated'] === '') {
       this.$router.push({ name: 'Home' })
-    } else if (this.$store.getters['get_is_authenticated'] === true) {
+    } else if (this.$store.getters['users/get_is_authenticated'] === true) {
       this.get_all_statistic_values()
     }
   }

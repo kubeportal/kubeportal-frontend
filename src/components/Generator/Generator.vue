@@ -50,7 +50,7 @@ export default {
   components: { Deployment, Service, Ingress, EventBus },
   data () {
     return {
-      tab: this.$store.getters['get_current_generator_tab']
+      tab: this.$store.getters['generator/get_current_generator_tab']
     }
   },
   methods: {

@@ -41,7 +41,7 @@ export default {
   methods: {
     async login () {
       const request_body = { username: this.username, password: this.password }
-      const response = await this.$store.dispatch('post_login_data', request_body)
+      const response = await this.$store.dispatch('users/post_login_data', request_body)
       console.log('response done')
       this.handle_login_response(response)
     },
@@ -54,7 +54,7 @@ export default {
         const auth_response = googleUser.getAuthResponse()
         console.log("getAuthResponse", this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse())
         this.isSignIn = this.$gAuth.isAuthorized
-        const response = await this.$store.dispatch('authorize_google_user', auth_response)
+        const response = await this.$store.dispatch('users/authorize_google_user', auth_response)
         await this.handle_login_response(response)
       } catch (error) {
         console.log(error)
@@ -63,21 +63,20 @@ export default {
     async handle_login_response (response) {
       if (response.status === 200) {
         console.log('in 200')
-        this.$store.commit('set_is_authenticated', 'true')
-        await this.$store.commit('update_token', response.data['token'])
-        console.log(response.data['user_authorized'])
-        await this.$store.dispatch('get_current_user', response.data['user_authorized'])
+        this.$store.commit('users/set_is_authenticated', 'true')
+        await this.$store.commit('users/set_token', response.data['token'])
+        await this.$store.dispatch('users/get_current_user', response.data['user_authorized'])
         this.$router.push({ name: 'Kubeportal' })
       } else {
         console.log('login failed')
-        this.$store.commit('set_is_authenticated', 'failed')
+        this.$store.commit('users/set_is_authenticated', 'failed')
         this.$router.push({ name: 'Home' })
       }
     }
   },
   computed: {
     is_authenticated () {
-      return this.$store.getters['get_is_authenticated']
+      return this.$store.getters['generator/get_is_authenticated']
     }
   }
 

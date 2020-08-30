@@ -11,11 +11,11 @@ export default {
   name: 'WebAppContainer',
   computed: {
     webapps () {
-      return this.$store.getters['get_webapps']
+      return this.$store.getters['generator/get_webapps']
     }
   },
   async created () {
-    await this.$store.dispatch('get_webapps')
+    await this.$store.dispatch('statistics/get_webapps')
   }
 }
 </script>
