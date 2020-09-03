@@ -42,7 +42,6 @@ export default {
     async login () {
       const request_body = { username: this.username, password: this.password }
       const response = await this.$store.dispatch('users/post_login_data', request_body)
-      console.log('response done')
       this.handle_login_response(response)
     },
     async signInWithGoogle () {
@@ -62,10 +61,9 @@ export default {
     },
     async handle_login_response (response) {
       if (response.status === 200) {
-        console.log('in 200')
+        console.log(response.data)
+        this.$store.commit('users/set_user', response.data)
         this.$store.commit('users/set_is_authenticated', 'true')
-        await this.$store.commit('users/set_token', response.data['token'])
-        await this.$store.dispatch('users/get_current_user', response.data['user_authorized'])
         this.$router.push({ name: 'Kubeportal' })
       } else {
         console.log('login failed')
