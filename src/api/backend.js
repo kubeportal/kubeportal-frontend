@@ -7,8 +7,10 @@ function canReadURLFromEnv () {
 }
 
 export function setBaseURLWithDefaultOrEnvValue () {
-  const defaultUrl = 'https://kubeportal-dev.api.datexis.com/'
-  return canReadURLFromEnv() ? process.env['VUE_APP_BASE_URL'] : defaultUrl
+  const API_VERSION = 'v1.0.0'
+  const defaultUrl = '127.0.0.1:8000'
+  const baseUrl = canReadURLFromEnv() ? process.env['VUE_APP_BASE_URL'] : defaultUrl
+  return `${baseUrl}${API_VERSION}/`
 }
 
 const config = {
