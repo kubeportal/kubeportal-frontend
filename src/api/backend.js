@@ -8,9 +8,9 @@ function canReadURLFromEnv () {
 
 export function setBaseURLWithDefaultOrEnvValue () {
   const API_VERSION = 'v1.0.0'
-  const defaultUrl = '127.0.0.1:8000'
+  const defaultUrl = 'http://localhost:8000'
   const baseUrl = canReadURLFromEnv() ? process.env['VUE_APP_BASE_URL'] : defaultUrl
-  return `${baseUrl}${API_VERSION}/`
+  return `${baseUrl}/${API_VERSION}`
 }
 
 const config = {
@@ -22,18 +22,18 @@ const config = {
 
 export const axiosInstance = axios.create(config)
 
-export async function read (collection, jwt) {
-  axiosInstance.defaults.headers.common['Authorization'] = `token ${jwt}`
+export async function read (collection) {
+  //axiosInstance.defaults.headers.common['Authorization'] = `token ${jwt}`
   try {
     const response = await axiosInstance.get(collection)
-    return response.data
+    return response
   } catch (e) {
     console.log(e)
   }
 }
 
-export async function readByField (collection, id, jwt) {
-  axiosInstance.defaults.headers.common['Authorization'] = `token ${jwt}`
+export async function readByField (collection, id) {
+  //axiosInstance.defaults.headers.common['Authorization'] = `token ${jwt}`
   try {
     const response = await axiosInstance.get(`${collection}/${id}`)
     return response.data
@@ -43,8 +43,10 @@ export async function readByField (collection, id, jwt) {
 }
 
 export async function create (collection, payload) {
+  console.log('create')
   try {
     const response = await axiosInstance.post(collection, payload)
+    console.log(response)
     return response
   } catch (e) {
     console.log(e)
