@@ -10,7 +10,7 @@
       <v-tab>
         <v-icon class="icon" left>mdi-file-document-outline</v-icon>
         <show-at breakpoint="mediumAndAbove">
-          <div class="title"><small>Config</small></div>
+          <div class="title"><small>Cluster</small></div>
         </show-at>
       </v-tab>
       <v-tab>
@@ -25,10 +25,16 @@
           <div class="title"><small>Generator</small></div>
         </show-at>
       </v-tab>
-      <v-tab @click="openAdmin" v-if="userIsAdmin">
+      <v-tab @click="openAdmin">
         <v-icon class="icon" left>mdi-tools</v-icon>
         <show-at breakpoint="mediumAndAbove">
           <div class="title"><small>Admin</small></div>
+        </show-at>
+      </v-tab>
+      <v-tab>
+        <v-icon class="icon" left>mdi-cog-outline</v-icon>
+        <show-at breakpoint="mediumAndAbove">
+          <div class="title"><small>Settings</small></div>
         </show-at>
       </v-tab>
       <v-tab @click="logout">
@@ -75,7 +81,7 @@
 
 import Welcome from '@/components/Welcome'
 import Statistics from '@/components/Statistics'
-import Config from '@/components/Config/Config'
+import Config from '@/components/Cluster/Config'
 import Generator from '@/components/Generator/Generator'
 import { showAt } from 'vue-breakpoints'
 
@@ -85,16 +91,16 @@ export default {
   components: { Statistics, Welcome, Config, showAt, Generator },
   data () {
     return {
-      metrics: this.$store.getters['statistics/get_metrics']
+      statistics: this.$store.getters['statistics/get_statistics']
     }
   },
   methods: {
     get_all_statistic_values () {
-      this.metrics.map(this.request_metric_value)
+      this.statistics.map(this.request_stat_value)
     },
-    async request_metric_value (metric) {
-      let request_metric = metric.replace(/_/i, '')
-      await this.$store.dispatch('statistics/get_statistic_metric', request_metric)
+    async request_stat_value (stat) {
+      let request_stat = stat.replace(/_/i, '')
+      await this.$store.dispatch('statistics/get_statistic_stat', request_stat)
     },
     logout () {
       this.$store.commit('users/set_user', {})
@@ -140,6 +146,9 @@ export default {
   }
   .title {
     padding: 0 1rem 0 3rem;
+  }
+  .items {
+    margin-left: 1vw;
   }
 
 </style>

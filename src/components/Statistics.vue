@@ -1,4 +1,5 @@
 <template>
+  <ContentCardHeader class="wrapper">
   <b-card class="maincard">
     <b-card-header>
       Cluster Statistics
@@ -23,16 +24,19 @@
     </v-simple-table>
     </div>
   </b-card>
+  </ContentCardHeader>
 </template>
 
 <script>
 
+import ContentCardHeader from "@/components/ContentCardHeader";
 export default {
   name: 'Statistics',
+  components: { ContentCardHeader },
   computed: {
     all_statistics () {
-      console.log(this.$store.getters['generator/get_all_statistics'])
-      return this.$store.getters['generator/get_all_statistics']
+      console.log(this.$store.getters['statistics/get_statistics'])
+      return this.$store.getters['statistics/get_statistics']
     }
   }
 }
@@ -41,5 +45,8 @@ export default {
 <style scoped lang="scss">
   .first {
     width: 30rem;
+  }
+  .wrapper {
+    height: 70vh !important;
   }
 </style>

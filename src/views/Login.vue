@@ -4,23 +4,21 @@
         <v-icon class="icon" left>mdi-login-variant</v-icon>
         Kubeportal
       </b-card-header>
-
       <b-card-body>
         <v-alert class="alert" dense outlined type="error" v-if="is_authenticated==='failed'"> Login Failed.</v-alert>
         <b-card-text>
         <v-text-field label="user name" v-model="username" required></v-text-field>
-        <v-text-field type="password" v-model="password" label="password" requires></v-text-field>
+        <v-text-field type="password" v-model="password" label="password" required></v-text-field>
       </b-card-text>
         <div class="row">
           <b-button class="signin" @click="login">
-            <v-icon class="icon" left></v-icon>
             Sign In
           </b-button>
         </div>
         <div class="row"><p class="my-4 text">or</p></div>
         <div class="row">
         <b-button class="signin" @click="signInWithGoogle">
-          <v-icon class="icon" left>mdi-google</v-icon>
+          <v-icon  white small left>mdi-google</v-icon>
           Continue with Google
         </b-button>
         </div>
@@ -62,6 +60,7 @@ export default {
     async handle_login_response (response) {
       if (response.status === 200) {
         console.log(response.data)
+        console.log(response.header)
         this.$store.commit('users/set_user', response.data)
         this.$store.commit('users/set_is_authenticated', 'true')
         this.$router.push({ name: 'Kubeportal' })
@@ -90,7 +89,7 @@ export default {
   .signin {
     width: 75%;
     color: floralwhite;
-    background-color: #757575;
+    background-color: #689F38;
     margin: auto;
   }
   .text {
@@ -102,4 +101,5 @@ export default {
   .alert {
     margin: 1vw 0 1vw 0;
   }
+
 </style>

@@ -7,7 +7,7 @@ function canReadURLFromEnv () {
 }
 
 export function setBaseURLWithDefaultOrEnvValue () {
-  const API_VERSION = 'v1.0.0'
+  const API_VERSION = 'v1.1.0'
   const defaultUrl = 'http://localhost:8000'
   const baseUrl = canReadURLFromEnv() ? process.env['VUE_APP_BASE_URL'] : defaultUrl
   return `${baseUrl}/${API_VERSION}`
