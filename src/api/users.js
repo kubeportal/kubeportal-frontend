@@ -7,18 +7,15 @@ const users_container = {
 
     state: {
       user: {},
-      jwt: '',
       is_authenticated: ''
     },
 
     getters: {
       get_current_user (state) { return state.user },
-      get_jwt (state) { return state.jwt },
       get_is_authenticated (state) { return state.is_authenticated }
     },
 
     mutations: {
-      set_token (state, token) { state.jwt = token },
       set_is_authenticated (state, status) { state.is_authenticated = status },
       set_user (state, user) { state.user = user }
     },
