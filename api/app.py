@@ -1,14 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
-from functools import wraps
-import jwt
-import datetime
-import os
-import json
-
-from . import mock
-from . import security
-from .utils import bad_request
+from flask_login import LoginManager
 
 from api.consts import SECRET_KEY
 
