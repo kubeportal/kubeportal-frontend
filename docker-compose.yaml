@@ -16,5 +16,5 @@ services:
       context: ./kubeportal-dev-api
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "8000:5000"
     restart: always
