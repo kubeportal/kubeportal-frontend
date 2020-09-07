@@ -50,7 +50,7 @@ export default {
     return {
       tooltip: 'You can test your installation by calling kubectl cluster-info.',
       windows: ['Install kubectl for Windows', 'Navigate to your home directory: cd %USERPROFILE%', 'Create the .kube directory: mkdir .kube', 'Store the config file as .kube/config'],
-      macUnix: ['Install kubectl with your package manager', 'Navigate to your home directory: cd ~', 'Create the .kube directory: mkdir .kube', 'Store the config file as .kube/config'],
+      macUnix: ['Install kubectl with your package manager', 'Navigate to your home directory: cd ~', 'Create the .kube directory: mkdir .kube', 'Store the config file as .kube/config']
     }
   }
 }
@@ -65,8 +65,12 @@ export default {
     color: floralwhite;
     background-color: #689F38 !important;
   }
+  .btn:hover {
+    background-color: #8BC34A !important;
+
+  }
   .icon {
-    color: floralwhite;
+    color: #F1F8E9;
   }
   .content {
     max-width: 80%;

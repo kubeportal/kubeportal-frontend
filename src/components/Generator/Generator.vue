@@ -1,15 +1,15 @@
 <template>
   <b-card class="maincard">
     <v-tabs >
-      <v-tab @click="SaveDataByOpenDeployment">
+      <v-tab class="tab-content" active-class="active" @click="SaveDataByOpenDeployment">
         <v-icon class="icon" left>mdi-hexagon-multiple-outline</v-icon>
           <div class="title"><small>Deployment</small></div>
       </v-tab>
-      <v-tab @click="SaveDataByOpenService">
+      <v-tab class="tab-content" active-class="active" @click="SaveDataByOpenService">
         <v-icon class="icon" left>mdi-transit-connection-horizontal</v-icon>
           <div class="title"><small>Service</small></div>
       </v-tab>
-      <v-tab @click="SaveDataByOpenIngress">
+      <v-tab class="tab-content" active-class="active" @click="SaveDataByOpenIngress">
         <v-icon class="icon" left>mdi-arrow-decision-outline</v-icon>
           <div class="title"><small>Ingress</small></div>
       </v-tab>
@@ -83,5 +83,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  .tab-content {
+    background-color: #F1F8E9 !important;
+  }
+  .active {
+    background-color: #AED581 !important;
+  }
 
 </style>

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import VuexPersist from 'vuex-persist';
+import VuexPersist from 'vuex-persist'
 import store from './store'
 import logger from '@/plugins/logger'
 import vuetify from './plugins/vuetify'

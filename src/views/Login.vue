@@ -49,7 +49,7 @@ export default {
           return null
         }
         const auth_response = googleUser.getAuthResponse()
-        console.log("getAuthResponse", this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse())
+        console.log('getAuthResponse', this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse())
         this.isSignIn = this.$gAuth.isAuthorized
         const response = await this.$store.dispatch('users/authorize_google_user', auth_response)
         await this.handle_login_response(response)
