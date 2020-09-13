@@ -1,19 +1,17 @@
-# kubeportal-integration
+# kubeportal-frontend
 
-## how to use git subtrees:
-https://github.com/git/git/blob/master/contrib/subtree/git-subtree.txt
+### testlogin:
+- username: Peter, s77518
+- password: is not checked.
 
-### update changes:
+### start
 
-```
-git subtree pull --prefix kubeportal-api https://github.com/kubeportal/kubeportal.git fe-api --squash
-aka:
-make pull-api
-```
+``
+$ make start
+``
 
-```
-git subtree push --prefix kubeportal-api https://github.com/kubeportal/kubeportal.git fe-api --squash
-aka:
-make push-api
-```
+### update api
 
+``
+$ make update-api
+``
