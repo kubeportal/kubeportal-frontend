@@ -7,8 +7,10 @@
       <b-card-body>
         <v-alert class="alert" dense outlined type="error" v-if="is_authenticated === 'false'">Login Failed.</v-alert>
         <b-card-text>
-          <v-text-field label="user name" v-model="username" required></v-text-field>
-          <v-text-field type="password" v-model="password" label="password" required></v-text-field>
+          <v-form>
+            <v-text-field label="user name" v-model="username" required></v-text-field>
+            <v-text-field type="password" v-model="password" label="password" required></v-text-field>
+          </v-form>
         </b-card-text>
         <div class="row">
           <b-button class="signin" @click="login">Sign In</b-button>
@@ -41,7 +43,7 @@ export default {
     async login () {
       const request_body = { username: this.username, password: this.password }
       const response = await this.$store.dispatch('users/post_login_data', request_body)
-      console.log(response);
+      console.log(response)
 
       await this.handle_login_response(response)
     },
