@@ -3,7 +3,14 @@
     <b-card-header>
       Cluster Statistics
     </b-card-header>
-    <div>
+    <div class="text-center" v-if="!is_loaded">
+            <v-progress-circular
+            :size="50"
+            color="primary"
+            indeterminate
+          ></v-progress-circular>
+        </div>
+    <div v-else>
     <v-simple-table fixed-header>
       <template v-slot:default>
         <thead>
@@ -29,10 +36,19 @@
 export default {
   name: 'Statistics',
   computed: {
+    is_loaded () {
+      return this.$store.getters['statistics/get_is_loaded']
+    },
     all_statistics () {
       return this.$store.getters['statistics/get_cluster_info']
     }
-  }
+  }/*,
+  created () {
+    console.log(this.is_loaded)
+  },
+  mounted () {
+    console.log(this.is_loaded)
+  }*/
 }
 </script>
 

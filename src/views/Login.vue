@@ -68,9 +68,10 @@ export default {
         await this.$router.push({ name: 'Home' })
       } else if (response.status === 200) {
         this.$store.commit('users/set_is_authenticated', 'true')
-        await this.$store.dispatch('users/get_user_details', response.data['id'])
-        await this.$store.dispatch('users/get_user_groups')
-        await this.$router.push({ name: 'Kubeportal' })
+        this.$store.dispatch('users/get_user_details', response.data['id'])
+        this.$store.dispatch('users/get_user_groups')
+        this.$router.push({ name: 'Kubeportal' })
+        
       }
     }
   },

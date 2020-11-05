@@ -1,21 +1,41 @@
 <template>
-  <div class="my-4 container-sm ">
-    <b-button v-for="app in webapps" :key="app.index" class="app-button">
-      {{ app.link_name }}
-    </b-button>
+  <div>
+    <div class="text-center" v-if="!loaded">
+        <v-progress-circular
+        :size="50"
+        color="primary"
+        indeterminate
+      ></v-progress-circular>
+    </div>
+    <div class="my-4 container-sm" v-else>
+      <b-button v-for="app in webapps" :key="app.index" class="app-button">
+        {{ app.link_name }}
+      </b-button>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'WebAppContainer',
-  computed: {
-    webapps () {
-      return this.$store.getters['users/get_user_webapps']
+  data(){
+    return{
+      loaded: false,
+      webapps: []
     }
   },
-  async created () {
-    await this.$store.dispatch('users/get_user_webapps')
+  methods: {
+    get_webapps: function () {
+      this.webapps = this.$store.getters['users/get_user_webapps']
+      this.loaded = true
+    }
+  },
+  created () {
+    
+  },
+  mounted () {
+    this.$store.dispatch('users/get_user_webapps')
+    this.get_webapps()
   }
 }
 </script>

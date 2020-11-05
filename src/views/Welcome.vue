@@ -1,8 +1,9 @@
 <template>
       <b-card bg-variant="light" class="maincard">
-          <b-card-header>
-            Hello: {{ this.current_user_firstname }} !
-          </b-card-header>
+        <b-card-header>
+          Hello: {{ this.current_user_firstname }} !
+        </b-card-header>
+        
         <WebAppContainer />
       </b-card>
 </template>

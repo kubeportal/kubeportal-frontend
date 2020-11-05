@@ -17,7 +17,8 @@ const gauthOption = {
 
 const vuexLocalStorage = new VuexPersistence({
   key: 'vuex', // The key to store the state on in the storage provider.
-  storage: window.localStorage // or window.sessionStorage or localForage
+  storage: window.localStorage,
+  // reducer: (state) => ({user: state.user}) // or window.sessionStorage or localForage
   // Function that passes the state and returns the state with only the objects you want to store.
 }).plugin(store)
 

@@ -20,7 +20,7 @@
           </b-card-body>
         </b-card>
       </div>
-        <div class="col-lg-7">
+        <div class="col-lg-8">
           <KubeInstallation class="installation" />
         </div>
     </div>
