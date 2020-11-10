@@ -1,12 +1,6 @@
 <template>
   <div>
-    <div class="text-center" v-if="!loaded">
-        <v-progress-circular
-        :size="50"
-        color="primary"
-        indeterminate
-      ></v-progress-circular>
-    </div>
+    <RequestSpinner v-if="!loaded"/>
     <div class="my-4 container-sm" v-else>
       <b-button v-for="app in webapps" :key="app.index" class="app-button">
         {{ app.link_name }}
@@ -16,26 +10,18 @@
 </template>
 
 <script>
+import RequestSpinner from './RequestSpinner'
+
 export default {
   name: 'WebAppContainer',
-  data(){
-    return{
-      loaded: false,
-      webapps: []
+  components: { RequestSpinner },
+  computed: {
+    loaded () {
+      return this.$store.getters['users/get_webapps_loaded']
+    },
+    webapps () {
+      return this.$store.getters['users/get_user_webapps']
     }
-  },
-  methods: {
-    get_webapps: function () {
-      this.webapps = this.$store.getters['users/get_user_webapps']
-      this.loaded = true
-    }
-  },
-  created () {
-    
-  },
-  mounted () {
-    this.$store.dispatch('users/get_user_webapps')
-    this.get_webapps()
   }
 }
 </script>

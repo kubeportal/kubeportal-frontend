@@ -15,7 +15,7 @@ const statistics = {
     getters: {
       get_cluster_request_info (state) { return state.cluster_request_info },
       get_cluster_info (state) { return state.cluster_info },
-      get_is_loaded (state) { return state.is_loaded } 
+      get_is_loaded (state) { return state.is_loaded }
     },
 
     mutations: {
@@ -25,7 +25,7 @@ const statistics = {
     },
 
     actions: {
-      async get_cluster_infos (context, infos) {
+      async request_cluster_infos (context, infos) {
         const newClusterInfo = []
         for (const field of infos) {
           const info = await backend.read(`/cluster/${field}/`)

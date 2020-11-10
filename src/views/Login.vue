@@ -5,7 +5,10 @@
           <v-icon class="icon" left>mdi-login-variant</v-icon>
           Kubeportal
         </b-card-header>
-        <b-card-body>
+        <b-card-body v-if="loading">
+          <RequestSpinner />
+        </b-card-body>
+        <b-card-body v-else>
           <v-alert class="alert" dense outlined type="error" v-if="is_authenticated === 'false'">Login Failed.</v-alert>
           <b-card-text>
             <v-text-field label="user name" v-model="username" required></v-text-field>
@@ -29,18 +32,22 @@
 <script>
 import to from 'await-to-js'
 import * as backend from '@/api/backend'
+import RequestSpinner from '../components/RequestSpinner'
 export default {
   name: 'Login',
+  components: { RequestSpinner },
   data () {
     return {
       is_authenticated: '',
       username: '',
       password: '',
-      isSignedIn: ''
+      isSignedIn: '',
+      loading: false
     }
   },
   methods: {
     async login () {
+      this.loading = true
       const request_body = { username: this.username, password: this.password }
       const response = await this.$store.dispatch('users/post_login_data', request_body)
       console.log(response)
@@ -64,14 +71,14 @@ export default {
     async handle_login_response (response) {
       console.log(response)
       if(response === undefined) {
+        this.loading = false
         this.is_authenticated = 'false'
-        await this.$router.push({ name: 'Home' })
+        // await this.$router.push({ name: 'Home' })
       } else if (response.status === 200) {
         this.$store.commit('users/set_is_authenticated', 'true')
         this.$store.dispatch('users/get_user_details', response.data['id'])
         this.$store.dispatch('users/get_user_groups')
         this.$router.push({ name: 'Kubeportal' })
-        
       }
     }
   },
