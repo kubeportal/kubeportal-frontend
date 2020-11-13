@@ -1,8 +1,8 @@
 <template>
       <b-card bg-variant="light" class="maincard">
-          <b-card-header>
-            Hello: {{ this.current_user_firstname }} !
-          </b-card-header>
+        <b-card-header>
+          Hello: {{ this.current_user_firstname }} !
+        </b-card-header>
         <WebAppContainer />
       </b-card>
 </template>
@@ -19,17 +19,25 @@ export default {
     }
   },
   methods: {
-    get_cluster_infos () {
-      let cluster_request = this.$store.getters['statistics/get_cluster_request_info']
-      this.request_infos(cluster_request)
-      //cluster_request.map(info => this.request_infos(info))
+
+    async request_cluster_infos () {
+      let cluster_info = this.$store.getters['statistics/get_cluster_info']
+      if(cluster_info.length === 0) {
+        let cluster_infos = this.$store.getters['statistics/get_cluster_request_info']
+        this.$store.dispatch('statistics/request_cluster_infos', cluster_infos)
+      }
     },
-    async request_infos (infos) {
-      await this.$store.dispatch('statistics/get_cluster_infos', infos)
+    async request_webapps () {
+      let apps = this.$store.getters['users/get_user_webapps']
+
+      if (apps.length === 0) {
+        this.$store.dispatch('users/request_user_webapps')
+      }
     }
   },
-  created () {
-    this.get_cluster_infos()
+  mounted () {
+    this.request_cluster_infos()
+    this.request_webapps()
   }
 }
 </script>

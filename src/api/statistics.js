@@ -8,7 +8,7 @@ const statistics = {
       cluster_request_info: [
         'portal_user_count', 'portal_version', 'k8s_version', 'k8s_node_count', 'k8s_cpu_count',
         'k8s_mem_sum', 'k8s_pod_count', 'k8s_volume_count', 'k8s_apiserver_url', 'k8s_cluster_name'],
-      cluster_info: []
+      cluster_info: [],
     },
 
     getters: {
@@ -18,11 +18,11 @@ const statistics = {
 
     mutations: {
       update_cluster_info (state, info) { state.cluster_info.push(info) },
-      set_cluster_info (state, info) { state.cluster_info = info }
+      set_cluster_info (state, info) { state.cluster_info = info },
     },
 
     actions: {
-      async get_cluster_infos (context, infos) {
+      async request_cluster_infos (context, infos) {
         const newClusterInfo = []
         for (const field of infos) {
           const info = await backend.read(`/cluster/${field}/`)

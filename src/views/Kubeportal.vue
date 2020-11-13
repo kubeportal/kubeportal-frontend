@@ -102,12 +102,6 @@ export default {
     }
   },
   methods: {
-    get_all_statistic_values () {
-      this.statistics.map(this.request_cluster_info)
-    },
-    async request_cluster_info (cluster_info) {
-      await this.$store.dispatch('statistics/get_cluster_info', cluster_info)
-    },
     logout () {
       this.$store.commit('users/set_user_id', null)
       this.$store.commit('users/set_user_firstname', '')

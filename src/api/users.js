@@ -40,9 +40,11 @@ const users_container = {
       },
       async post_login_data (context, request_body) {
         const response = await backend.create('/login/', request_body)
-        context.commit('set_user_id', response.data['id'])
-        context.commit('set_user_firstname', response.data['firstname'])
-        store.commit('api/set_access_token', response.data['access_token'])
+        if (response) {
+          context.commit('set_user_id', response.data['id'])
+          context.commit('set_user_firstname', response.data['firstname'])
+          store.commit('api/set_access_token', response.data['access_token'])
+        }
         return response
       },
       async authorize_google_user (context, auth_response) {
@@ -50,7 +52,7 @@ const users_container = {
         // @ TODO
         return response
       },
-      async get_user_webapps (context) {
+      async request_user_webapps (context) {
         const response = await backend.read(`/users/${context.state.user_id}/webapps/`)
         response !== undefined ? context.commit('set_user_webapps', response.data) : console.log('no webapps found')
         return response

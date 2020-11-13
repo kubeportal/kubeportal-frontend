@@ -1,21 +1,24 @@
 <template>
-  <div class="my-4 container-sm ">
-    <b-button v-for="app in webapps" :key="app.index" class="app-button">
-      {{ app.link_name }}
-    </b-button>
+  <div>
+    <RequestSpinner v-if="webapps.length === 0"/>
+    <div class="my-4 container-sm" v-else>
+      <b-button v-for="app in webapps" :key="app.index" class="app-button">
+        {{ app.link_name }}
+      </b-button>
+    </div>
   </div>
 </template>
 
 <script>
+import RequestSpinner from './RequestSpinner'
+
 export default {
   name: 'WebAppContainer',
+  components: { RequestSpinner },
   computed: {
     webapps () {
       return this.$store.getters['users/get_user_webapps']
     }
-  },
-  async created () {
-    await this.$store.dispatch('users/get_user_webapps')
   }
 }
 </script>
