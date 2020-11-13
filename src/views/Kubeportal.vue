@@ -109,7 +109,6 @@ export default {
       this.$store.commit('users/set_user_details', {})
       this.$store.commit('users/set_user_webapps', [])
       this.$store.commit('statistics/set_cluster_info', [])
-      this.$store.commit('statistics/set_is_loaded', false)
       this.$store.commit('api/set_csrf_token', '')
       this.$store.commit('api/set_access_token', '')
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <RequestSpinner v-if="!loaded"/>
+    <RequestSpinner v-if="webapps.length === 0"/>
     <div class="my-4 container-sm" v-else>
       <b-button v-for="app in webapps" :key="app.index" class="app-button">
         {{ app.link_name }}
@@ -16,9 +16,6 @@ export default {
   name: 'WebAppContainer',
   components: { RequestSpinner },
   computed: {
-    loaded () {
-      return this.$store.getters['users/get_webapps_loaded']
-    },
     webapps () {
       return this.$store.getters['users/get_user_webapps']
     }

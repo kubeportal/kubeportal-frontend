@@ -1,18 +1,9 @@
 <template>
   <b-card class="maincard">
     <b-card-header>
-      <v-row>
-        <v-col cols="11"> Cluster Statistics </v-col>
-        <v-col cols="1">
-          <v-btn icon
-          color="primary"
-          @click="request_cluster_infos">
-            <v-icon>mdi-cached</v-icon>
-          </v-btn>
-        </v-col>
-      </v-row>
+      Cluster Statistics
     </b-card-header>
-    <RequestSpinner v-if="!is_loaded" />
+    <RequestSpinner v-if="all_statistics.length === 0" />
     <div v-else>
       <v-simple-table fixed-header>
         <template v-slot:default>
@@ -40,9 +31,6 @@ export default {
   name: 'Statistics',
   components: { RequestSpinner },
   computed: {
-    is_loaded () {
-      return this.$store.getters['statistics/get_is_loaded']
-    },
     all_statistics () {
       return this.$store.getters['statistics/get_cluster_info']
     }
@@ -50,7 +38,6 @@ export default {
   methods: {
     request_cluster_infos () {
       let cluster_infos = this.$store.getters['statistics/get_cluster_request_info']
-      this.$store.commit('statistics/set_is_loaded', false)
       this.$store.dispatch('statistics/request_cluster_infos', cluster_infos)
     }
   }
