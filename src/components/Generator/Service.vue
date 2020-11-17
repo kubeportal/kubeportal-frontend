@@ -1,37 +1,18 @@
 <template>
   <div class="text-left main">
-      <b-row no-gutters>
-        <b-col>
-            <b-card-body class="card">
-              <b-form>
-                <b-form-group label="custom service name:">
-                  <b-form-input v-model="form.servicename" required></b-form-input>
-                </b-form-group>
-
-                <b-form-group small label="service port">
-                  <b-form-input v-model="form.serviceport" required></b-form-input>
-               </b-form-group>
-
-                <b-form-group label="namespace:">
-                  <b-form-input v-model="form.namespace" required></b-form-input>
-                </b-form-group>
-
-                <b-form-group label="deployment name">
-                  <b-form-input v-model="form.deploymentname" required></b-form-input>
-                </b-form-group>
-              </b-form>
-            </b-card-body>
-        </b-col>
-        <b-col>
-          <YamlContainer :yamlfile="yamlfile"/>
-        </b-col>
-      </b-row>
-      <b-row>
-        <div class="text-left">
-        </div>
-        <div class="text-right">
-        </div>
-      </b-row>
+    <v-row no-gutters>
+      <v-col>
+        <v-form>
+          <v-text-field v-model="form.servicename" required label="custom service name"></v-text-field>
+          <v-text-field v-model="form.serviceport" required label="service port"></v-text-field>
+          <v-text-field v-model="form.namespace" required label="namespace"></v-text-field>
+          <v-text-field v-model="form.deploymentname" required label="deployment name"></v-text-field>
+        </v-form>
+      </v-col>
+      <v-col>
+        <YamlContainer :yamlfile="yamlfile"/>
+      </v-col>
+    </v-row>
   </div>
 </template>
 

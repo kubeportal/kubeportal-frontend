@@ -1,16 +1,25 @@
 <template>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-3">
+  <div>
+    <v-row>
+      <v-col md="3">
         <div>
           <v-icon class="icon" left>mdi-download</v-icon>
           <a><b>kubectl config</b></a>
         </div>
-      </div>
-      <div class="col-md-7">
+      </v-col>
+      <v-col md="7">
         <p class="content">{{ download_info }}</p>
-      </div>
-    </div>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col md="3">
+        <v-icon class="icon" left>mdi-download-outline</v-icon>
+        <a><b>test installation</b></a>
+      </v-col>
+      <v-col md=7>
+        <p class="content">{{ test_installation }}</p>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -21,7 +30,8 @@ export default {
   data () {
     return {
       download_info: 'this configuration file is needed for Kubernetes client tools on your computer.\n' +
-        'It contains your personal access token.'
+        'It contains your personal access token.',
+      test_installation: 'You can test your installation by calling kubectl cluster-info.'
     }
   }
 }

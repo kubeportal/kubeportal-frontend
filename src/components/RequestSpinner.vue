@@ -10,10 +10,9 @@
 
 <script>
 export default {
-    name: 'RequestSpinner'
+  name: 'RequestSpinner'
 }
 </script>
 
 <style>
-
 </style>

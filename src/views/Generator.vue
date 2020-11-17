@@ -1,5 +1,5 @@
 <template>
-  <b-card class="maincard">
+  <v-card>
     <v-tabs >
       <v-tab class="tab-content" active-class="active" @click="SaveDataByOpenDeployment">
         <v-icon class="icon" left>mdi-hexagon-multiple-outline</v-icon>
@@ -35,7 +35,7 @@
         </v-card>
       </v-tab-item>
     </v-tabs>
-  </b-card>
+  </v-card>
 </template>
 
 <script>
@@ -88,6 +88,4 @@ export default {
   .active {
     background-color: #AED581 !important;
   }
-
-
 </style>

@@ -1,10 +1,10 @@
 <template>
   <div>
     <RequestSpinner v-if="webapps.length === 0"/>
-    <div class="my-4 container-sm" v-else>
-      <b-button v-for="app in webapps" :key="app.index" class="app-button">
+    <div class="my-4 container" v-else>
+      <v-btn v-for="app in webapps" :key="app.index" color="#689F38" x-large class="app-button">
         {{ app.link_name }}
-      </b-button>
+      </v-btn>
     </div>
   </div>
 </template>
@@ -26,16 +26,10 @@ export default {
 <style scoped lang="scss">
   .app-button {
     margin: 2vw 2vw 0vw 0vw;
-    width: 20%;
-    min-width: 110px;
-    height: 8vh;
+    width: 30%;
     color: white;
     transition: 0.3s ease;
     opacity: 0.8;
-    transform: translate(0, 0);
-    -ms-transform: translate(0, 0%);
-    background-color: #689F38;
-    border-color: #689F38;
   }
   .app-button:hover {
     opacity: 1;

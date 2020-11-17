@@ -1,10 +1,10 @@
 <template>
-      <b-card bg-variant="light" class="maincard">
-        <b-card-header>
+      <v-card bg-variant="light" class="maincard">
+        <v-card-title>
           Hello: {{ this.current_user_firstname }} !
-        </b-card-header>
+        </v-card-title>
         <WebAppContainer />
-      </b-card>
+      </v-card>
 </template>
 
 <script>

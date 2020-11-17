@@ -1,11 +1,9 @@
 <template>
-  <b-card-body>
-    <b-card-text>
-      <b-card>
-          <pre>{{ yamlfile }}</pre>
-      </b-card>
-    </b-card-text>
-  </b-card-body>
+  <v-card>
+    <v-card-text>
+      <pre>{{ yamlfile }}</pre>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>

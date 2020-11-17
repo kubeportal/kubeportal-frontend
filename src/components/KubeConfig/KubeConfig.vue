@@ -1,10 +1,10 @@
 <template>
-  <b-card class="yaml-card">
-    <b-card-header>Config</b-card-header>
-    <b-card-body>
+  <v-card class="yaml-card">
+    <v-card-title>Config</v-card-title>
+    <v-card-text>
         <pre>{{ yamlfile }}</pre>
-    </b-card-body>
-  </b-card>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>

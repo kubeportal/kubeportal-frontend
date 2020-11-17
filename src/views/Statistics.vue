@@ -1,8 +1,8 @@
 <template>
-  <b-card class="maincard">
-    <b-card-header>
+  <v-card >
+    <v-card-title>
       Cluster Statistics
-    </b-card-header>
+    </v-card-title>
     <RequestSpinner v-if="all_statistics.length === 0" />
     <div v-else>
       <v-simple-table fixed-header>
@@ -22,7 +22,7 @@
         </template>
       </v-simple-table>
     </div>
-  </b-card>
+  </v-card>
 </template>
 
 <script>

@@ -1,32 +1,34 @@
 <template>
-    <b-card bg-variant="light" class="mt-16 logincard">
-      <b-form @submit.prevent="login">
-        <b-card-header>
+    <v-card class="logincard">
+      <v-form @submit.prevent="login">
+        <v-card-title>
           <v-icon class="icon" left>mdi-login-variant</v-icon>
           Kubeportal
-        </b-card-header>
-        <b-card-body v-if="loading">
+        </v-card-title>
+        <v-card-text v-if="loading">
           <RequestSpinner />
-        </b-card-body>
-        <b-card-body v-else>
+        </v-card-text>
+        <v-card-text v-else>
           <v-alert class="alert" dense outlined type="error" v-if="is_authenticated === 'false'">Login Failed.</v-alert>
-          <b-card-text>
+          <v-card-text>
             <v-text-field label="user name" v-model="username" required></v-text-field>
             <v-text-field type="password" v-model="password" label="password" required></v-text-field>
-          </b-card-text>
+          </v-card-text>
           <div class="row">
-            <b-button type="submit" class="signin">Sign In</b-button>
+            <v-btn type="submit" color="#689F38" class="signin">Sign In</v-btn>
           </div>
-          <div class="row"><p class="my-4 text">or</p></div>
-          <div class="row">
-            <b-button class="signin" @click="signInWithGoogle">
+          <v-row>
+            <p class="my-4 text">or</p>
+          </v-row>
+          <v-row>
+            <v-btn class="signin" color="#689F38" @click="signInWithGoogle">
               <v-icon  white small left>mdi-google</v-icon>
               Continue with Google
-            </b-button>
-          </div>
-        </b-card-body>
-      </b-form>
-    </b-card>
+            </v-btn>
+          </v-row>
+        </v-card-text>
+      </v-form>
+    </v-card>
 </template>
 
 <script>
@@ -93,13 +95,12 @@ export default {
 
 <style scoped lang="scss">
   .logincard {
-    margin: auto;
+    margin: 5vh auto;
     width: 25%;
     min-width: 300px;
   }
   .signin {
     color: floralwhite;
-    background-color: #689F38;
     margin: auto;
     width: 100%
   }
