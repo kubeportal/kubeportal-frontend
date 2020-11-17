@@ -4,30 +4,32 @@
       <v-card-text>
         <Download />
         <v-divider></v-divider>
-        <v-expansion-panels focusable class="accordion">
+        <div>
+          <v-expansion-panels>
 
-          <v-expansion-panel>
-            <v-expansion-panel-header>
-              <v-icon left>mdi-apple</v-icon>
-              <v-icon left>mdi-linux</v-icon>
-              MacOS/ Linux
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <OSInstallation :instructions="macUnix" />
-            </v-expansion-panel-content>
-          </v-expansion-panel>
+            <v-expansion-panel>
+              <v-expansion-panel-header>
+                <v-icon left>mdi-apple</v-icon>
+                <v-icon left>mdi-linux</v-icon>
+                MacOS/ Linux
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <OSInstallation :instructions="macUnix" />
+              </v-expansion-panel-content>
+            </v-expansion-panel>
 
-          <v-expansion-panel>
-            <v-expansion-panel-header>
-              <v-icon>mdi-microsoft-windows</v-icon>
-              Windows
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <OSInstallation :instructions="windows" />
-            </v-expansion-panel-content>
-          </v-expansion-panel>
+            <v-expansion-panel>
+              <v-expansion-panel-header>
+                <v-icon>mdi-microsoft-windows</v-icon>
+                Windows
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <OSInstallation :instructions="windows" />
+              </v-expansion-panel-content>
+            </v-expansion-panel>
 
-        </v-expansion-panels>
+          </v-expansion-panels>
+        </div>
       </v-card-text>
   </v-card>
 </template>
