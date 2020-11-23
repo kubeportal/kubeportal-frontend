@@ -1,5 +1,5 @@
 <template>
-      <v-card bg-variant="light" class="maincard">
+      <v-card>
         <v-card-title>
           Hello: {{ this.current_user_firstname }} !
         </v-card-title>

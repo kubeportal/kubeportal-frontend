@@ -88,4 +88,5 @@ export default {
   .active {
     background-color: #AED581 !important;
   }
+
 </style>

@@ -2,7 +2,7 @@
   <div>
     <RequestSpinner v-if="webapps.length === 0"/>
     <div class="my-4 container" v-else>
-      <v-btn v-for="app in webapps" :key="app.index" color="#689F38" x-large class="app-button">
+      <v-btn v-for="app in webapps" :key="app.index" color="#689F38" class="app-button">
         {{ app.link_name }}
       </v-btn>
     </div>
@@ -30,6 +30,7 @@ export default {
     color: white;
     transition: 0.3s ease;
     opacity: 0.8;
+    height: 16vh !important ;
   }
   .app-button:hover {
     opacity: 1;

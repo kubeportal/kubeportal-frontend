@@ -2,12 +2,14 @@
   <div class="text-left main">
     <v-row no-gutters>
       <v-col>
-        <v-form>
-          <v-text-field v-model="form.servicename" required label="custom service name"></v-text-field>
-          <v-text-field v-model="form.serviceport" required label="service port"></v-text-field>
-          <v-text-field v-model="form.namespace" required label="namespace"></v-text-field>
-          <v-text-field v-model="form.deploymentname" required label="deployment name"></v-text-field>
-        </v-form>
+        <v-card>
+          <v-form class="generator_form">
+            <v-text-field v-model="form.servicename" required label="custom service name"></v-text-field>
+            <v-text-field v-model="form.serviceport" required label="service port"></v-text-field>
+            <v-text-field v-model="form.namespace" required label="namespace"></v-text-field>
+            <v-text-field v-model="form.deploymentname" required label="deployment name"></v-text-field>
+          </v-form>
+        </v-card>
       </v-col>
       <v-col>
         <YamlContainer :yamlfile="yamlfile"/>
@@ -81,5 +83,10 @@ export default {
   }
   .main {
     padding: 2vw 0vw 0vw 0vw;
+  }
+
+  .generator_form {
+    width: 95%;
+    margin: 0 1em;
   }
 </style>

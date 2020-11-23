@@ -1,14 +1,15 @@
 <template>
   <div>
-    <v-row>
+    <v-row >
       <v-col lg="3">
         <v-card class="profile">
           <v-card-title>
-            <v-row>
-              <v-col md="2">
+            <v-row >
+              <v-col sm="2">
                 <EditModal/>
               </v-col>
-              <v-col md=10>
+              <v-spacer></v-spacer>
+              <v-col lg=6>
                 <v-icon class="icon">mdi-account</v-icon>Profile
               </v-col>
             </v-row>
@@ -62,11 +63,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .profile {
     background: rgba(255, 255, 255, 1);
     min-width: 180px;
     height: 100%;
+    word-break: keep-all;
   }
   p, .v-card__subtitle {
     color: black !important;

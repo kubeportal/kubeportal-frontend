@@ -2,18 +2,20 @@
   <div class="text-left main">
     <v-row no-gutters>
       <v-col>
-        <v-form>
-          <v-text-field v-model="form.ingressname" required label="cutom ingress name"></v-text-field>
-          <v-select v-model="form.domainname" :items="domains" required label="domain"></v-select>
-          <v-text-field v-model="form.subdomain" required label="subdomain"></v-text-field>
-          <v-text-field v-model="form.servicename" required label="service name"></v-text-field>
-          <v-text-field v-model="form.serviceport" required label="service port"></v-text-field>
-          <v-text-field v-model="form.namespace" required label="namespace"></v-text-field>
-          <v-subheader v-text="'choose more annotations:'"></v-subheader>
-          <v-checkbox label="enable CORS" v-model="allow_cors" color="blue"></v-checkbox>
-          <v-checkbox label="restriction to beuth network" v-model="allow_restriction" color="blue"></v-checkbox>
-          <v-checkbox label="cors-allow-origin" v-model="allow_cors_origin" color="blue"></v-checkbox>
-        </v-form>
+        <v-card>
+          <v-form class="generator_form">
+            <v-text-field v-model="form.ingressname" required label="cutom ingress name"></v-text-field>
+            <v-select v-model="form.domainname" :items="domains" required label="domain"></v-select>
+            <v-text-field v-model="form.subdomain" required label="subdomain"></v-text-field>
+            <v-text-field v-model="form.servicename" required label="service name"></v-text-field>
+            <v-text-field v-model="form.serviceport" required label="service port"></v-text-field>
+            <v-text-field v-model="form.namespace" required label="namespace"></v-text-field>
+            <v-subheader v-text="'choose more annotations:'"></v-subheader>
+            <v-checkbox label="enable CORS" v-model="allow_cors" color="blue"></v-checkbox>
+            <v-checkbox label="restriction to beuth network" v-model="allow_restriction" color="blue"></v-checkbox>
+            <v-checkbox label="cors-allow-origin" v-model="allow_cors_origin" color="blue"></v-checkbox>
+          </v-form>
+        </v-card>
       </v-col>
       <v-col>
         <YamlContainer :yamlfile="yamlfile"/>
@@ -138,4 +140,8 @@ export default {
     margin-top: 1vw;
   }
 
+  .generator_form {
+    width: 95%;
+    margin: 0 1em;
+  }
 </style>

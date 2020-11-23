@@ -5,12 +5,12 @@
         <Download />
         <v-divider></v-divider>
         <div>
-          <v-expansion-panels>
+          <v-expansion-panels mandatory=true>
 
             <v-expansion-panel>
-              <v-expansion-panel-header>
-                <v-icon left>mdi-apple</v-icon>
-                <v-icon left>mdi-linux</v-icon>
+              <v-expansion-panel-header class="button">
+                <v-icon left class="icon">mdi-apple</v-icon>
+                <v-icon left class="icon">mdi-linux</v-icon>
                 MacOS/ Linux
               </v-expansion-panel-header>
               <v-expansion-panel-content>
@@ -19,8 +19,8 @@
             </v-expansion-panel>
 
             <v-expansion-panel>
-              <v-expansion-panel-header>
-                <v-icon>mdi-microsoft-windows</v-icon>
+              <v-expansion-panel-header class="button">
+                <v-icon class="icon">mdi-microsoft-windows</v-icon>
                 Windows
               </v-expansion-panel-header>
               <v-expansion-panel-content>
@@ -58,8 +58,15 @@ export default {
   .accordion{
     width: 60vw;
     margin: 0 auto;
-    //$expansion-panel-border-radius: 0px !important
-    //https://vuetifyjs.com/en/api/v-expansion-panel/#sass-variables
+  }
+
+  .icon {
+    color: white;
+  }
+
+  .button {
+    background-color: #689F38 !important;
+    color: white;
   }
 
 </style>
