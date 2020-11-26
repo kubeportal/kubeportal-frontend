@@ -19,4 +19,7 @@ export default {
   height: 100%;
   margin-left: 2em;
 }
+pre {
+  color: var(--v-pre_color);
+}
 </style>

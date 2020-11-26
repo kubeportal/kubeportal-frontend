@@ -65,14 +65,11 @@ export default {
 
 <style scoped>
   .profile {
-    background: rgba(255, 255, 255, 1);
     min-width: 180px;
     height: 100%;
     word-break: keep-all;
   }
-  p, .v-card__subtitle {
-    color: black !important;
-  }
+
   .profile_body {
     margin-top: 3vh;
     min-width: 149px;

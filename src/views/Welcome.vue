@@ -1,7 +1,15 @@
 <template>
       <v-card>
         <v-card-title>
-          Hello: {{ this.current_user_firstname }} !
+          <v-row>
+            <v-col lg="8">
+                Hello: {{ this.current_user_firstname }} !
+              </v-col>
+              <v-spacer></v-spacer>
+              <v-col lg=1>
+                <v-icon class="icon" @click="switch_dark_mode">mdi-brightness-6 </v-icon>
+              </v-col>
+          </v-row>
         </v-card-title>
         <WebAppContainer />
       </v-card>
@@ -33,6 +41,11 @@ export default {
       if (apps.length === 0) {
         this.$store.dispatch('users/request_user_webapps')
       }
+    },
+    async switch_dark_mode () {
+      let tmp = await this.$store.dispatch('users/switch_dark_mode')
+      console.log(tmp)
+      this.$vuetify.theme.dark = tmp
     }
   },
   mounted () {

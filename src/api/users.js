@@ -12,7 +12,8 @@ const users_container = {
       is_authenticated: '',
       user_details: {},
       user_webapps: [],
-      user_groups: []
+      user_groups: [],
+      dark_mode: false
     },
 
     getters: {
@@ -21,7 +22,8 @@ const users_container = {
       get_user_firstname (state) { return state.user_firstname },
       get_user_webapps (state) { return state.user_webapps },
       get_is_authenticated (state) { return state.is_authenticated },
-      get_user_groups (state) { return state.user_groups }
+      get_user_groups (state) { return state.user_groups },
+      get_dark_mode (state) { return state.dark_mode }
     },
 
     mutations: {
@@ -29,7 +31,8 @@ const users_container = {
       set_user_firstname (state, name) { state.user_firstname = name },
       set_user_details (state, user_details) { state.user_details = user_details },
       set_user_webapps (state, webapps) { state.user_webapps = webapps },
-      set_is_authenticated (state, is_authenticated) { state.is_authenticated = is_authenticated }
+      set_is_authenticated (state, is_authenticated) { state.is_authenticated = is_authenticated },
+      set_dark_mode (state) { state.dark_mode = !state.dark_mode }
     },
 
     actions: {
@@ -66,6 +69,10 @@ const users_container = {
         const response = await backend.update(`/users/${context.state.user_id}/`, payload)
         context.commit('set_user_details', response.data)
         return response
+      },
+      async switch_dark_mode (context) {
+        context.commit('set_dark_mode')
+        return context.getters['get_dark_mode']
       }
     }
   }

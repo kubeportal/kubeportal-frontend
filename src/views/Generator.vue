@@ -82,9 +82,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .tab-content {
-    background-color: #F1F8E9 !important;
-  }
+
   .active {
     background-color: #AED581 !important;
   }
