@@ -137,6 +137,9 @@ export default {
     } else {
       await this.$router.push({ name: 'Home' })
     }
+  },
+  created () {
+    this.$vuetify.theme.dark = this.$store.getters['users/get_dark_mode']
   }
 }
 </script>

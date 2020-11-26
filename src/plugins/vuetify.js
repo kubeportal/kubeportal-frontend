@@ -1,6 +1,7 @@
 import '@mdi/font/css/materialdesignicons.css' // Ensure you are using css-loader
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
+import store from '../store'
 
 const vuetify = new Vuetify({
   theme: {
@@ -9,12 +10,12 @@ const vuetify = new Vuetify({
         primary: '#424242',
         secondary: '#b0bec5',
         anchor: '#8c9eff',
-        pre_color: 'rgba(0, 0, 0, 0.87)'
+        pre_color: '#000000'
       },
       dark: {
         primary: '#36392e',
         secondary: '#606357',
-        pre_color: 'white'
+        pre_color: '#ffffff'
       }
     }
   },
