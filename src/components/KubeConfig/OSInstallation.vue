@@ -3,7 +3,8 @@
     <v-list-item-content>
       <v-list-item-title v-for="instruction in instructions" :key="instruction.index">
         <v-icon class="icon" left>mdi-hand-pointing-right</v-icon>
-        {{ instruction }}</v-list-item-title>
+        {{ instruction }}
+      </v-list-item-title>
     </v-list-item-content>
   </v-list-item>
 </template>
@@ -16,6 +17,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
-
+  #text{
+    overflow-wrap: break-word;
+  }
 </style>

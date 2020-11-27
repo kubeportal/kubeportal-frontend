@@ -1,9 +1,9 @@
 <template>
-    <b-card class="maincard-adapt">
-      <b-card-header>Cluster</b-card-header>
-      <b-card-body>
-      </b-card-body>
-    </b-card>
+    <v-card outlined>
+      <v-card-title>Cluster</v-card-title>
+      <v-card-text>
+      </v-card-text>
+    </v-card>
 </template>
 
 <script>
@@ -19,6 +19,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
-
 </style>

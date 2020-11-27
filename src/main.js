@@ -5,7 +5,6 @@ import store from './store'
 import logger from '@/plugins/logger'
 import vuetify from './plugins/vuetify'
 import router from './router'
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import GAuth from 'vue-google-oauth2'
 import '@/assets/css/tailwind.css'
 
@@ -23,8 +22,6 @@ const vuexLocalStorage = new VuexPersistence({
 }).plugin(store)
 
 Vue.use(GAuth, gauthOption)
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
 Vue.use(logger)
 
 Vue.config.productionTip = false

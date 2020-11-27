@@ -1,29 +1,37 @@
 <template>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-lg-3">
-        <b-card class="profile">
-          <b-card-header>
-            <EditModal class="float-right"></EditModal>
-            <v-icon class="icon">mdi-account</v-icon>Profile</b-card-header>
-            <b-card-body class="profile_body">
-              <b-card-sub-title>Firstname</b-card-sub-title>
-              <b-card-text>{{ current_user['firstname'] }}</b-card-text>
-              <b-card-sub-title>Last name</b-card-sub-title>
-              <b-card-text>{{ current_user['name'] }}</b-card-text>
-              <b-card-sub-title>Primary Email</b-card-sub-title>
-              <b-card-text> {{ current_user['primary_email'] }}</b-card-text>
-              <b-card-sub-title>User groups</b-card-sub-title>
-              <b-card-text>{{ user_groups['name'] }}</b-card-text>
-              <b-card-sub-title>Cluster access</b-card-sub-title>
-              <b-card-text>{{ current_user['cluster_access'] }}</b-card-text>
-          </b-card-body>
-        </b-card>
-      </div>
-        <div class="col-lg-8">
-          <KubeInstallation class="installation" />
-        </div>
-    </div>
+  <div>
+    <v-row >
+      <v-col lg="3">
+        <v-card class="profile">
+          <v-card-title>
+            <v-row >
+              <v-col sm="2">
+                <EditModal/>
+              </v-col>
+              <v-spacer></v-spacer>
+              <v-col lg=6>
+                <v-icon class="icon">mdi-account</v-icon>Profile
+              </v-col>
+            </v-row>
+          </v-card-title>
+          <v-card-text class="profile_body">
+            <v-card-subtitle>Firstname</v-card-subtitle>
+            <v-card-text>{{ current_user['firstname'] }}</v-card-text>
+            <v-card-subtitle>Last name</v-card-subtitle>
+            <v-card-text>{{ current_user['name'] }}</v-card-text>
+            <v-card-subtitle>Primary Email</v-card-subtitle>
+            <v-card-text> {{ current_user['primary_email'] }}</v-card-text>
+            <v-card-subtitle>User groups</v-card-subtitle>
+            <v-card-text>{{ user_groups['name'] }}</v-card-text>
+            <v-card-subtitle>Cluster access</v-card-subtitle>
+            <v-card-text>{{ current_user['cluster_access'] }}</v-card-text>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col lg="8">
+        <KubeInstallation class="installation" />
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -55,13 +63,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .profile {
     background: rgba(255, 255, 255, 1);
     min-width: 180px;
     height: 100%;
+    word-break: keep-all;
   }
-  p, div>.card-header {
+  p, .v-card__subtitle {
     color: black !important;
   }
   .profile_body {

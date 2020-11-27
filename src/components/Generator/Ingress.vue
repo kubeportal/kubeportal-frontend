@@ -1,48 +1,26 @@
 <template>
   <div class="text-left main">
-        <b-row no-gutters>
-        <b-col>
-            <b-card-body class="card">
-              <b-form>
-                <b-form-group label="custom ingress name:">
-                  <b-form-input v-model="form.ingressname" required></b-form-input>
-                </b-form-group>
-
-                <b-form-group small label="domain:">
-                  <b-form-select v-model="form.domainname" :options="domains" required></b-form-select>
-               </b-form-group>
-
-                <b-form-group label="subdomain:">
-                  <b-form-input v-model="form.subdomain" required></b-form-input>
-                </b-form-group>
-
-                <b-form-group label="service name:">
-                  <b-form-input v-model="form.servicename" required></b-form-input>
-                </b-form-group>
-
-                <b-form-group label="service port:">
-                  <b-form-input v-model="form.serviceport" required></b-form-input>
-                </b-form-group>
-
-                <b-form-group label="namespace:">
-                  <b-form-input v-model="form.namespace" required></b-form-input>
-                </b-form-group>
-
-                <b-form-group label="choose more annotations:" class="annotations">
-                  <b-form-checkbox-group
-                    v-model="selected"
-                    :options="options"
-                    name="flavour-2a"
-                    stacked>
-                  </b-form-checkbox-group>
-                </b-form-group>
-              </b-form>
-            </b-card-body>
-        </b-col>
-        <b-col>
-          <YamlContainer :yamlfile="yamlfile"/>
-        </b-col>
-      </b-row>
+    <v-row no-gutters>
+      <v-col>
+        <v-card>
+          <v-form class="generator_form">
+            <v-text-field v-model="form.ingressname" required label="cutom ingress name"></v-text-field>
+            <v-select v-model="form.domainname" :items="domains" required label="domain"></v-select>
+            <v-text-field v-model="form.subdomain" required label="subdomain"></v-text-field>
+            <v-text-field v-model="form.servicename" required label="service name"></v-text-field>
+            <v-text-field v-model="form.serviceport" required label="service port"></v-text-field>
+            <v-text-field v-model="form.namespace" required label="namespace"></v-text-field>
+            <v-subheader v-text="'choose more annotations:'"></v-subheader>
+            <v-checkbox label="enable CORS" v-model="allow_cors" color="blue"></v-checkbox>
+            <v-checkbox label="restriction to beuth network" v-model="allow_restriction" color="blue"></v-checkbox>
+            <v-checkbox label="cors-allow-origin" v-model="allow_cors_origin" color="blue"></v-checkbox>
+          </v-form>
+        </v-card>
+      </v-col>
+      <v-col>
+        <YamlContainer :yamlfile="yamlfile"/>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -64,10 +42,12 @@ export default {
         subdomain: this.$store.getters['generator/get_subdomain'],
         namespace: this.$store.getters['generator/get_namespace']
       },
-      domains: [{ text: 'choose...', value: '' }, 'demo.datexis.com', 'app.datexis.com', 'internal.datexis.com', 'api.datexis.com'],
-      options: ['enable CORS', 'restriction to beuth network', 'cors-allow-origin'],
+      domains: ['demo.datexis.com', 'app.datexis.com', 'internal.datexis.com', 'api.datexis.com'],
       sourceRange: '*',
-      selected: []
+      selected: [],
+      allow_cors: false,
+      allow_restriction: false,
+      allow_cors_origin: false
     }
   },
 
@@ -160,4 +140,8 @@ export default {
     margin-top: 1vw;
   }
 
+  .generator_form {
+    width: 95%;
+    margin: 0 1em;
+  }
 </style>

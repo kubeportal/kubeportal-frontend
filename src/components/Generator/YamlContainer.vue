@@ -1,11 +1,9 @@
 <template>
-  <b-card-body>
-    <b-card-text>
-      <b-card>
-          <pre>{{ yamlfile }}</pre>
-      </b-card>
-    </b-card-text>
-  </b-card-body>
+  <v-card class="generator_card">
+    <v-card-text>
+      <pre>{{ yamlfile }}</pre>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -17,5 +15,8 @@ export default {
 </script>
 
 <style scoped>
-
+.generator_card {
+  height: 100%;
+  margin-left: 2em;
+}
 </style>
