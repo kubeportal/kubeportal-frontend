@@ -29,10 +29,10 @@ export default {
   data () {
     return {
       form: {
-        serviceport: this.$store.getters['generator/get_containerport'],
-        servicename: this.$store.getters['generator/get_servicename'],
+        serviceport: this.$store.getters['generator/get_container_port'],
+        servicename: this.$store.getters['generator/get_service_name'],
         namespace: this.$store.getters['generator/get_namespace'],
-        deploymentname: this.$store.getters['generator/get_deploymentname']
+        deploymentname: this.$store.getters['generator/get_deployment_name']
       }
     }
   },
@@ -68,10 +68,10 @@ export default {
   },
   created () {
     EventBus.$on('SaveServiceData', (() => {
-      this.$store.commit('set_servicename', this.form.servicename)
-      this.$store.commit('set_service_port', this.form.serviceport)
-      this.$store.commit('set_namespace', this.form.namespace)
-      this.$store.commit('set_deployment_name', this.form.deploymentname)
+      this.$store.commit('generator/set_service_name', this.form.servicename)
+      this.$store.commit('generator/set_service_port', this.form.serviceport)
+      this.$store.commit('generator/set_namespace', this.form.namespace)
+      this.$store.commit('generator/set_deployment_name', this.form.deploymentname)
     }))
   }
 }

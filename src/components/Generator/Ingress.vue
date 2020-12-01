@@ -35,10 +35,10 @@ export default {
   data () {
     return {
       form: {
-        ingressname: this.$store.getters['generator/get_ingressname'],
-        serviceport: this.$store.getters['generator/get_serviceport'],
-        servicename: this.$store.getters['generator/get_servicename'],
-        domainname: this.$store.getters['generator/get_domainname'],
+        ingressname: this.$store.getters['generator/get_ingress_name'],
+        serviceport: this.$store.getters['generator/get_service_port'],
+        servicename: this.$store.getters['generator/get_service_name'],
+        domainname: this.$store.getters['generator/get_domain_name'],
         subdomain: this.$store.getters['generator/get_subdomain'],
         namespace: this.$store.getters['generator/get_namespace']
       },
@@ -121,12 +121,12 @@ export default {
   },
   created () {
     EventBus.$on('SaveIngressData', (() => {
-      this.$store.commit('set_ingressname', this.form.ingressname)
-      this.$store.commit('set_domainname', this.form.domainname)
-      this.$store.commit('set_subdomain', this.form.subdomain)
-      this.$store.commit('set_namespace', this.form.namespace)
-      this.$store.commit('set_servicename', this.form.servicename)
-      this.$store.commit('set_service_port', this.form.serviceport)
+      this.$store.commit('generator/set_ingress_name', this.form.ingressname)
+      this.$store.commit('generator/set_domain_name', this.form.domainname)
+      this.$store.commit('generator/set_subdomain', this.form.subdomain)
+      this.$store.commit('generator/set_namespace', this.form.namespace)
+      this.$store.commit('generator/set_service_name', this.form.servicename)
+      this.$store.commit('generator/set_service_port', this.form.serviceport)
     }))
   }
 }

@@ -52,11 +52,11 @@ export default {
   data () {
     return {
       form: {
-        imagename: this.$store.getters['generator/get_imagename'],
-        deploymentname: this.$store.getters['generator/get_deploymentname'],
-        containername: this.$store.getters['generator/get_containername'],
+        imagename: this.$store.getters['generator/get_image_name'],
+        deploymentname: this.$store.getters['generator/get_deployment_name'],
+        containername: this.$store.getters['generator/get_container_name'],
         namespace: this.$store.getters['generator/get_namespace'],
-        containerport: this.$store.getters['generator/get_containerport']
+        containerport: this.$store.getters['generator/get_container_port']
       },
       options: ['', 'restriction to beuth network', 'cors-allow-origin'],
       tooltip: 'dasdas'
@@ -121,14 +121,14 @@ export default {
   },
   created () {
     EventBus.$on('SaveDeploymentData', (() => {
-      this.$store.commit('set_deployment_name', this.form.deploymentname)
-      this.$store.commit('set_container_port', this.form.containerport)
-      this.$store.commit('set_service_port', this.form.containerport)
-      this.$store.commit('set_servicename', this.form.deploymentname + '-service')
-      this.$store.commit('set_ingressname', this.form.deploymentname + '-ingress')
-      this.$store.commit('set_container_name', this.form.containername)
-      this.$store.commit('set_namespace', this.form.namespace)
-      this.$store.commit('set_image_name', this.form.imagename)
+      this.$store.commit('generator/set_deployment_name', this.form.deploymentname)
+      this.$store.commit('generator/set_container_port', this.form.containerport)
+      this.$store.commit('generator/set_service_port', this.form.containerport)
+      this.$store.commit('generator/set_service_name', this.form.deploymentname + '-service')
+      this.$store.commit('generator/set_ingress_name', this.form.deploymentname + '-ingress')
+      this.$store.commit('generator/set_container_name', this.form.containername)
+      this.$store.commit('generator/set_namespace', this.form.namespace)
+      this.$store.commit('generator/set_image_name', this.form.imagename)
     }))
   }
 }

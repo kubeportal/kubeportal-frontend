@@ -59,7 +59,7 @@ export default {
       } else if (this.tab === 'Ingress') {
         EventBus.$emit('SaveIngressData')
       }
-      this.$store.commit('set_current_generator_tab', 'Deployment')
+      this.$store.commit('generator/set_current_generator_tab', 'Deployment')
     },
     SaveDataByOpenService () {
       if(this.tab === 'Deployment') {
@@ -67,7 +67,7 @@ export default {
       } else if (this.tab === 'Ingress') {
         EventBus.$emit('SaveIngressData')
       }
-      this.$store.commit('set_current_generator_tab', 'Service')
+      this.$store.commit('generator/set_current_generator_tab', 'Service')
     },
     SaveDataByOpenIngress () {
       if(this.tab === 'Service') {
@@ -75,7 +75,7 @@ export default {
       } else if (this.tab === 'Deployment') {
         EventBus.$emit('SaveDeploymentData')
       }
-      this.$store.commit('set_current_generator_tab', 'Ingress')
+      this.$store.commit('generator/set_current_generator_tab', 'Ingress')
     }
   }
 }
