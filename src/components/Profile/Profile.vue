@@ -6,10 +6,11 @@
           <v-card-title>
             <v-row >
               <v-col sm="2">
-                <EditModal/>
+                <v-icon class="icon" @click="switch_dark_mode">mdi-brightness-6 </v-icon>
               </v-col>
+              <EditModal/>
               <v-spacer></v-spacer>
-              <v-col lg=6>
+              <v-col lg="6">
                 <v-icon class="icon">mdi-account</v-icon>Profile
               </v-col>
             </v-row>
@@ -58,6 +59,11 @@ export default {
     change_primary_email (email) {
       console.log('click')
       this.primary_email = email
+    },
+    async switch_dark_mode () {
+      let tmp = await this.$store.dispatch('users/switch_dark_mode')
+      console.log(tmp)
+      this.$vuetify.theme.dark = tmp
     }
   }
 }

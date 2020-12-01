@@ -1,8 +1,8 @@
 <template>
-  <v-row justify="center">
+  <v-row>
     <v-dialog v-model="dialog" persistent max-width="600" class="overlay">
       <template v-slot:activator="{ on, attrs }">
-          <v-icon v-bind="attrs" v-on="on" class="float-right icon">mdi-account-edit</v-icon>
+          <v-icon v-bind="attrs" v-on="on" class="icon">mdi-account-edit</v-icon>
       </template>
       <v-card>
         <v-card-text>
@@ -54,14 +54,5 @@ export default {
 </script>
 
 <style scoped>
-.icon:hover {
-  cursor: pointer;
-}
-.icon {
-  margin-right: 1vw;
-}
-.dropdown {
-  margin-left: 1vw;
-}
 
 </style>

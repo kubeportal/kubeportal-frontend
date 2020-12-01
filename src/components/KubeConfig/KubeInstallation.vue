@@ -5,7 +5,7 @@
         <Download />
         <v-divider></v-divider>
         <div>
-          <v-expansion-panels mandatory=true>
+          <v-expansion-panels mandatory>
 
             <v-expansion-panel>
               <v-expansion-panel-header class="button">
