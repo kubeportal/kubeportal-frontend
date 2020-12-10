@@ -1,10 +1,10 @@
 <template>
   <v-app >
     <v-main>
-      <v-toolbar flat class="blue-grey darken-4 toolbar">
+      <!--v-toolbar flat class="blue-grey darken-4 toolbar">
         <v-icon class="icon">mdi-view-dashboard-variant</v-icon>
         <v-toolbar-title class="title">Data Science Cluster</v-toolbar-title>
-      </v-toolbar>
+      </v-toolbar-->
       <router-view />
     </v-main>
   </v-app>

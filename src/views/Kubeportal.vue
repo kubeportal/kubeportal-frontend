@@ -1,48 +1,58 @@
 <template>
   <v-card class="app">
-    <v-tabs vertical dark class="sidenav">
-      <v-tab>
-        <v-icon class="icon" left>mdi-home-heart</v-icon>
-        <show-at breakpoint="mediumAndAbove">
-          <div class="title"><small>Welcome</small></div>
-        </show-at>
-      </v-tab>
-      <v-tab>
-        <v-icon class="icon" left>mdi-account</v-icon>
-        <show-at breakpoint="mediumAndAbove">
-          <div class="title"><small>Profile</small></div>
-        </show-at>
-      </v-tab>
-      <v-tab>
-        <v-icon class="icon" left>mdi-file-document-outline</v-icon>
-        <show-at breakpoint="mediumAndAbove">
-          <div class="title"><small>Cluster</small></div>
-        </show-at>
-      </v-tab>
-      <v-tab>
-        <v-icon class="icon" left>mdi-chart-pie</v-icon>
-        <show-at breakpoint="mediumAndAbove">
-          <div class="title"><small>Statistics</small></div>
-        </show-at>
-      </v-tab>
-      <v-tab>
-        <v-icon class="icon" left>mdi-file-edit-outline</v-icon>
-        <show-at breakpoint="mediumAndAbove">
-          <div class="title"><small>Generator</small></div>
-        </show-at>
-      </v-tab>
-      <v-tab v-if="userIsAdmin" @click="openAdmin">
-        <v-icon class="icon" left>mdi-tools</v-icon>
-        <show-at breakpoint="mediumAndAbove">
-          <div class="title"><small>Admin</small></div>
-        </show-at>
-      </v-tab>
-      <v-tab @click="logout">
-        <v-icon class="icon" left>mdi-logout-variant</v-icon>
-        <show-at breakpoint="mediumAndAbove">
-          <div class="title"><small>Logout</small></div>
-        </show-at>
-      </v-tab>
+    <v-tabs vertical class="sidenav" dark active-class="activeTab">
+      <v-img src="../assets/mountain.jpeg" gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)" width="30vh" height="100vh">
+        <v-container class="logo">
+            <v-icon class="icon">mdi-view-dashboard-variant</v-icon>
+            <div class="title"><small>Data Science Cluster</small></div>
+
+        </v-container>
+        <v-container>
+          <hr/>
+        </v-container>
+        <v-tab>
+          <v-icon class="icon" left>mdi-home-heart</v-icon>
+          <show-at breakpoint="mediumAndAbove">
+            <div class="title"><small>Welcome</small></div>
+          </show-at>
+        </v-tab>
+        <v-tab>
+          <v-icon class="icon" color="floralwhite" left>mdi-account</v-icon>
+          <show-at breakpoint="mediumAndAbove">
+            <div class="title"><small>Profile</small></div>
+          </show-at>
+        </v-tab>
+        <v-tab>
+          <v-icon class="icon" left>mdi-file-document-outline</v-icon>
+          <show-at breakpoint="mediumAndAbove">
+            <div class="title"><small>Cluster</small></div>
+          </show-at>
+        </v-tab>
+        <v-tab>
+          <v-icon class="icon" left>mdi-chart-pie</v-icon>
+          <show-at breakpoint="mediumAndAbove">
+            <div class="title"><small>Statistics</small></div>
+          </show-at>
+        </v-tab>
+        <v-tab>
+          <v-icon class="icon" left>mdi-file-edit-outline</v-icon>
+          <show-at breakpoint="mediumAndAbove">
+            <div class="title"><small>Generator</small></div>
+          </show-at>
+        </v-tab>
+        <v-tab v-if="userIsAdmin" @click="openAdmin">
+          <v-icon class="icon" left>mdi-tools</v-icon>
+          <show-at breakpoint="mediumAndAbove">
+            <div class="title"><small>Admin</small></div>
+          </show-at>
+        </v-tab>
+        <v-tab @click="logout">
+          <v-icon class="icon" left>mdi-logout-variant</v-icon>
+          <show-at breakpoint="mediumAndAbove">
+            <div class="title"><small>Logout</small></div>
+          </show-at>
+        </v-tab>
+      </v-img>
 
       <v-tab-item class="items">
         <v-card flat>
@@ -84,7 +94,6 @@
 </template>
 
 <script>
-
 import Welcome from '@/views/Welcome'
 import Statistics from '@/views/Statistics'
 import Config from '@/views/Cluster'
@@ -127,7 +136,7 @@ export default {
     }
   },
   async mounted () {
-    if(this.$store.getters['users/get_is_authenticated'] === 'true') {
+    if (this.$store.getters['users/get_is_authenticated'] === 'true') {
       const user_id = this.$store.getters['users/get_user_id']
       /*if (user_id === undefined) {
         await this.$store.dispatch('users/get_user_details', localStorage.getItem('user_id'))
@@ -142,24 +151,37 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .icon {
-    position: absolute;
-    left: 15px;
-    color: floralwhite;
-  }
-  .sidenav {
-    max-height: 150vh;
-    min-height: 95vh;
-    position: absolute;
-    left: -2px;
-    top: -2px;
-    min-width: 100px;
-  }
-  .title {
-    padding: 0 1rem 0 3rem;
-  }
-  .items {
-    margin-left: 1vw;
-  }
+.icon {
+  position: absolute;
+  left: 15px;
+  color: floralwhite;
+}
+.sidenav {
+  height: 100vh;
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  min-width: 100px;
+}
+.activeTab{
+  background-color: green;
+}
 
+.logo {
+  padding: 1.25em .75em 1em 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+hr{
+  background-color: rgba(240, 240, 240, .5);
+}
+
+.title {
+  padding: 0 1rem 0 3rem;
+  color: floralwhite;
+}
+.items {
+  margin-left: 1vw;
+}
 </style>
