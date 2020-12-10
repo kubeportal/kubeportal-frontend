@@ -1,23 +1,19 @@
 <template>
-      <v-card>
-        <v-card-title>
-          Hello: {{ this.current_user_firstname }} !
-        </v-card-title>
-        <WebAppContainer />
+      <div>
+        <TopBar title="Welcome"/>
+        <v-card>
+          <WebAppContainer />
       </v-card>
+      </div>
 </template>
 
 <script>
 import WebAppContainer from '../components/WebAppContainer'
+import TopBar from '../components/TopBar'
 
 export default {
   name: 'Welcome',
-  components: { WebAppContainer },
-  data () {
-    return {
-      current_user_firstname: this.$store.getters['users/get_user_firstname']
-    }
-  },
+  components: { WebAppContainer, TopBar },
   methods: {
 
     async request_cluster_infos () {
