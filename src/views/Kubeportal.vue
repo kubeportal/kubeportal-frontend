@@ -1,5 +1,6 @@
 <template>
   <v-card class="app">
+    <!--TopBar class="topBar" title="welocem"/-->
     <v-tabs vertical class="sidenav" dark active-class="activeTab">
       <v-img src="../assets/mountain.jpeg" gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)" width="25vh" height="100vh">
         <v-container class="logo">
@@ -99,11 +100,12 @@ import Config from '@/views/Cluster'
 import Generator from '@/views/Generator'
 import Profile from '@/components/Profile/Profile'
 import { showAt } from 'vue-breakpoints'
+import TopBar from '@/components/TopBar'
 
 export default {
   name: 'App',
 
-  components: { Statistics, Welcome, Config, Generator, Profile, showAt },
+  components: { Statistics, Welcome, Config, Generator, Profile, showAt, TopBar },
   data () {
     return {
       statistics: this.$store.getters['statistics/get_cluster_info']
@@ -137,11 +139,6 @@ export default {
   async mounted () {
     if (this.$store.getters['users/get_is_authenticated'] === 'true') {
       const user_id = this.$store.getters['users/get_user_id']
-      /*if (user_id === undefined) {
-        await this.$store.dispatch('users/get_user_details', localStorage.getItem('user_id'))
-        this.$store.commit('users/set_user_firstname', localStorage.getItem('firstname'))
-        this.$store.commit('users/set_is_authenticated', 'true')
-      }*/
     } else {
       await this.$router.push({ name: 'Home' })
     }
@@ -166,6 +163,13 @@ export default {
   background-color: green;
 }
 
+.topBar{
+  position: absolute;
+  width: 80vw;
+  right: 0vw;
+  z-index: 1;
+}
+
 .logo {
   padding: 1.25em .75em 1em 1em;
   display: flex;
@@ -182,5 +186,6 @@ hr{
 }
 .items {
   margin-left: 1vw;
+  //margin: 6.5vh;
 }
 </style>

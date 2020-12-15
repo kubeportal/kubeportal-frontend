@@ -33,6 +33,7 @@
                 <v-icon>mdi-brightness-6</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
+                <!-- <v-switch></v-switch> -->
                 <v-list-item-title>Darkmode</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
