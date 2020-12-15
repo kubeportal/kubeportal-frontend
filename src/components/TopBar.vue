@@ -28,7 +28,7 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item>
+            <v-list-item @click="switch_dark_mode">
               <v-list-item-icon>
                 <v-icon>mdi-brightness-6</v-icon>
               </v-list-item-icon>
@@ -47,7 +47,7 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item>
+            <v-list-item @click="logout">
               <v-list-item-icon>
                 <v-icon>mdi-logout-variant</v-icon>
               </v-list-item-icon>
@@ -70,6 +70,25 @@ export default {
   data () {
     return {
       user_firstname: this.$store.getters['users/get_user_firstname']
+    }
+  },
+  methods: {
+    async switch_dark_mode () {
+      let tmp = await this.$store.dispatch('users/switch_dark_mode')
+      console.log(tmp)
+      this.$vuetify.theme.dark = tmp
+    },
+    logout () {
+      this.$store.commit('users/set_user_id', null)
+      this.$store.commit('users/set_user_firstname', '')
+      this.$store.commit('users/set_is_authenticated', '')
+      this.$store.commit('users/set_user_details', {})
+      this.$store.commit('users/set_user_webapps', [])
+      this.$store.commit('statistics/set_cluster_info', [])
+      this.$store.commit('api/set_csrf_token', '')
+      this.$store.commit('api/set_access_token', '')
+
+      this.$router.push({ name: 'Home' })
     }
   }
 }

@@ -41,19 +41,33 @@
             <div class="title"><small>Generator</small></div>
           </show-at>
         </v-tab>
+        <v-tab>
+          <!-- package-variant-closed -->
+          <v-icon class="icon" left>mdi-package</v-icon>
+          <show-at breakpoint="mediumAndAbove">
+            <div class="title"><small>Container</small></div>
+          </show-at>
+        </v-tab>
+        <v-tab>
+          <v-icon class="icon" left>mdi-database</v-icon>
+          <show-at breakpoint="mediumAndAbove">
+            <div class="title"><small>Storage</small></div>
+          </show-at>
+        </v-tab>
+        <v-tab>
+          <v-icon class="icon" left>mdi-lan</v-icon>
+          <show-at breakpoint="mediumAndAbove">
+            <div class="title"><small>Network</small></div>
+          </show-at>
+        </v-tab>
         <v-tab v-if="userIsAdmin" @click="openAdmin">
           <v-icon class="icon" left>mdi-tools</v-icon>
           <show-at breakpoint="mediumAndAbove">
             <div class="title"><small>Admin</small></div>
           </show-at>
         </v-tab>
-        <v-tab @click="logout">
-          <v-icon class="icon" left>mdi-logout-variant</v-icon>
-          <show-at breakpoint="mediumAndAbove">
-            <div class="title"><small>Logout</small></div>
-          </show-at>
-        </v-tab>
       </v-img>
+      <!-- Begin Tab Items -->
       <v-tab-item class="items">
         <v-card flat>
           <v-card-text>
@@ -89,23 +103,48 @@
           </v-card-text>
         </v-card>
       </v-tab-item>
+      <v-tab-item class="items">
+        <v-card flat>
+          <v-card-text>
+            <Container />
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item class="items">
+        <v-card flat>
+          <v-card-text>
+            <Storage />
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item class="items">
+        <v-card flat>
+          <v-card-text>
+            <Network />
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
     </v-tabs>
   </v-card>
 </template>
 
 <script>
-import Welcome from '@/views/Welcome'
 import Statistics from '@/views/Statistics'
 import Config from '@/views/Cluster'
 import Generator from '@/views/Generator'
 import Profile from '@/components/Profile/Profile'
 import { showAt } from 'vue-breakpoints'
+
+import Welcome from '@/views/Welcome'
 import TopBar from '@/components/TopBar'
+import Container from '@/views/Container'
+import Storage from '@/views/Storage'
+import Network from '@/views/Network'
 
 export default {
   name: 'App',
 
-  components: { Statistics, Welcome, Config, Generator, Profile, showAt, TopBar },
+  components: { Statistics, Welcome, Config, Generator, Profile, showAt, TopBar, Container, Storage, Network },
   data () {
     return {
       statistics: this.$store.getters['statistics/get_cluster_info']
@@ -142,6 +181,9 @@ export default {
     } else {
       await this.$router.push({ name: 'Home' })
     }
+  },
+  created () {
+    this.$vuetify.theme.dark = this.$store.getters['users/get_dark_mode']
   }
 }
 </script>
