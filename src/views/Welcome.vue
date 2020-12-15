@@ -50,13 +50,6 @@ export default {
     }
   },
   methods: {
-    async request_cluster_infos () {
-      let cluster_info = this.$store.getters['statistics/get_cluster_info']
-      if (cluster_info.length === 0) {
-        let cluster_infos = this.$store.getters['statistics/get_cluster_request_info']
-        this.$store.dispatch('statistics/request_cluster_infos', cluster_infos)
-      }
-    },
     async request_webapps () {
       let apps = this.$store.getters['users/get_user_webapps']
 
@@ -66,7 +59,6 @@ export default {
     }
   },
   mounted () {
-    this.request_cluster_infos()
     this.request_webapps()
   }
 }

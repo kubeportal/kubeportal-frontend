@@ -18,6 +18,17 @@
 
         <v-list flat>
           <v-subheader>Signed in as: {{user_firstname}}</v-subheader>
+
+          <v-list-item @click="kubeportal_link">
+              <v-list-item-icon>
+                <v-icon>mdi-view-dashboard-variant</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <!-- <v-switch></v-switch> -->
+                <v-list-item-title>Dashboard</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
           <v-list-item-group>
             <v-list-item>
               <v-list-item-icon>
@@ -38,7 +49,7 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item>
+            <v-list-item @click="info_link">
               <v-list-item-icon>
                 <v-icon>mdi-information-outline</v-icon>
               </v-list-item-icon>
@@ -89,6 +100,12 @@ export default {
       this.$store.commit('api/set_access_token', '')
 
       this.$router.push({ name: 'Home' })
+    },
+    info_link () {
+      this.$router.push({ name: 'Info' })
+    },
+    kubeportal_link () {
+      this.$router.push({ name: 'Kubeportal' })
     }
   }
 }

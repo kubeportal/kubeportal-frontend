@@ -1,5 +1,7 @@
 <template>
   <v-card >
+    <TopBar title="Infos" />
+
     <v-card-title>
       Cluster Statistics
     </v-card-title>
@@ -27,9 +29,11 @@
 
 <script>
 import RequestSpinner from '../components/RequestSpinner'
+import TopBar from '../components/TopBar'
+
 export default {
   name: 'Statistics',
-  components: { RequestSpinner },
+  components: { RequestSpinner, TopBar },
   computed: {
     all_statistics () {
       return this.$store.getters['statistics/get_cluster_info']
@@ -40,6 +44,9 @@ export default {
       let cluster_infos = this.$store.getters['statistics/get_cluster_request_info']
       this.$store.dispatch('statistics/request_cluster_infos', cluster_infos)
     }
+  },
+  mounted () {
+    this.request_cluster_infos()
   }
 }
 </script>

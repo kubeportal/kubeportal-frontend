@@ -145,11 +145,6 @@ export default {
   name: 'App',
 
   components: { Statistics, Welcome, Config, Generator, Profile, showAt, TopBar, Container, Storage, Network },
-  data () {
-    return {
-      statistics: this.$store.getters['statistics/get_cluster_info']
-    }
-  },
   methods: {
     logout () {
       this.$store.commit('users/set_user_id', null)
