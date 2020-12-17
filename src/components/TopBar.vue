@@ -19,7 +19,7 @@
         <v-list flat>
           <v-subheader>Signed in as: {{user_firstname}}</v-subheader>
 
-          <v-list-item @click="kubeportal_link">
+          <v-list-item @click="push_route('Kubeportal')">
               <v-list-item-icon>
                 <v-icon>mdi-view-dashboard-variant</v-icon>
               </v-list-item-icon>
@@ -49,7 +49,7 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item @click="info_link">
+            <v-list-item @click="push_route('Info')">
               <v-list-item-icon>
                 <v-icon>mdi-information-outline</v-icon>
               </v-list-item-icon>
@@ -85,9 +85,7 @@ export default {
   },
   methods: {
     async switch_dark_mode () {
-      let tmp = await this.$store.dispatch('users/switch_dark_mode')
-      console.log(tmp)
-      this.$vuetify.theme.dark = tmp
+      this.$vuetify.theme.dark = await this.$store.dispatch('users/switch_dark_mode')
     },
     logout () {
       this.$store.commit('users/set_user_id', null)
@@ -95,17 +93,16 @@ export default {
       this.$store.commit('users/set_is_authenticated', '')
       this.$store.commit('users/set_user_details', {})
       this.$store.commit('users/set_user_webapps', [])
-      this.$store.commit('statistics/set_cluster_info', [])
+      this.$store.commit('infos/set_cluster_info', [])
       this.$store.commit('api/set_csrf_token', '')
       this.$store.commit('api/set_access_token', '')
 
       this.$router.push({ name: 'Home' })
     },
-    info_link () {
-      this.$router.push({ name: 'Info' })
-    },
-    kubeportal_link () {
-      this.$router.push({ name: 'Kubeportal' })
+    push_route (name) {
+      if (this.$route.name !== name) {
+        this.$router.push({ name: name })
+      }
     }
   }
 }

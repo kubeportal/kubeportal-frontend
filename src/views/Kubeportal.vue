@@ -17,44 +17,44 @@
             <div class="title"><small>Welcome</small></div>
           </show-at>
         </v-tab>
-        <v-tab>
+        <v-tab v-if="!has_access">
+          <v-icon class="icon" left>mdi-key</v-icon>
+          <show-at breakpoint="mediumAndAbove">
+            <div class="title"><small>Request Access</small></div>
+          </show-at>
+        </v-tab>
+        <v-tab v-if="has_access">
           <v-icon class="icon" color="floralwhite" left>mdi-account</v-icon>
           <show-at breakpoint="mediumAndAbove">
             <div class="title"><small>Profile</small></div>
           </show-at>
         </v-tab>
-        <v-tab>
+        <v-tab v-if="has_access">
           <v-icon class="icon" left>mdi-file-document-outline</v-icon>
           <show-at breakpoint="mediumAndAbove">
             <div class="title"><small>Cluster</small></div>
           </show-at>
         </v-tab>
-        <v-tab>
-          <v-icon class="icon" left>mdi-chart-pie</v-icon>
-          <show-at breakpoint="mediumAndAbove">
-            <div class="title"><small>Statistics</small></div>
-          </show-at>
-        </v-tab>
-        <v-tab>
+        <v-tab v-if="has_access">
           <v-icon class="icon" left>mdi-file-edit-outline</v-icon>
           <show-at breakpoint="mediumAndAbove">
             <div class="title"><small>Generator</small></div>
           </show-at>
         </v-tab>
-        <v-tab>
+        <v-tab v-if="has_access">
           <!-- package-variant-closed -->
           <v-icon class="icon" left>mdi-package</v-icon>
           <show-at breakpoint="mediumAndAbove">
             <div class="title"><small>Container</small></div>
           </show-at>
         </v-tab>
-        <v-tab>
+        <v-tab v-if="has_access">
           <v-icon class="icon" left>mdi-database</v-icon>
           <show-at breakpoint="mediumAndAbove">
             <div class="title"><small>Storage</small></div>
           </show-at>
         </v-tab>
-        <v-tab>
+        <v-tab v-if="has_access">
           <v-icon class="icon" left>mdi-lan</v-icon>
           <show-at breakpoint="mediumAndAbove">
             <div class="title"><small>Network</small></div>
@@ -68,56 +68,56 @@
         </v-tab>
       </v-img>
       <!-- Begin Tab Items -->
-      <v-tab-item class="items">
+      <v-tab-item class="items" >
         <v-card flat>
           <v-card-text>
             <Welcome />
           </v-card-text>
         </v-card>
       </v-tab-item>
-      <v-tab-item class="items">
+      <v-tab-item v-if="!has_access" class="items">
+        <v-card flat>
+          <v-card-text>
+            <RequestAccess />
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item class="items" v-if="has_access">
         <v-card flat>
           <v-card-text>
             <Profile />
           </v-card-text>
         </v-card>
       </v-tab-item>
-      <v-tab-item class="items">
+      <v-tab-item class="items" v-if="has_access">
         <v-card flat>
           <v-card-text>
             <Config />
           </v-card-text>
         </v-card>
       </v-tab-item>
-      <v-tab-item class="items">
-        <v-card flat>
-          <v-card-text>
-            <Statistics />
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item class="items">
+      <v-tab-item class="items" v-if="has_access">
         <v-card flat>
           <v-card-text>
             <Generator />
           </v-card-text>
         </v-card>
       </v-tab-item>
-      <v-tab-item class="items">
+      <v-tab-item class="items" v-if="has_access">
         <v-card flat>
           <v-card-text>
             <Container />
           </v-card-text>
         </v-card>
       </v-tab-item>
-      <v-tab-item class="items">
+      <v-tab-item class="items" v-if="has_access">
         <v-card flat>
           <v-card-text>
             <Storage />
           </v-card-text>
         </v-card>
       </v-tab-item>
-      <v-tab-item class="items">
+      <v-tab-item class="items" v-if="has_access">
         <v-card flat>
           <v-card-text>
             <Network />
@@ -129,7 +129,6 @@
 </template>
 
 <script>
-import Statistics from '@/views/Statistics'
 import Config from '@/views/Cluster'
 import Generator from '@/views/Generator'
 import Profile from '@/components/Profile/Profile'
@@ -140,26 +139,15 @@ import TopBar from '@/components/TopBar'
 import Container from '@/views/Container'
 import Storage from '@/views/Storage'
 import Network from '@/views/Network'
+import RequestAccess from '@/views/RequestAccess'
 
 export default {
   name: 'App',
 
-  components: { Statistics, Welcome, Config, Generator, Profile, showAt, TopBar, Container, Storage, Network },
+  components: { Welcome, Config, Generator, Profile, showAt, TopBar, Container, Storage, Network, RequestAccess },
   methods: {
-    logout () {
-      this.$store.commit('users/set_user_id', null)
-      this.$store.commit('users/set_user_firstname', '')
-      this.$store.commit('users/set_is_authenticated', '')
-      this.$store.commit('users/set_user_details', {})
-      this.$store.commit('users/set_user_webapps', [])
-      this.$store.commit('statistics/set_cluster_info', [])
-      this.$store.commit('api/set_csrf_token', '')
-      this.$store.commit('api/set_access_token', '')
-
-      this.$router.push({ name: 'Home' })
-    },
     openAdmin () {
-      window.location.href = 'https://cluster.datexis.com/admin/'
+      window.open('https://cluster.datexis.com/admin/', '_blank')
     }
   },
   computed: {
@@ -168,6 +156,9 @@ export default {
       console.log('current user')
       console.log(current_user)
       return current_user['admin']
+    },
+    has_access () {
+      return true
     }
   },
   async mounted () {

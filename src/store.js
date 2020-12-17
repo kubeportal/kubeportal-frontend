@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import generator from './api/generator.js'
-import statistics from './api/statistics.js'
+import infos from './api/infos.js'
 import users from './api/users.js'
 import api from './api/api.js'
 
@@ -14,7 +14,7 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     users: users.module,
-    statistics: statistics.module,
+    infos: infos.module,
     generator: generator.module,
     api: api.module
   }

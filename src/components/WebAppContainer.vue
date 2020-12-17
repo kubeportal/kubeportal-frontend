@@ -8,7 +8,7 @@
             <div class="app" :class="{ 'on-hover': hover }" @click="open_link(app.link_url)">
               <v-card class="app-icon" :elevation="hover ? 12 : 2">
                 <v-card-text class="app-icon-text">
-                  <v-icon large >mdi-view-quilt</v-icon>
+                  <v-icon large color="white">mdi-view-quilt</v-icon>
                 </v-card-text>
               </v-card>
 
@@ -52,7 +52,7 @@ export default {
   height: 12vh;
   position: relative;
   text-align: center;
-  margin-top: 2vh;
+  padding: 1vh;
 }
 
 .app-icon {
@@ -61,10 +61,12 @@ export default {
   z-index: 1;
   left: 5%;
   bottom: 70%;
+  border-color: green;
 }
 
 .app-icon-text{
   padding: 5px;
+  background-color: green;
 }
 
 .app-text{

@@ -18,7 +18,16 @@
           :items="pods_data"
           :items-per-page="5"
           class="elevation-1"
-        ></v-data-table>
+          :search="search_pods"
+        >
+          <template v-slot:top>
+            <v-text-field
+              v-model="search_pods"
+              label="Search"
+              class="mx-4"
+            ></v-text-field>
+          </template>
+        </v-data-table>
       </v-tab-item>
       <v-tab-item>
         <v-data-table
@@ -26,7 +35,16 @@
           :items="deployment_data"
           :items-per-page="5"
           class="elevation-1"
-        ></v-data-table>
+          :search="search_deployments"
+        >
+          <template v-slot:top>
+            <v-text-field
+              v-model="search_deployments"
+              label="Search"
+              class="mx-4"
+            ></v-text-field>
+          </template>
+        </v-data-table>
       </v-tab-item>
     </v-tabs>
   </div>
@@ -38,6 +56,8 @@ export default {
   props: ['pods_data', 'deployment_data'],
   data () {
     return {
+      search_pods: '',
+      search_deployments: '',
       pods_headers: [{
         text: 'Name', algin:'start', sortable: false, value:'name'
       },
@@ -58,42 +78,6 @@ export default {
       }]
     }
   }
-  // computed: {
-  //   pods_data () {
-  //     return [{
-  //       name: 'Pod1',
-  //       status: 'running',
-  //       cpu_usage: '99%'
-  //     },
-  //     {
-  //       name: 'Pod2',
-  //       status: 'sleeping',
-  //       cpu_usage: '1%'
-  //     },
-  //     {
-  //       name: 'not a pod',
-  //       status: 'not running',
-  //       cpu_usage: '110%'
-  //     }]
-  //   },
-  //   deployment_data () {
-  //     return [{
-  //       name: 'deployment',
-  //       status: 'running',
-  //       cpu_usage: '99%'
-  //     },
-  //     {
-  //       name: 'deployment2',
-  //       status: 'sleeping',
-  //       cpu_usage: '1%'
-  //     },
-  //     {
-  //       name: 'not a deployment',
-  //       status: 'not running',
-  //       cpu_usage: '110%'
-  //     }]
-  //   }
-  // }
 
 }
 </script>

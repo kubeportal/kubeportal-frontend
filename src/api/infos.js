@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import * as backend from '@/api/backend'
 
-const statistics = {
+const infos = {
   module: {
     namespaced: true,
     state: {
@@ -34,4 +34,4 @@ const statistics = {
   }
 }
 
-export default statistics
+export default infos
