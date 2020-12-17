@@ -4,7 +4,7 @@ import Home from './views/Home.vue'
 import Kubeportal from './views/Kubeportal.vue'
 import Login from './views/Login.vue'
 import Info from './views/Info'
-import store from '@/store'
+import Settings from './views/Settings'
 
 Vue.use(Router)
 
@@ -31,6 +31,11 @@ const router = new Router({
       name: 'Info',
       path: '/kubeportal/info',
       component: Info
+    },
+    {
+      name: 'Settings',
+      path: '/kubeportal/settings',
+      component: Settings
     },
     {
       name: 'invalidUrl',

@@ -30,12 +30,6 @@
           </show-at>
         </v-tab>
         <v-tab v-if="has_access">
-          <v-icon class="icon" left>mdi-file-document-outline</v-icon>
-          <show-at breakpoint="mediumAndAbove">
-            <div class="title"><small>Cluster</small></div>
-          </show-at>
-        </v-tab>
-        <v-tab v-if="has_access">
           <v-icon class="icon" left>mdi-file-edit-outline</v-icon>
           <show-at breakpoint="mediumAndAbove">
             <div class="title"><small>Generator</small></div>
@@ -92,13 +86,6 @@
       <v-tab-item class="items" v-if="has_access">
         <v-card flat>
           <v-card-text>
-            <Config />
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item class="items" v-if="has_access">
-        <v-card flat>
-          <v-card-text>
             <Generator />
           </v-card-text>
         </v-card>
@@ -129,7 +116,6 @@
 </template>
 
 <script>
-import Config from '@/views/Cluster'
 import Generator from '@/views/Generator'
 import Profile from '@/components/Profile/Profile'
 import { showAt } from 'vue-breakpoints'
@@ -144,7 +130,7 @@ import RequestAccess from '@/views/RequestAccess'
 export default {
   name: 'App',
 
-  components: { Welcome, Config, Generator, Profile, showAt, TopBar, Container, Storage, Network, RequestAccess },
+  components: { Welcome, Generator, Profile, showAt, TopBar, Container, Storage, Network, RequestAccess },
   methods: {
     openAdmin () {
       window.open('https://cluster.datexis.com/admin/', '_blank')

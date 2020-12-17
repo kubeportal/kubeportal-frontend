@@ -3,9 +3,8 @@
     <v-card-title>Using Kubectl</v-card-title>
       <v-card-text>
         <Download />
-        <v-divider></v-divider>
         <div>
-          <v-expansion-panels mandatory=true>
+          <v-expansion-panels mandatory class="w-75 mx-auto">
 
             <v-expansion-panel>
               <v-expansion-panel-header class="button">

@@ -4,12 +4,12 @@
       fixed-tabs
       >
       <v-tab>
-        Pods
         <v-icon>mdi-desktop-classic</v-icon>
+        Pods
       </v-tab>
       <v-tab>
-        Deployments
         <v-icon>mdi-hexagon-multiple-outline</v-icon>
+        Deployments
       </v-tab>
 
       <v-tab-item>

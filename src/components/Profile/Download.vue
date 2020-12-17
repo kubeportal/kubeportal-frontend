@@ -1,22 +1,22 @@
 <template>
   <div>
     <v-row>
-      <v-col md="3">
+      <v-col>
         <div>
           <v-icon class="icon" left>mdi-download</v-icon>
-          <a><b>kubectl config</b></a>
+          <b>kubectl config</b>
         </div>
       </v-col>
-      <v-col md="7">
+      <v-col>
         <p class="content">{{ download_info }}</p>
       </v-col>
     </v-row>
     <v-row>
-      <v-col md="3">
+      <v-col>
         <v-icon class="icon" left>mdi-download-outline</v-icon>
-        <a><b>test installation</b></a>
+        <b>test installation</b>
       </v-col>
-      <v-col md=7>
+      <v-col>
         <p class="content">{{ test_installation }}</p>
       </v-col>
     </v-row>
