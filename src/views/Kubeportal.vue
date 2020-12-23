@@ -155,13 +155,6 @@ export default {
       return true
     }
   },
-  async mounted () {
-    if (this.$store.getters['users/get_is_authenticated'] === 'true') {
-      const user_id = this.$store.getters['users/get_user_id']
-    } else {
-      await this.$router.push({ name: 'Home' })
-    }
-  },
   created () {
     this.$vuetify.theme.dark = this.$store.getters['users/get_dark_mode']
   }
