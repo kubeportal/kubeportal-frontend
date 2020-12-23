@@ -20,18 +20,31 @@
                 <v-col>{{ current_user['firstname'] }}</v-col>
               </v-row>
               <v-row>
+                <v-col>Last Name</v-col>
+                <v-col>{{ current_user['name'] }}</v-col>
+              </v-row>
+              <v-row>
+                <v-col>User Groups</v-col>
+                <v-col>
+                  <span v-for="group in user_groups" :key="group.name" >
+                    {{group.name}} |
+                  </span>
+                </v-col>
+              </v-row>
+              <v-row>
                 <v-col>
                   Primary eMail
-                  <!-- {{current_user}} -->
-                  <!-- {{user_groups}} -->
+                  <!-- {{current_user}}
+                  {{user_groups}} -->
                 </v-col>
                 <v-col>
                   <v-select
                     class="w-75"
                     dense
+                    solo
                     :items="current_user['all_emails']"
                     :label="current_user['primary_email']"
-                    :v-model="selected_email"
+                    v-model="selected_email"
                   ></v-select>
                 </v-col>
               </v-row>
@@ -40,9 +53,17 @@
                   Namespaces shown
                 </v-col>
                 <v-col>
+                  <v-checkbox v-for="(namespace, i) in [current_user['k8s_namespace']]" color="green" :key=i :label="namespace" :value="namespace" v-model="selected_namespace"></v-checkbox>
+                  <!-- TODO -->
                   <!-- Instead use: -->
                   <!-- https://vuetifyjs.com/en/components/selects/#selection -->
-                  <v-checkbox v-for="(namespace, i) in [current_user['k8s_namespace']]" color="green" :key=i :label="namespace" :value="namespace" v-model="selected_namespace"></v-checkbox>
+                  <!-- <v-select
+                    v-model="selected_namespace"
+                    :items="[current_user['k8s_namespace']]"
+                    :menu-props="{ maxHeight: '400' }"
+                    multiple
+                    persistent-hint
+                  ></v-select> -->
                 </v-col>
               </v-row>
               <v-row>
@@ -76,7 +97,7 @@
                             </v-icon>
                           </v-btn>
                         </template>
-                        <span>download config.yml</span>
+                        <span>download config.yaml</span>
                       </v-tooltip>
                     </v-col>
                   </v-row>
@@ -126,7 +147,6 @@
               </v-card>
             </v-col>
             <v-col lg=6>
-              <!-- {{current_user}} -->
               <KubeInstallation/>
             </v-col>
           </v-row>
@@ -181,7 +201,7 @@ users:
     download () {
       const element = document.createElement('a')
       element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.config_file))
-      element.setAttribute('download', 'config.yml')
+      element.setAttribute('download', 'config.yaml')
       element.style.display = 'none'
       document.body.appendChild(element)
       element.click()
@@ -194,7 +214,6 @@ users:
       e.preventDefault()
       console.log(this.selected_namespace)
       console.log(this.selected_email)
-      console.log(this.current_user['primary_email'])
     },
     onCopy () {
       this.success = true
@@ -226,7 +245,7 @@ users:
     right: 1%;
   }
   .on-hover{
-    display: none;
+    opacity: .5;
   }
   .btn {
     color: floralwhite;

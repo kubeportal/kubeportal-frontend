@@ -2,7 +2,7 @@
   <v-card class="app">
     <!--TopBar class="topBar" title="welocem"/-->
     <v-tabs vertical class="sidenav" dark active-class="activeTab">
-      <v-img src="../assets/mountain.jpeg" gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)" width="13vw" height="100vh">
+      <v-img src="../assets/mountain.jpeg" gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)" width="25vh" height="100vh">
         <v-container class="logo">
             <v-icon class="icon">mdi-view-dashboard-variant</v-icon>
             <div class="title"><small>Data Science Cluster</small></div>
