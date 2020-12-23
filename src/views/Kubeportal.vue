@@ -2,7 +2,7 @@
   <v-card class="app">
     <!--TopBar class="topBar" title="welocem"/-->
     <v-tabs vertical class="sidenav" dark active-class="activeTab">
-      <v-img src="../assets/mountain.jpeg" gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)" width="25vh" height="100vh">
+      <v-img src="../assets/mountain.jpeg" gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)" width="13vw" height="100vh">
         <v-container class="logo">
             <v-icon class="icon">mdi-view-dashboard-variant</v-icon>
             <div class="title"><small>Data Science Cluster</small></div>
@@ -21,12 +21,6 @@
           <v-icon class="icon" left>mdi-key</v-icon>
           <show-at breakpoint="mediumAndAbove">
             <div class="title"><small>Request Access</small></div>
-          </show-at>
-        </v-tab>
-        <v-tab v-if="has_access">
-          <v-icon class="icon" color="floralwhite" left>mdi-account</v-icon>
-          <show-at breakpoint="mediumAndAbove">
-            <div class="title"><small>Profile</small></div>
           </show-at>
         </v-tab>
         <v-tab v-if="has_access">
@@ -79,13 +73,6 @@
       <v-tab-item class="items" v-if="has_access">
         <v-card flat>
           <v-card-text>
-            <Profile />
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item class="items" v-if="has_access">
-        <v-card flat>
-          <v-card-text>
             <Container />
           </v-card-text>
         </v-card>
@@ -116,9 +103,7 @@
 </template>
 
 <script>
-import Profile from '@/components/Profile/Profile'
 import { showAt } from 'vue-breakpoints'
-
 import Welcome from '@/views/Welcome'
 import TopBar from '@/components/TopBar'
 import Container from '@/views/Container'
@@ -130,7 +115,30 @@ import Wizard from '@/views/Wizard'
 export default {
   name: 'App',
 
-  components: { Welcome, Profile, showAt, TopBar, Container, Storage, Network, RequestAccess, Wizard },
+  components: { Welcome, showAt, TopBar, Container, Storage, Network, RequestAccess, Wizard },
+  // data () {
+  //   return {
+  //     tabs: [
+  //       {
+  //         icon: 'mdi-package',
+  //         name: 'Container'
+  //       },
+  //       {
+  //         icon: 'mdi-database',
+  //         name: 'Storage'
+  //       },
+  //       {
+  //         icon: 'mdi-lan',
+  //         name: 'Network'
+  //       },
+  //       {
+  //         icon: 'mdi-wizard-hat',
+  //         name: 'Wizard'
+  //       }
+  //     ],
+  //     tab_items: [ <Container/>, <Network/>, <Wizard/>]
+  //   }
+  // },
   methods: {
     openAdmin () {
       window.open('https://cluster.datexis.com/admin/', '_blank')

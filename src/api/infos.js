@@ -26,6 +26,7 @@ const infos = {
         const newClusterInfo = []
         for (const field of infos) {
           const info = await backend.read(`/cluster/${field}/`)
+          console.log(info)
           newClusterInfo.push(info.data)
         }
         context.commit('set_cluster_info', newClusterInfo)

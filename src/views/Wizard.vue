@@ -30,6 +30,7 @@
               <v-spacer/>
               <v-col md=1>
                 <v-btn
+                  text
                   class="mt-3"
                   color="primary"
                   @click="e1 = 2"
@@ -49,6 +50,7 @@
               <v-spacer/>
               <v-col md=1>
                 <v-btn
+                  text
                   class="mt-3"
                   color="primary"
                   @click="e1 = 1"
@@ -59,6 +61,7 @@
 
               <v-col md=1>
                 <v-btn
+                  text
                   class="mt-3"
                   color="primary"
                   @click="e1 = 3"
@@ -78,6 +81,7 @@
               <v-spacer/>
               <v-col md=1>
                 <v-btn
+                  text
                   class="mt-3"
                   color="primary"
                   @click="e1 = 2"
@@ -86,8 +90,9 @@
                 </v-btn>
               </v-col>
 
-              <v-col md=2>
+              <v-col md=1>
                 <v-btn
+                  text
                   class="mt-3"
                   color="primary"
                   @click="deploy"

@@ -28,7 +28,7 @@
     </v-card>
     <v-card>
       <v-card-title>
-        <a href="https://github.com/kubeportal/kubeportal"><v-icon>mdi-github</v-icon> Kubeportal</a>
+        <a href="https://github.com/kubeportal/kubeportal"><v-icon>mdi-git</v-icon> Kubeportal</a>
       </v-card-title>
     </v-card>
   </v-container>
@@ -59,10 +59,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.first {
-  width: 30rem;
-}
-.wrapper {
-  height: 70vh !important;
-}
+  a{
+    text-decoration: none;
+  }
+  .first {
+    width: 30rem;
+  }
+  .wrapper {
+    height: 70vh !important;
+  }
 </style>

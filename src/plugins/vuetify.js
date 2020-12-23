@@ -8,11 +8,12 @@ const vuetify = new Vuetify({
       light: {
         primary: '#424242',
         secondary: '#b0bec5',
-        anchor: '#8c9eff'
+        anchor: '#8c9eff',
+        pre_color: '#000000'
       },
       dark: {
-        primary: '#36392e',
-        secondary: '#606357'
+        primary: '#cccccc',
+        pre_color: '#ffffff'
       }
     }
   },

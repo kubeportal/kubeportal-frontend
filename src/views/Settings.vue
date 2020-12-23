@@ -214,6 +214,9 @@ users:
 </script>
 
 <style lang="scss" scoped>
+  pre {
+    color: var(--v-pre_color);
+  }
   .alerts{
     position: absolute;
   }

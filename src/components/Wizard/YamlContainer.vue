@@ -1,5 +1,5 @@
 <template>
-  <v-card class="wizard_card">
+  <v-card class="yaml_card">
     <v-card-text>
       <pre>{{ yamlfile }}</pre>
     </v-card-text>
@@ -15,8 +15,12 @@ export default {
 </script>
 
 <style scoped>
-.wizard_card {
-  height: 100%;
-  margin-left: 2em;
-}
+  .yaml_card {
+    height: 100%;
+    margin-left: 2em;
+  }
+
+  pre {
+    color: var(--v-pre_color);
+  }
 </style>
