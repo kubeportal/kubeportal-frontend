@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import * as backend from '@/api/backend'
 
-const generator = {
+const wizard = {
   module: {
     namespaced: true,
 
@@ -18,7 +18,7 @@ const generator = {
       domainname: '',
       subdomain: '',
       hostname_valid: '',
-      current_generator_tab: 'Deployment'
+      current_wizard_tab: 'Deployment'
     },
 
     getters: {
@@ -33,7 +33,7 @@ const generator = {
       get_subdomain (state) { return state.subdomain },
       get_ingressname (state) { return state.ingressname },
       get_hostname_valid (state) { return state.hostname_valid },
-      get_current_generator_tab (state) { return state.current_generator_tab }
+      get_current_wizard_tab (state) { return state.current_wizard_tab }
     },
 
     mutations: {
@@ -49,7 +49,7 @@ const generator = {
       set_domainname (state, name) { state.domainname = name },
       set_subdomain (state, name) { state.subdomain = name },
       setHostnameValidation (state, valid) { state.validate_hostname = valid },
-      set_current_generator_tab (state, tab) { state.current_generator_tab = tab }
+      set_current_wizard_tab (state, tab) { state.current_wizard_tab = tab }
     },
 
     actions: {
@@ -63,4 +63,4 @@ const generator = {
   }
 }
 
-export default generator
+export default wizard

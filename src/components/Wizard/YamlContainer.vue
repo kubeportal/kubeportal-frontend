@@ -1,5 +1,5 @@
 <template>
-  <v-card class="generator_card">
+  <v-card class="wizard_card">
     <v-card-text>
       <pre>{{ yamlfile }}</pre>
     </v-card-text>
@@ -15,7 +15,7 @@ export default {
 </script>
 
 <style scoped>
-.generator_card {
+.wizard_card {
   height: 100%;
   margin-left: 2em;
 }

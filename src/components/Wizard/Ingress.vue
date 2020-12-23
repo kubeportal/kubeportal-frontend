@@ -3,7 +3,7 @@
     <v-row no-gutters>
       <v-col>
         <v-card>
-          <v-form class="generator_form">
+          <v-form class="wizard_form">
             <v-text-field v-model="form.ingressname" required label="cutom ingress name"></v-text-field>
             <v-select v-model="form.domainname" :items="domains" required label="domain"></v-select>
             <v-text-field v-model="form.subdomain" required label="subdomain"></v-text-field>
@@ -35,12 +35,12 @@ export default {
   data () {
     return {
       form: {
-        ingressname: this.$store.getters['generator/get_ingressname'],
-        serviceport: this.$store.getters['generator/get_serviceport'],
-        servicename: this.$store.getters['generator/get_servicename'],
-        domainname: this.$store.getters['generator/get_domainname'],
-        subdomain: this.$store.getters['generator/get_subdomain'],
-        namespace: this.$store.getters['generator/get_namespace']
+        ingressname: this.$store.getters['wizard/get_ingressname'],
+        serviceport: this.$store.getters['wizard/get_serviceport'],
+        servicename: this.$store.getters['wizard/get_servicename'],
+        domainname: this.$store.getters['wizard/get_domainname'],
+        subdomain: this.$store.getters['wizard/get_subdomain'],
+        namespace: this.$store.getters['wizard/get_namespace']
       },
       domains: ['demo.datexis.com', 'app.datexis.com', 'internal.datexis.com', 'api.datexis.com'],
       sourceRange: '*',
@@ -115,18 +115,18 @@ export default {
     },
     async checkHostName () {
       let hostname = this.form.subdomain + '.' + this.form.domainname
-      const validation = await this.$store.dispatch('generator/validate_hostname', hostname)
+      const validation = await this.$store.dispatch('wizard/validate_hostname', hostname)
       return validation
     }
   },
   created () {
     EventBus.$on('SaveIngressData', (() => {
-      this.$store.commit('set_ingressname', this.form.ingressname)
-      this.$store.commit('set_domainname', this.form.domainname)
-      this.$store.commit('set_subdomain', this.form.subdomain)
-      this.$store.commit('set_namespace', this.form.namespace)
-      this.$store.commit('set_servicename', this.form.servicename)
-      this.$store.commit('set_service_port', this.form.serviceport)
+      this.$store.commit('wizard/set_ingressname', this.form.ingressname)
+      this.$store.commit('wizard/set_domainname', this.form.domainname)
+      this.$store.commit('wizard/set_subdomain', this.form.subdomain)
+      this.$store.commit('wizard/set_namespace', this.form.namespace)
+      this.$store.commit('wizard/set_servicename', this.form.servicename)
+      this.$store.commit('wizard/set_service_port', this.form.serviceport)
     }))
   }
 }
@@ -140,7 +140,7 @@ export default {
     margin-top: 1vw;
   }
 
-  .generator_form {
+  .wizard_form {
     width: 95%;
     margin: 0 1em;
   }

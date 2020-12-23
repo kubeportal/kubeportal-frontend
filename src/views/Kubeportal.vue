@@ -30,12 +30,6 @@
           </show-at>
         </v-tab>
         <v-tab v-if="has_access">
-          <v-icon class="icon" left>mdi-file-edit-outline</v-icon>
-          <show-at breakpoint="mediumAndAbove">
-            <div class="title"><small>Generator</small></div>
-          </show-at>
-        </v-tab>
-        <v-tab v-if="has_access">
           <!-- package-variant-closed -->
           <v-icon class="icon" left>mdi-package</v-icon>
           <show-at breakpoint="mediumAndAbove">
@@ -52,6 +46,12 @@
           <v-icon class="icon" left>mdi-lan</v-icon>
           <show-at breakpoint="mediumAndAbove">
             <div class="title"><small>Network</small></div>
+          </show-at>
+        </v-tab>
+        <v-tab v-if="has_access">
+          <v-icon class="icon" left>mdi-wizard-hat</v-icon>
+          <show-at breakpoint="mediumAndAbove">
+            <div class="title"><small>Wizard</small></div>
           </show-at>
         </v-tab>
         <v-tab v-if="userIsAdmin" @click="openAdmin">
@@ -86,13 +86,6 @@
       <v-tab-item class="items" v-if="has_access">
         <v-card flat>
           <v-card-text>
-            <Generator />
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item class="items" v-if="has_access">
-        <v-card flat>
-          <v-card-text>
             <Container />
           </v-card-text>
         </v-card>
@@ -111,12 +104,18 @@
           </v-card-text>
         </v-card>
       </v-tab-item>
+      <v-tab-item class="items" v-if="has_access">
+        <v-card flat>
+          <v-card-text>
+            <Wizard />
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
     </v-tabs>
   </v-card>
 </template>
 
 <script>
-import Generator from '@/views/Generator'
 import Profile from '@/components/Profile/Profile'
 import { showAt } from 'vue-breakpoints'
 
@@ -126,11 +125,12 @@ import Container from '@/views/Container'
 import Storage from '@/views/Storage'
 import Network from '@/views/Network'
 import RequestAccess from '@/views/RequestAccess'
+import Wizard from '@/views/Wizard'
 
 export default {
   name: 'App',
 
-  components: { Welcome, Generator, Profile, showAt, TopBar, Container, Storage, Network, RequestAccess },
+  components: { Welcome, Profile, showAt, TopBar, Container, Storage, Network, RequestAccess, Wizard },
   methods: {
     openAdmin () {
       window.open('https://cluster.datexis.com/admin/', '_blank')

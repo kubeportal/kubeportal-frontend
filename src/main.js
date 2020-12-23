@@ -6,6 +6,7 @@ import logger from '@/plugins/logger'
 import vuetify from './plugins/vuetify'
 import router from './router'
 import GAuth from 'vue-google-oauth2'
+import VueClipboard from 'vue-clipboard2'
 import '@/assets/css/tailwind.css'
 
 const gauthOption = {
@@ -22,6 +23,7 @@ const vuexLocalStorage = new VuexPersistence({
 }).plugin(store)
 
 Vue.use(GAuth, gauthOption)
+Vue.use(VueClipboard)
 Vue.use(logger)
 
 Vue.config.productionTip = false

@@ -3,7 +3,7 @@
     <v-row no-gutters>
       <v-col>
         <v-card>
-          <v-form class="generator_form">
+          <v-form class="wizard_form">
             <v-text-field v-model="form.servicename" required label="custom service name"></v-text-field>
             <v-text-field v-model="form.serviceport" required label="service port"></v-text-field>
             <v-text-field v-model="form.namespace" required label="namespace"></v-text-field>
@@ -29,10 +29,10 @@ export default {
   data () {
     return {
       form: {
-        serviceport: this.$store.getters['generator/get_containerport'],
-        servicename: this.$store.getters['generator/get_servicename'],
-        namespace: this.$store.getters['generator/get_namespace'],
-        deploymentname: this.$store.getters['generator/get_deploymentname']
+        serviceport: this.$store.getters['wizard/get_containerport'],
+        servicename: this.$store.getters['wizard/get_servicename'],
+        namespace: this.$store.getters['wizard/get_namespace'],
+        deploymentname: this.$store.getters['wizard/get_deploymentname']
       }
     }
   },
@@ -85,7 +85,7 @@ export default {
     padding: 2vw 0vw 0vw 0vw;
   }
 
-  .generator_form {
+  .wizard_form {
     width: 95%;
     margin: 0 1em;
   }

@@ -3,7 +3,7 @@
     <v-row no-gutters>
       <v-col>
         <v-card>
-          <v-form class="generator_form">
+          <v-form class="wizard_form">
             <v-text-field v-model="form.deploymentname" required label="deployment name"></v-text-field>
             <v-text-field v-model="form.imagename" required label="image name" hint="schema: registry.datexis.com/<namespace>/<imagename>:<tag>"></v-text-field>
             <v-text-field v-model="form.namespace" required label="namespace"></v-text-field>
@@ -52,11 +52,11 @@ export default {
   data () {
     return {
       form: {
-        imagename: this.$store.getters['generator/get_imagename'],
-        deploymentname: this.$store.getters['generator/get_deploymentname'],
-        containername: this.$store.getters['generator/get_containername'],
-        namespace: this.$store.getters['generator/get_namespace'],
-        containerport: this.$store.getters['generator/get_containerport']
+        imagename: this.$store.getters['wizard/get_imagename'],
+        deploymentname: this.$store.getters['wizard/get_deploymentname'],
+        containername: this.$store.getters['wizard/get_containername'],
+        namespace: this.$store.getters['wizard/get_namespace'],
+        containerport: this.$store.getters['wizard/get_containerport']
       },
       options: ['', 'restriction to beuth network', 'cors-allow-origin'],
       tooltip: 'dasdas'
@@ -121,14 +121,14 @@ export default {
   },
   created () {
     EventBus.$on('SaveDeploymentData', (() => {
-      this.$store.commit('set_deployment_name', this.form.deploymentname)
-      this.$store.commit('set_container_port', this.form.containerport)
-      this.$store.commit('set_service_port', this.form.containerport)
-      this.$store.commit('set_servicename', this.form.deploymentname + '-service')
-      this.$store.commit('set_ingressname', this.form.deploymentname + '-ingress')
-      this.$store.commit('set_container_name', this.form.containername)
-      this.$store.commit('set_namespace', this.form.namespace)
-      this.$store.commit('set_image_name', this.form.imagename)
+      this.$store.commit('wizard/set_deployment_name', this.form.deploymentname)
+      this.$store.commit('wizard/set_container_port', this.form.containerport)
+      this.$store.commit('wizard/set_service_port', this.form.containerport)
+      this.$store.commit('wizard/set_servicename', this.form.deploymentname + '-service')
+      this.$store.commit('wizard/set_ingressname', this.form.deploymentname + '-ingress')
+      this.$store.commit('wizard/set_container_name', this.form.containername)
+      this.$store.commit('wizard/set_namespace', this.form.namespace)
+      this.$store.commit('wizard/set_image_name', this.form.imagename)
     }))
   }
 }
@@ -143,7 +143,7 @@ export default {
     padding: 2vw 0vw 0vw 0vw;
   }
 
-  .generator_form {
+  .wizard_form {
     width: 95%;
     margin: 0 1em;
   }
