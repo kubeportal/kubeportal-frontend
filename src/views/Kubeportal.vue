@@ -1,104 +1,163 @@
 <template>
-  <v-card class="app">
+  <v-card>
     <!--TopBar class="topBar" title="welocem"/-->
-    <v-tabs vertical class="sidenav" dark active-class="activeTab">
-      <v-img src="../assets/mountain.jpeg" gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)" width="25vh" height="100vh">
-        <v-container class="logo">
-            <v-icon class="icon">mdi-view-dashboard-variant</v-icon>
-            <div class="title"><small>Data Science Cluster</small></div>
 
-        </v-container>
-        <v-container>
-          <hr/>
-        </v-container>
-        <v-tab>
-          <v-icon class="icon" left>mdi-home-heart</v-icon>
-          <show-at breakpoint="mediumAndAbove">
+    <show-at breakpoint="mediumAndAbove">
+      <v-tabs vertical class="sidenav" dark active-class="activeTab">
+        <v-img src="../assets/mountain.jpeg" gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)" width="25vh" height="100vh">
+          <v-container class="logo">
+              <v-icon class="icon">mdi-view-dashboard-variant</v-icon>
+              <div class="title"><small>Data Science Cluster</small></div>
+
+          </v-container>
+          <v-container>
+            <hr/>
+          </v-container>
+          <v-tab>
+            <v-icon class="icon" left>mdi-home-heart</v-icon>
             <div class="title"><small>Welcome</small></div>
-          </show-at>
+          </v-tab>
+          <v-tab v-if="!has_access">
+            <v-icon class="icon" left>mdi-key</v-icon>
+            <div class="title"><small>Request Access</small></div>
+          </v-tab>
+          <v-tab v-if="has_access">
+            <!-- package-variant-closed -->
+            <v-icon class="icon" left>mdi-package</v-icon>
+            <div class="title"><small>Container</small></div>
+          </v-tab>
+          <v-tab v-if="has_access">
+            <v-icon class="icon" left>mdi-database</v-icon>
+            <div class="title"><small>Storage</small></div>
+          </v-tab>
+          <v-tab v-if="has_access">
+            <v-icon class="icon" left>mdi-lan</v-icon>
+            <div class="title"><small>Network</small></div>
+          </v-tab>
+          <v-tab v-if="has_access">
+            <v-icon class="icon" left>mdi-wizard-hat</v-icon>
+            <div class="title"><small>Wizard</small></div>
+          </v-tab>
+          <v-tab v-if="userIsAdmin" @click="openAdmin">
+            <v-icon class="icon" left>mdi-tools</v-icon>
+            <div class="title"><small>Admin</small></div>
+          </v-tab>
+        </v-img>
+      <!-- Begin Tab Items -->
+        <v-tab-item class="items" >
+          <v-card flat>
+            <v-card-text>
+              <Welcome />
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item v-if="!has_access" class="items">
+          <v-card flat>
+            <v-card-text>
+              <RequestAccess />
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item class="items" v-if="has_access">
+          <v-card flat>
+            <v-card-text>
+              <Container />
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item class="items" v-if="has_access">
+          <v-card flat>
+            <v-card-text>
+              <Storage />
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item class="items" v-if="has_access">
+          <v-card flat>
+            <v-card-text>
+              <Network />
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item class="items" v-if="has_access">
+          <v-card flat>
+            <v-card-text>
+              <Wizard />
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+      </v-tabs>
+    </show-at>
+
+    <show-at breakpoint="small">
+      <v-tabs class="sidenav" fixed-tabs dark active-class="activeTab">
+        <v-tab>
+          <v-icon>mdi-home-heart</v-icon>
         </v-tab>
         <v-tab v-if="!has_access">
-          <v-icon class="icon" left>mdi-key</v-icon>
-          <show-at breakpoint="mediumAndAbove">
-            <div class="title"><small>Request Access</small></div>
-          </show-at>
+          <v-icon>mdi-key</v-icon>
         </v-tab>
         <v-tab v-if="has_access">
           <!-- package-variant-closed -->
-          <v-icon class="icon" left>mdi-package</v-icon>
-          <show-at breakpoint="mediumAndAbove">
-            <div class="title"><small>Container</small></div>
-          </show-at>
+          <v-icon>mdi-package</v-icon>
         </v-tab>
         <v-tab v-if="has_access">
-          <v-icon class="icon" left>mdi-database</v-icon>
-          <show-at breakpoint="mediumAndAbove">
-            <div class="title"><small>Storage</small></div>
-          </show-at>
+          <v-icon>mdi-database</v-icon>
         </v-tab>
         <v-tab v-if="has_access">
-          <v-icon class="icon" left>mdi-lan</v-icon>
-          <show-at breakpoint="mediumAndAbove">
-            <div class="title"><small>Network</small></div>
-          </show-at>
+          <v-icon>mdi-lan</v-icon>
         </v-tab>
         <v-tab v-if="has_access">
-          <v-icon class="icon" left>mdi-wizard-hat</v-icon>
-          <show-at breakpoint="mediumAndAbove">
-            <div class="title"><small>Wizard</small></div>
-          </show-at>
+          <v-icon>mdi-wizard-hat</v-icon>
         </v-tab>
         <v-tab v-if="userIsAdmin" @click="openAdmin">
-          <v-icon class="icon" left>mdi-tools</v-icon>
-          <show-at breakpoint="mediumAndAbove">
-            <div class="title"><small>Admin</small></div>
-          </show-at>
+          <v-icon left>mdi-tools</v-icon>
         </v-tab>
-      </v-img>
       <!-- Begin Tab Items -->
-      <v-tab-item class="items" >
-        <v-card flat>
-          <v-card-text>
-            <Welcome />
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item v-if="!has_access" class="items">
-        <v-card flat>
-          <v-card-text>
-            <RequestAccess />
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item class="items" v-if="has_access">
-        <v-card flat>
-          <v-card-text>
-            <Container />
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item class="items" v-if="has_access">
-        <v-card flat>
-          <v-card-text>
-            <Storage />
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item class="items" v-if="has_access">
-        <v-card flat>
-          <v-card-text>
-            <Network />
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item class="items" v-if="has_access">
-        <v-card flat>
-          <v-card-text>
-            <Wizard />
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-    </v-tabs>
+        <v-tab-item class="items" >
+          <v-card flat>
+            <v-card-text>
+              <Welcome />
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item v-if="!has_access" class="items">
+          <v-card flat>
+            <v-card-text>
+              <RequestAccess />
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item class="items" v-if="has_access">
+          <v-card flat>
+            <v-card-text>
+              <Container />
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item class="items" v-if="has_access">
+          <v-card flat>
+            <v-card-text>
+              <Storage />
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item class="items" v-if="has_access">
+          <v-card flat>
+            <v-card-text>
+              <Network />
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item class="items" v-if="has_access">
+          <v-card flat>
+            <v-card-text>
+              <Wizard />
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+      </v-tabs>
+    </show-at>
   </v-card>
 </template>
 

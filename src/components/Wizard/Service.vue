@@ -1,5 +1,5 @@
 <template>
-  <div class="text-left main">
+  <div class="text-left">
     <v-row no-gutters>
       <v-col>
         <v-card>
@@ -80,9 +80,6 @@ export default {
 <style scoped>
   .card {
     margin-top: 1vw;
-  }
-  .main {
-    padding: 2vw 0vw 0vw 0vw;
   }
 
   .wizard_form {

@@ -33,7 +33,7 @@ const users_container = {
       set_user_webapps (state, webapps) { state.user_webapps = webapps },
       set_is_authenticated (state, is_authenticated) { state.is_authenticated = is_authenticated },
       set_dark_mode (state) { state.dark_mode = !state.dark_mode },
-      set_user_groups(state, user_groups) { state.user_groups = user_groups }
+      set_user_groups (state, user_groups) { state.user_groups = user_groups }
     },
 
     actions: {
