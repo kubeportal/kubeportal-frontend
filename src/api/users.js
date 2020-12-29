@@ -32,7 +32,8 @@ const users_container = {
       set_user_details (state, user_details) { state.user_details = user_details },
       set_user_webapps (state, webapps) { state.user_webapps = webapps },
       set_is_authenticated (state, is_authenticated) { state.is_authenticated = is_authenticated },
-      set_dark_mode (state) { state.dark_mode = !state.dark_mode }
+      set_dark_mode (state) { state.dark_mode = !state.dark_mode },
+      set_user_groups(state, user_groups) { state.user_groups = user_groups }
     },
 
     actions: {
@@ -62,7 +63,7 @@ const users_container = {
       },
       async get_user_groups (context) {
         const response = await backend.read(`/users/${context.state.user_id}/groups/`)
-        for(let group of response.data) { context.state.user_groups.push(group) }
+        context.commit('set_user_groups', response.data)
         return response
       },
       async update_user (context, payload) {

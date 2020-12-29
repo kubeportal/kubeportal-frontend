@@ -48,8 +48,10 @@ export default {
   },
   methods: {
     request_cluster_infos () {
-      let cluster_infos = this.$store.getters['infos/get_cluster_request_info']
-      this.$store.dispatch('infos/request_cluster_infos', cluster_infos)
+      if (this.all_statistics.length === 0) {
+        let cluster_infos = this.$store.getters['infos/get_cluster_request_info']
+        this.$store.dispatch('infos/request_cluster_infos', cluster_infos)
+      }
     }
   },
   mounted () {

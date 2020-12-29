@@ -77,7 +77,7 @@
         <v-tab-item>
           <v-row>
             <v-col lg=6>
-              <v-card class="h-100">
+              <v-card class="config">
                 <v-card-title>
                   <v-row>
                     <v-col lg=3>
@@ -233,8 +233,13 @@ users:
 </script>
 
 <style lang="scss" scoped>
+  .config {
+    max-width: 100%;
+    height: 100%;
+  }
   pre {
     color: var(--v-pre_color);
+    word-wrap: break-word;
   }
   .alerts{
     position: absolute;

@@ -17,7 +17,9 @@ function setAuthorizationHeader () {
 }
 
 function setCSRFToken () {
-  return readTokenFromVuex('csrf_token')
+  let tmp = readTokenFromVuex('csrf_token')
+  console.log('csrf_token', tmp)
+  return tmp
 }
 
 export function setBaseURLWithDefaultOrEnvValue () {
@@ -58,6 +60,7 @@ export async function read (relative_path) {
 
 export async function create (relative_path, payload) {
   axiosInstance.defaults.headers['Authorization'] = setAuthorizationHeader()
+  // TODO: problem for login is probebly csrf-token
   axiosInstance.defaults.headers['X-CSRFToken'] = setCSRFToken()
   let error, response
   [error, response] = await to(axiosInstance.post(relative_path, payload))
