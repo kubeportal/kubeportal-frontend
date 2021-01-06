@@ -57,7 +57,7 @@ export default {
 
 .app-icon {
   position: absolute;
-  // background-color: green;
+  background-color: green;
   z-index: 1;
   left: 5%;
   bottom: 70%;
@@ -75,7 +75,9 @@ export default {
   align-items: center;
   height: 100%;
   font-size: 1rem !important;
-  color: black
+  //color: black;
+  border-radius: 30px;
+  background-image: linear-gradient(to bottom left, rgba(74, 151, 74, .4), rgba(92, 185, 92, 1));
 }
 
 .v-card.on-hover.theme--dark{

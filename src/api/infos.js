@@ -26,10 +26,9 @@ const infos = {
       async request_cluster_infos (context, infos) {
         // const newClusterInfo = []
         for (const field of infos) {
-          backend.read(`/cluster/${field}/`).then(data => {
-            context.commit('push_cluster_info', data.data)
-            console.log(data.data);
-          });
+          backend.read(`/cluster/${field}/`).then(response => {
+            context.commit('push_cluster_info', response.data)
+          })
           //console.log(info)
           //newClusterInfo.push(info.data)
         }
