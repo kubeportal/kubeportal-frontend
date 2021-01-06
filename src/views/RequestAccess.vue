@@ -2,7 +2,7 @@
   <div>
       <TopBar title="Request Access" />
       <v-subheader>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Architecto perferendis molestiae aut quas nobis eaque beatae voluptate atque dolorum? Dolorem qui veniam quibusdam veritatis omnis harum eligendi, aliquam molestias quidem?
+        You can send an access request to an administrator of your choice:
       </v-subheader>
       <v-card class="my-4">
           <v-card-title>

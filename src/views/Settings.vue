@@ -34,8 +34,8 @@
               <v-row>
                 <v-col>
                   Primary eMail
-                  <!-- {{current_user}}
-                  {{user_groups}} -->
+                  {{current_user}}
+                  {{user_groups}}
                 </v-col>
                 <v-col>
                   <v-select
@@ -53,17 +53,17 @@
                   Namespaces shown
                 </v-col>
                 <v-col>
-                  <v-checkbox v-for="(namespace, i) in [current_user['k8s_namespace']]" color="green" :key=i :label="namespace" :value="namespace" v-model="selected_namespace"></v-checkbox>
+                  <!-- <v-checkbox v-for="(namespace, i) in [current_user['k8s_namespace']]" color="green" :key=i :label="namespace" :value="namespace" v-model="selected_namespace"></v-checkbox> -->
                   <!-- TODO -->
                   <!-- Instead use: -->
                   <!-- https://vuetifyjs.com/en/components/selects/#selection -->
-                  <!-- <v-select
+                  <v-select
                     v-model="selected_namespace"
                     :items="[current_user['k8s_namespace']]"
                     :menu-props="{ maxHeight: '400' }"
                     multiple
                     persistent-hint
-                  ></v-select> -->
+                  ></v-select>
                 </v-col>
               </v-row>
               <v-row>

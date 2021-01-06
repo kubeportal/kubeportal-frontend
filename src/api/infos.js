@@ -18,18 +18,22 @@ const infos = {
 
     mutations: {
       update_cluster_info (state, info) { state.cluster_info.push(info) },
-      set_cluster_info (state, info) { state.cluster_info = info }
+      set_cluster_info (state, info) { state.cluster_info = info },
+      push_cluster_info (state, info) { state.cluster_info.push(info) }
     },
 
     actions: {
       async request_cluster_infos (context, infos) {
-        const newClusterInfo = []
+        // const newClusterInfo = []
         for (const field of infos) {
-          const info = await backend.read(`/cluster/${field}/`)
-          console.log(info)
-          newClusterInfo.push(info.data)
+          backend.read(`/cluster/${field}/`).then(data => {
+            context.commit('push_cluster_info', data.data)
+            console.log(data.data);
+          });
+          //console.log(info)
+          //newClusterInfo.push(info.data)
         }
-        context.commit('set_cluster_info', newClusterInfo)
+        //context.commit('set_cluster_info', newClusterInfo)
       }
     }
   }

@@ -58,7 +58,7 @@ export async function read (relative_path) {
 
 export async function create (relative_path, payload) {
   // TODO: problem for login is Authorization header
-  //axiosInstance.defaults.headers['Authorization'] = setAuthorizationHeader()
+ // axiosInstance.defaults.headers['Authorization'] = setAuthorizationHeader()
   axiosInstance.defaults.headers['X-CSRFToken'] = setCSRFToken()
   let error, response
   [error, response] = await to(axiosInstance.post(relative_path, payload))
