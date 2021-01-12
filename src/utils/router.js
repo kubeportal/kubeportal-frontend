@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import Home from '../views/Home.vue'
 import Kubeportal from '../views/Kubeportal.vue'
 import Login from '../views/Login.vue'
-import Info from '../components/Info/Info'
 import Settings from '../views/Settings'
 
 Vue.use(Router)
@@ -26,11 +25,6 @@ const router = new Router({
       name: 'Login',
       path: '/login',
       component: Login
-    },
-    {
-      name: 'Info',
-      path: '/kubeportal/info',
-      component: Info
     },
     {
       name: 'Settings',

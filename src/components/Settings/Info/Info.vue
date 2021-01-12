@@ -1,7 +1,6 @@
 <template>
   <v-container>
     <v-card >
-
       <v-card-title>
         Cluster Details
       </v-card-title>
