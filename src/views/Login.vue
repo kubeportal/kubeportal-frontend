@@ -33,7 +33,7 @@
 
 <script>
 import to from 'await-to-js'
-import * as backend from '@/api/backend'
+import * as backend from '@/utils/backend'
 import RequestSpinner from '../components/RequestSpinner'
 export default {
   name: 'Login',

@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import * as backend from '@/api/backend'
-import store from '../store.js'
+import * as backend from '@/utils/backend'
+import store from './store.js'
 
 const users_container = {
   module: {

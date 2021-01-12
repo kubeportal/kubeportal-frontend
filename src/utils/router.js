@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
-import Kubeportal from './views/Kubeportal.vue'
-import Login from './views/Login.vue'
-import Info from './views/Info'
-import Settings from './views/Settings'
+import Home from '../views/Home.vue'
+import Kubeportal from '../views/Kubeportal.vue'
+import Login from '../views/Login.vue'
+import Info from '../components/Info/Info'
+import Settings from '../views/Settings'
 
 Vue.use(Router)
 

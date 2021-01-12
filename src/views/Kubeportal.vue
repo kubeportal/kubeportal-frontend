@@ -163,13 +163,13 @@
 
 <script>
 import { showAt } from 'vue-breakpoints'
-import Welcome from '@/views/Welcome'
+import Welcome from '@/components/Welcome/Welcome'
 import TopBar from '@/components/TopBar'
-import Container from '@/views/Container'
-import Storage from '@/views/Storage'
-import Network from '@/views/Network'
-import RequestAccess from '@/views/RequestAccess'
-import Wizard from '@/views/Wizard'
+import Container from '@/components/Container/Container'
+import Storage from '@/components/Storage/Storage'
+import Network from '@/components/Network/Network'
+import RequestAccess from '@/components/RequestAccess/RequestAccess'
+import Wizard from '@/components/Wizard/Wizard'
 
 export default {
   name: 'App',

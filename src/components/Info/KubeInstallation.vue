@@ -35,13 +35,12 @@
 
 <script>
 import OSInstallation from './OSInstallation'
-import KubeConfig from '@/components/KubeConfig/KubeConfig'
-import Download from '@/components/Profile/Download'
-import { showAt } from 'vue-breakpoints'
+import KubeConfig from './KubeConfig'
+import Download from './Download'
 
 export default {
   name: 'KubeInstallation',
-  components: { OSInstallation, KubeConfig, Download, showAt },
+  components: { OSInstallation, KubeConfig, Download },
 
   data () {
     return {

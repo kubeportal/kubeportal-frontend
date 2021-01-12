@@ -110,7 +110,7 @@ import TopBar from '@/components/TopBar'
 import Deployment from '@/components/Wizard/Deployment'
 import Service from '@/components/Wizard/Service'
 import Ingress from '@/components/Wizard/Ingress'
-import EventBus from '../plugins/eventbus.js'
+import EventBus from '@/utils/eventbus.js'
 export default {
   name: 'Wizard',
   components: { TopBar, Deployment, Service, Ingress, EventBus },

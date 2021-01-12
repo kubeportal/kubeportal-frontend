@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import wizard from './api/wizard.js'
-import infos from './api/infos.js'
-import users from './api/users.js'
-import api from './api/api.js'
+import wizard from './wizard.js'
+import infos from './infos.js'
+import users from './users.js'
+import api from './api.js'
 
 Vue.use(Vuex)
 

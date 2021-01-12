@@ -158,7 +158,7 @@
 
 <script>
 import TopBar from '@/components/TopBar'
-import KubeInstallation from '@/components/KubeConfig/KubeInstallation'
+import KubeInstallation from '@/components/Info/KubeInstallation'
 
 export default {
   name: 'Settings',

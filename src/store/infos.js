@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import * as backend from '@/api/backend'
+import * as backend from '@/utils/backend'
 
 const infos = {
   module: {

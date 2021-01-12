@@ -28,15 +28,15 @@
     </v-card>
     <v-card>
       <v-card-title>
-        <a href="https://github.com/kubeportal/kubeportal"><v-icon>mdi-git</v-icon> Kubeportal</a>
+        <a href="https://github.com/kubeportal/kubeportal"><v-icon>mdi-github</v-icon> Kubeportal</a>
       </v-card-title>
     </v-card>
   </v-container>
 </template>
 
 <script>
-import RequestSpinner from '../components/RequestSpinner'
-import TopBar from '../components/TopBar'
+import RequestSpinner from '@/components/RequestSpinner'
+import TopBar from '@/components/TopBar'
 
 export default {
   name: 'Info',

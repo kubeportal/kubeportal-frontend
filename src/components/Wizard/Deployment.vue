@@ -43,7 +43,7 @@
 
 <script>
 import YamlContainer from './YamlContainer'
-import EventBus from '../../plugins/eventbus.js'
+import EventBus from '@/utils/eventbus'
 
 export default {
   name: 'Deployment',

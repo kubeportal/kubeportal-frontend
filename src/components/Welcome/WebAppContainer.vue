@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import RequestSpinner from './RequestSpinner'
+import RequestSpinner from '@/components/RequestSpinner'
 
 export default {
   name: 'WebAppContainer',
@@ -77,7 +77,8 @@ export default {
   font-size: 1rem !important;
   //color: black;
   border-radius: 30px;
-  background-image: linear-gradient(to bottom left, rgba(74, 151, 74, .4), rgba(92, 185, 92, 1));
+  background-color: green;
+  //background-image: linear-gradient(to bottom left, rgba(74, 151, 74, .4), rgba(92, 185, 92, 1));
 }
 
 .v-card.on-hover.theme--dark{

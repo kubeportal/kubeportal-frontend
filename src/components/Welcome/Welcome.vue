@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import WebAppContainer from '../components/WebAppContainer'
-import TopBar from '../components/TopBar'
+import WebAppContainer from './WebAppContainer'
+import TopBar from '@/components/TopBar'
 
 export default {
   name: 'Welcome',

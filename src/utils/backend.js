@@ -1,16 +1,17 @@
 import axios from 'axios'
 import to from 'await-to-js'
-import store from '../store.js'
+import store from '../store/store.js'
 
 function canReadURLFromEnv () {
   return !!process.env['VUE_APP_BASE_URL']
 }
 
 function _check_header () {
+  console.log('HEADER', axiosInstance.defaults.headers)
   if (!axiosInstance.defaults.headers['authorization'] || !axiosInstance.defaults.headers['X-CSRFToken']) {
-    let tmp = store.getters['api/get_access_token']
+    let token = store.getters['api/get_access_token']
     // eslint-disable-next-line
-    axiosInstance.defaults.headers['authorization'] = !!tmp ? 'Bearer ' + tmp : undefined
+    axiosInstance.defaults.headers['authorization'] = !!token ? 'Bearer ' + token : undefined
     axiosInstance.defaults.headers['X-CSRFToken'] = store.getters['api/get_csrf_token']
   }
 }
@@ -50,7 +51,6 @@ export async function read (relative_path) {
 
 export async function create (relative_path, payload) {
   _check_header()
-  console.log(axiosInstance.defaults.headers)
   let [error, response] = await to(axiosInstance.post(relative_path, payload))
   response === undefined ? console.log(error.message) : console.log(response)
   return response
