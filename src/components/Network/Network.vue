@@ -1,6 +1,5 @@
 <template>
   <div>
-    <TopBar title="Network"/>
     <v-card>
       <DataHolder :pods_data="pods_data" :deployment_data="deployment_data" />
     </v-card>

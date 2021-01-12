@@ -1,6 +1,5 @@
 <template>
   <div>
-    <TopBar title="Welcome" />
     <v-card>
       <WebAppContainer />
     </v-card>

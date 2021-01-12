@@ -49,12 +49,12 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item @click="push_route('Info')">
+            <v-list-item  v-if="user_is_admin" @click="open_admin">
               <v-list-item-icon>
-                <v-icon>mdi-information-outline</v-icon>
+                <v-icon>mdi-tools</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title>Info</v-list-item-title>
+                <v-list-item-title>ADMIN</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
 
@@ -83,6 +83,14 @@ export default {
       user_firstname: this.$store.getters['users/get_user_firstname']
     }
   },
+  computed: {
+    user_is_admin () {
+      let current_user = this.$store.getters['users/get_user_details']
+      console.log('current user')
+      console.log(current_user)
+      return current_user['admin']
+    }
+  },
   methods: {
     async switch_dark_mode () {
       this.$vuetify.theme.dark = await this.$store.dispatch('users/switch_dark_mode')
@@ -98,6 +106,9 @@ export default {
       this.$store.commit('api/set_access_token', '')
 
       this.$router.push({ name: 'Home' })
+    },
+    open_admin () {
+      window.open('https://cluster.datexis.com/admin/', '_blank')
     },
     push_route (name) {
       if (this.$route.name !== name) {

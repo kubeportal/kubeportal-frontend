@@ -1,6 +1,5 @@
 <template>
   <div>
-    <TopBar title="Storage"/>
     <v-card>
       <DataHolder :pods_data="pods_data" :deployment_data="deployment_data" />
     </v-card>

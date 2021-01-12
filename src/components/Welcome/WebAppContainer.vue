@@ -13,7 +13,7 @@
               </v-card>
 
               <v-card class="app-text" :elevation="hover ? 12 : 2">
-                <v-card-text class="text-md-h5">
+                <v-card-text class="text-md-h5 white--text">
                   {{ app.link_name }}
                   <!-- {{ app.link_url }} -->
                 </v-card-text>
@@ -74,9 +74,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  font-size: 1rem !important;
-  //color: black;
-  border-radius: 30px;
+  border-radius: 40px;
   background-color: green;
   //background-image: linear-gradient(to bottom left, rgba(74, 151, 74, .4), rgba(92, 185, 92, 1));
 }

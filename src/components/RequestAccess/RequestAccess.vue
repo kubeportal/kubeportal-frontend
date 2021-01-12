@@ -1,6 +1,5 @@
 <template>
   <div>
-      <TopBar title="Request Access" />
       <v-subheader>
         You can send an access request to an administrator of your choice:
       </v-subheader>

@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <TopBar title="Info" />
     <v-card >
 
       <v-card-title>
