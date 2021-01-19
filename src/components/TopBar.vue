@@ -54,7 +54,7 @@
                 <v-icon>mdi-tools</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title>ADMIN</v-list-item-title>
+                <v-list-item-title>Admin</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
 
@@ -86,8 +86,6 @@ export default {
   computed: {
     user_is_admin () {
       let current_user = this.$store.getters['users/get_user_details']
-      console.log('current user')
-      console.log(current_user)
       return current_user['admin']
     }
   },

@@ -7,8 +7,8 @@
         width="25vh"
         height="100vh"
       >
-        <div>
-          <v-row class="logo">
+        <div class="logo text-center" @click="go_to_dashboard">
+          <v-row align="center" >
             <v-col sm="2">
               <v-icon class="icon">mdi-view-dashboard-variant</v-icon>
             </v-col>
@@ -50,14 +50,15 @@ import Node from './Node'
 
 export default {
   name: 'Dashboard',
-
-  components: { showAt, Node },
-  props: ['tabs'],
   methods: {
-    openAdmin () {
-      window.open('https://cluster.datexis.com/admin/', '_blank')
+    go_to_dashboard () {
+      if (this.$route.name !== 'Kubeportal') {
+        this.$router.push({ name: 'Kubeportal' })
+      }
     }
   },
+  components: { showAt, Node },
+  props: ['tabs'],
   computed: {
     filtered_tabs () {
       return this.tabs.filter((tab) => tab.has_access)
@@ -87,9 +88,11 @@ export default {
 
 .logo {
   padding-top: 0.25em;
-  width: 75%;
+  width: 85%;
   margin: 0 auto;
+  cursor: pointer;
 }
+
 hr {
   background-color: rgba(240, 240, 240, 0.5);
 }

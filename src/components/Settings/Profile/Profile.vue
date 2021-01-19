@@ -20,8 +20,8 @@
       <v-row>
         <v-col>
           Primary eMail
-          {{ current_user }}
-          {{ user_groups }}
+          <!-- {{ current_user }} -->
+          <!-- {{ user_groups }} -->
         </v-col>
         <v-col>
           <v-select
