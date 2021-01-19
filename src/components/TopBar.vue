@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar flat>
+  <v-toolbar flat class="topBar">
     <v-toolbar-title>{{title}}</v-toolbar-title>
     <v-spacer/>
     <div class="text-center">
@@ -119,6 +119,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+  .topBar {
+    max-width: 100vw;
+  }
 
 </style>

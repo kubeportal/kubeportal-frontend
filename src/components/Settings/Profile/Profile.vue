@@ -1,5 +1,5 @@
 <template>
-  <v-card class="p-5">
+  <v-card class="p-4">
     <v-form @submit="user_form">
       <v-row>
         <v-col>First Name</v-col>

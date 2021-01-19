@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <v-card >
       <v-card-title>
         Cluster Details
@@ -29,7 +29,7 @@
         <a href="https://github.com/kubeportal/kubeportal"><v-icon>mdi-github</v-icon> Kubeportal</a>
       </v-card-title>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script>

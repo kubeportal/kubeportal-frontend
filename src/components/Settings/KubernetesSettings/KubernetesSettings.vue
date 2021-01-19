@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row class="p-4">
     <v-col lg="6">
       <v-card class="config">
         <v-card-title>
@@ -39,7 +39,7 @@
                 </template>
                 <span>Copy to clipboard</span>
               </v-tooltip>
-              <pre>
+              <pre >
                 {{ config_file }}
               </pre>
             </div>
@@ -87,9 +87,9 @@ contexts:
 - context:
     cluster: data_science_cluster
     namespace: ${this.current_user['k8s_namespace']}
-    user: s80066
-  name: s80066
-current-context: s80066
+    user: ${this.current_user['username']}
+  name: ${this.current_user['username']}
+current-context: ${this.current_user['username']}
 kind: Config
 preferences: {}
 users:
@@ -127,11 +127,15 @@ users:
 
 <style scoped>
   .config {
-    max-width: 100%;
+    max-width: 50vw;
     height: 100%;
   }
   pre {
     color: var(--v-pre_color);
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
     word-wrap: break-word;
   }
   .alerts{
