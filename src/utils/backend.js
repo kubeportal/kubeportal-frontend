@@ -20,7 +20,7 @@ export function setBaseURLWithDefaultOrEnvValue () {
   const defaultUrl = 'https://cluster.datexis.com'
   const baseUrl = canReadURLFromEnv() ? process.env['VUE_APP_BASE_URL'] : defaultUrl
   const API_VERSION = 'v1.4.0'
-  console.log(`${baseUrl}/api/${API_VERSION}`)
+  console.log(`BASEURL: ${baseUrl}/api/${API_VERSION}`)
   return `${baseUrl}/api/${API_VERSION}`
 }
 
@@ -40,6 +40,7 @@ export async function read (relative_path) {
   if(relative_path === '/api/') {
     const defaultUrl = 'https://cluster.datexis.com'
     precall.defaults.baseURL = canReadURLFromEnv() ? process.env['VUE_APP_BASE_URL'] : defaultUrl
+    console.log(precall.defaults.baseURL);
     let [error, response] = await to(precall.get(relative_path))
     response === undefined ? console.log(error.message) : console.log(response)
     return response

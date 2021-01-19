@@ -19,9 +19,12 @@ export default {
   name: 'App',
 
   components: { Welcome, Container, Storage, Network, RequestAccess, Wizard, Dashboard },
-  data () {
-    return {
-      tabs: [
+  computed: {
+    has_access () {
+      return true
+    },
+    tabs () {
+      return [
         {
           icon: 'mdi-home-heart',
           name: 'Welcome',
@@ -30,7 +33,7 @@ export default {
         }, {
           icon: 'mdi-key',
           name: 'Request Access',
-          has_access: this.has_access,
+          has_access: !this.has_access,
           component: RequestAccess
         }, {
           icon: 'mdi-package',
@@ -54,11 +57,6 @@ export default {
           component: Wizard
         }
       ]
-    }
-  },
-  computed: {
-    has_access () {
-      return true
     }
   },
   created () {

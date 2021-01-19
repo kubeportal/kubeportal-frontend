@@ -10,7 +10,7 @@
         <div>
           <v-row class="logo">
             <v-col sm="2">
-              <v-icon class="icon" >mdi-view-dashboard-variant</v-icon>
+              <v-icon class="icon">mdi-view-dashboard-variant</v-icon>
             </v-col>
             <v-col sm="10">
               <div class="title"><small>Data Science Cluster</small></div>
@@ -20,7 +20,7 @@
         <v-container>
           <hr />
         </v-container>
-        <v-tab v-for="tab in tabs" :key="tab.name">
+        <v-tab v-for="tab in filtered_tabs" :key="tab.name">
           <v-row>
             <v-col sm="2">
               <v-icon class="icon">{{ tab.icon }}</v-icon>
@@ -33,10 +33,13 @@
           </v-row>
         </v-tab>
       </v-img>
-
-      <v-tab-item v-for="(tab, index) in tabs" :key="tab + index" class="items">
-        <Node :tab="tab" />
-      </v-tab-item>
+        <v-tab-item
+          v-for="(tab, index) in filtered_tabs"
+          :key="tab.name + index"
+          class="items"
+        >
+          <Node :tab="tab" />
+        </v-tab-item>
     </v-tabs>
   </v-card>
 </template>
@@ -56,14 +59,8 @@ export default {
     }
   },
   computed: {
-    userIsAdmin () {
-      let current_user = this.$store.getters['users/get_user_details']
-      console.log('current user')
-      console.log(current_user)
-      return current_user['admin']
-    },
-    has_access () {
-      return true
+    filtered_tabs () {
+      return this.tabs.filter((tab) => tab.has_access)
     }
   },
   created () {
@@ -89,7 +86,7 @@ export default {
 }
 
 .logo {
-  padding-top: .25em;
+  padding-top: 0.25em;
   width: 75%;
   margin: 0 auto;
 }
@@ -103,6 +100,7 @@ hr {
 }
 .items {
   margin-left: 1vw;
+  max-height: 100vh;
   //margin: 6.5vh;
 }
 </style>

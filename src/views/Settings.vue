@@ -13,23 +13,23 @@ import Profile from '@/components/Settings/Profile/Profile'
 export default {
   name: 'Settings',
   components: { Dashboard },
-  data () {
-    return {
-      tabs: [
+  computed: {
+    tabs () {
+      return [
         {
           icon: 'mdi-account-details',
           name: 'User',
-          has_acces: true,
+          has_access: true,
           component: Profile
         }, {
           icon: 'mdi-kubernetes',
           name: 'Kubernetes',
-          has_acces: true,
+          has_access: true,
           component: KubernetesSettings
         }, {
           icon: 'mdi-information-outline',
           name: 'Infos',
-          has_acces: true,
+          has_access: true,
           component: Info
         }
       ]
