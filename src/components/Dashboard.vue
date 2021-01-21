@@ -104,6 +104,5 @@ hr {
 .items {
   margin-left: 1vw;
   max-height: 100vh;
-  //margin: 6.5vh;
 }
 </style>

@@ -49,18 +49,6 @@ export default {
       }]
     }
   }
-  // data () {
-  //   return {
-  //     tabs: [{
-  //       name: 'Pods',
-  //       icon: 'mdi-desktop-classic'
-  //     },
-  //     {
-  //       name: 'Deployments',
-  //       icon: 'mdi-hexagon-multiple-outline'
-  //     }]
-  //   }
-  // }
 }
 </script>
 
