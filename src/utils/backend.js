@@ -18,7 +18,8 @@ function _check_header () {
 
 export function setBaseURLWithDefaultOrEnvValue () {
   const defaultUrl = 'https://cluster.datexis.com'
-  const baseUrl = canReadURLFromEnv() ? process.env['VUE_APP_BASE_URL'] : defaultUrl
+  const baseUrl = process.env['VUE_APP_BASE_URL'] ? process.env['VUE_APP_BASE_URL'] : defaultUrl
+  // const API_VERSION = store.getters['api/get_api_version']
   const API_VERSION = 'v1.4.0'
   console.log(`BASEURL: ${baseUrl}/api/${API_VERSION}`)
   return `${baseUrl}/api/${API_VERSION}`
@@ -33,15 +34,15 @@ let config = {
 }
 
 const axiosInstance = axios.create(config)
-const precall = axios.create(config) // only used for the initial request
+// const precall = axios.create(config) // only used for the initial request
 
 export async function read (relative_path) {
   _check_header()
   if(relative_path === '/api/') {
     const defaultUrl = 'https://cluster.datexis.com'
-    precall.defaults.baseURL = canReadURLFromEnv() ? process.env['VUE_APP_BASE_URL'] : defaultUrl
-    console.log(precall.defaults.baseURL);
-    let [error, response] = await to(precall.get(relative_path))
+    let baseURL = canReadURLFromEnv() ? process.env['VUE_APP_BASE_URL'] : defaultUrl
+
+    let [error, response] = await to(axios.get(baseURL + relative_path))
     response === undefined ? console.log(error.message) : console.log(response)
     return response
   }

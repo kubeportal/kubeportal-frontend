@@ -7,7 +7,7 @@ import api from './api.js'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {},
   getters: {},
   mutations: {},
@@ -19,3 +19,5 @@ export default new Vuex.Store({
     api: api.module
   }
 })
+
+export default store
