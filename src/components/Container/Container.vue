@@ -9,6 +9,7 @@
 <script>
 import TopBar from '@/components/TopBar'
 import DataHolder from '@/components/DataHolder'
+import * as backend from '@/utils/backend'
 
 export default {
   name: 'Container',
@@ -48,6 +49,15 @@ export default {
         cpu_usage: '110%'
       }]
     }
+  },
+  methods: {
+    async get_pods () {
+      let response = await backend.read('pods/default/')
+      console.log(response)
+    }
+  },
+  mounted () {
+    this.get_pods()
   }
 }
 </script>
