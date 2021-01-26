@@ -80,12 +80,12 @@ export default {
   props: ['title'],
   data () {
     return {
-      user_firstname: this.$store.getters['users/get_user_firstname']
+      user_firstname: this.$store.getters['users/get_firstname']
     }
   },
   computed: {
     user_is_admin () {
-      let current_user = this.$store.getters['users/get_user_details']
+      let current_user = this.$store.getters['users/get_details']
       return current_user['admin']
     }
   },
@@ -95,13 +95,13 @@ export default {
     },
     logout () {
       this.$store.commit('users/set_user_id', null)
-      this.$store.commit('users/set_user_firstname', '')
+      this.$store.commit('users/set_firstname', '')
       this.$store.commit('users/set_is_authenticated', '')
-      this.$store.commit('users/set_user_details', {})
-      this.$store.commit('users/set_user_webapps', [])
+      this.$store.commit('users/set_details', {})
+      this.$store.commit('users/set_webapps', [])
       this.$store.commit('infos/set_cluster_info', [])
       this.$store.commit('api/set_csrf_token', '')
-      this.$store.commit('api/set_access_token', '')
+      this.$store.commit('users/set_access_token', '')
 
       this.$router.push({ name: 'Home' })
     },

@@ -71,24 +71,19 @@ export default {
       this.handle_login_response(response)
     },
     async handle_login_response (response) {
-      console.log(response)
       if(response === undefined) {
         this.loading = false
         this.is_authenticated = 'false'
-        // await this.$router.push({ name: 'Home' })
       } else if (response.status === 200) {
         this.$store.commit('users/set_is_authenticated', 'true')
-        this.$store.dispatch('users/get_user_details', response.data['id'])
-        this.$store.dispatch('users/get_user_groups')
+        this.$store.dispatch('users/get_details', response.data['id'])
+        this.$store.dispatch('users/get_groups')
         this.$router.push({ name: 'Kubeportal' })
       }
     }
   },
   async mounted () {
-    let response
-    response = await backend.read('/api/')
-    this.$store.commit('api/set_csrf_token', response.data['csrf_token'])
-    this.$store.commit('api/set_api_version', response.data['default_api_version'])
+    this.$store.dispatch('api/get_basic_api_information')
   }
 }
 </script>

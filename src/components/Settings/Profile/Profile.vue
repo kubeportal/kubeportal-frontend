@@ -75,8 +75,8 @@ export default {
     }
   },
   computed: {
-    current_user () { return this.$store.getters['users/get_user_details'] },
-    user_groups () { return this.$store.getters['users/get_user_groups'] }
+    current_user () { return this.$store.getters['users/get_details'] },
+    user_groups () { return this.$store.getters['users/get_groups'] }
   },
   methods: {
     cancel () {
