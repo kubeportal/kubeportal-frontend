@@ -17,7 +17,7 @@
         </template>
 
         <v-list flat>
-          <v-subheader>Signed in as: {{user_firstname}}</v-subheader>
+          <v-subheader>Signed in as: {{current_user['username']}}</v-subheader>
 
           <v-list-item @click="push_route('Kubeportal')">
               <v-list-item-icon>
@@ -49,7 +49,7 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item  v-if="user_is_admin" @click="open_admin">
+            <v-list-item  v-if="current_user['admin']" @click="open_admin">
               <v-list-item-icon>
                 <v-icon>mdi-tools</v-icon>
               </v-list-item-icon>
@@ -78,15 +78,9 @@
 export default {
   name: 'TopBar',
   props: ['title'],
-  data () {
-    return {
-      user_firstname: this.$store.getters['users/get_firstname']
-    }
-  },
   computed: {
-    user_is_admin () {
-      let current_user = this.$store.getters['users/get_details']
-      return current_user['admin']
+    current_user () {
+      return this.$store.getters['users/get_details']
     }
   },
   methods: {
@@ -95,8 +89,6 @@ export default {
     },
     logout () {
       this.$store.commit('users/set_user_id', null)
-      this.$store.commit('users/set_firstname', '')
-      this.$store.commit('users/set_is_authenticated', '')
       this.$store.commit('users/set_details', {})
       this.$store.commit('users/set_webapps', [])
       this.$store.commit('infos/set_cluster_info', [])

@@ -91,5 +91,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped >
+  .btn{
+    color: floralwhite;
+  }
 </style>

@@ -9,7 +9,7 @@
           <RequestSpinner />
         </v-card-text>
         <v-card-text v-else>
-          <v-alert class="alert" dense outlined type="error" v-if="is_authenticated === 'false'">Login Failed.</v-alert>
+          <v-alert class="alert" dense outlined type="error" v-if="is_authenticated === false">Login Failed.</v-alert>
           <v-card-text>
             <v-text-field label="user name" v-model="username" required></v-text-field>
             <v-text-field type="password" v-model="password" label="password" required></v-text-field>
@@ -33,7 +33,6 @@
 
 <script>
 import to from 'await-to-js'
-import * as backend from '@/utils/backend'
 import RequestSpinner from '../components/RequestSpinner'
 export default {
   name: 'Login',
@@ -52,16 +51,15 @@ export default {
       this.loading = true
       const request_body = { username: this.username, password: this.password }
       const response = await this.$store.dispatch('users/post_login_data', request_body)
-      console.log(response)
+      console.log('LOGIN', response)
 
       this.handle_login_response(response)
     },
     async signInWithGoogle () {
-      let error, googleUser
-      [error, googleUser] = await to(this.$gAuth.signIn())
+      let [error, googleUser] = await to(this.$gAuth.signIn())
       if (!googleUser || error) {
         console.log('google login failed')
-        this.is_authenticated = 'false'
+        this.is_authenticated = false
         return undefined
       }
       const auth_response = googleUser.getAuthResponse()
@@ -71,13 +69,12 @@ export default {
       this.handle_login_response(response)
     },
     async handle_login_response (response) {
-      if(response === undefined) {
+      if(!response) {
         this.loading = false
-        this.is_authenticated = 'false'
+        this.is_authenticated = false
       } else if (response.status === 200) {
-        this.$store.commit('users/set_is_authenticated', 'true')
-        this.$store.dispatch('users/get_details', response.data['id'])
-        this.$store.dispatch('users/get_groups')
+        this.is_authenticated = true
+        await this.$store.dispatch('users/get_details')
         this.$router.push({ name: 'Kubeportal' })
       }
     }
