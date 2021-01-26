@@ -19,7 +19,7 @@
         <v-list flat>
           <v-subheader>Signed in as: {{current_user['username']}}</v-subheader>
 
-          <v-list-item @click="push_route('Kubeportal')">
+          <v-list-item @click="push_route('Kubeportal')" class="listItem">
               <v-list-item-icon>
                 <v-icon>mdi-view-dashboard-variant</v-icon>
               </v-list-item-icon>
@@ -29,8 +29,7 @@
               </v-list-item-content>
             </v-list-item>
 
-          <v-list-item-group>
-            <v-list-item @click="push_route('Settings')">
+            <v-list-item @click="push_route('Settings')" class="listItem">
               <v-list-item-icon>
                 <v-icon>mdi-account</v-icon>
               </v-list-item-icon>
@@ -39,7 +38,7 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item @click="switch_dark_mode">
+            <v-list-item @click="switch_dark_mode" class="listItem">
               <v-list-item-icon>
                 <v-icon>mdi-brightness-6</v-icon>
               </v-list-item-icon>
@@ -49,7 +48,7 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item  v-if="current_user['admin']" @click="open_admin">
+            <v-list-item  v-if="current_user['admin']" @click="open_admin" class="listItem">
               <v-list-item-icon>
                 <v-icon>mdi-tools</v-icon>
               </v-list-item-icon>
@@ -58,7 +57,7 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item @click="logout">
+            <v-list-item @click="logout" class="listItem">
               <v-list-item-icon>
                 <v-icon>mdi-logout-variant</v-icon>
               </v-list-item-icon>
@@ -67,7 +66,6 @@
               </v-list-item-content>
             </v-list-item>
 
-          </v-list-item-group>
         </v-list>
       </v-menu>
     </div>
@@ -112,6 +110,10 @@ export default {
 <style scoped>
   .topBar {
     max-width: 100vw;
+  }
+
+  .listItem {
+    margin-right: 1em;
   }
 
 </style>

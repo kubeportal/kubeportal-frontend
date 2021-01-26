@@ -82,11 +82,19 @@ export default {
     cancel () {
       this.$router.push({ name: 'Kubeportal' })
     },
+    request_groups () {
+      if (this.user_groups.length === 0) {
+        this.$store.dispatch('users/request_groups')
+      }
+    },
     user_form (e) {
       e.preventDefault()
       console.log(this.selected_namespace)
       console.log(this.selected_email)
     }
+  },
+  mounted () {
+    this.request_groups()
   }
 }
 </script>

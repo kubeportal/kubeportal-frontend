@@ -24,8 +24,8 @@ const users_container = {
       get_user_id (state) { return state.user_id },
       get_namespace (state) { return state.namespace },
       get_details (state) { return state.details },
-      // get_firstname (state) { return state.firstname },
       get_webapps (state) { return state.webapps },
+      get_group_ids (state) { return state.group_ids },
       get_groups (state) { return state.groups },
       get_dark_mode (state) { return state.dark_mode }
     },
@@ -33,10 +33,11 @@ const users_container = {
     mutations: {
       set_access_token (state, token) { state.access_token = token },
       set_user_id (state, id) { state.user_id = id },
+      set_group_ids (state, group_ids) { state.group_ids = group_ids },
       set_namespace (state, namespace) { state.namespace = namespace },
-      // set_firstname (state, name) { state.user_firstname = name },
       set_details (state, details) { state.details = details },
       push_webapp (state, webapp) { state.webapps.push(webapp) },
+      push_group (state, group) { state.groups.push(group) },
       set_webapps (state, webapps) { state.webapps = webapps },
       set_dark_mode (state) { state.dark_mode = !state.dark_mode },
       set_groups (state, groups) { state.groups = groups }
@@ -56,6 +57,7 @@ const users_container = {
           context.commit('set_user_id', response.data['user_id'])
           context.commit('set_namespace', response.data['namespace'])
           context.commit('set_access_token', response.data['access_token'])
+          context.commit('set_group_ids', response.data['group_ids'])
         }
         return response
       },
@@ -68,16 +70,19 @@ const users_container = {
       async request_webapps (context) {
         const current_user = context.getters['get_details']
         console.log('WEBAPP IDS', current_user['webapp_ids'])
-        console.log('CURRENT USER', current_user)
         for (const webapp_id of current_user['webapp_ids']) {
           const response = await backend.read(`/webapps/${webapp_id}/`)
-          !response ? console.log('no webapps found', response) : context.commit('push_webapp', response.data)
+          context.commit('push_webapp', response.data)
         }
       },
-      async get_groups (context) {
-        const response = await backend.read(`/users/${context.state.user_id}/groups/`)
-        context.commit('set_groups', response.data)
-        return response
+      async request_groups (context) {
+        const group_ids = context.getters['get_group_ids']
+        console.log('GROUP IDS', group_ids)
+        for (const group_id of group_ids) {
+          const response = await backend.read(`/groups/${group_id}/`)
+          console.log('GROUP RESPONSE', response)
+          context.commit('push_group', response.data)
+        }
       },
       async update_user (context, payload) {
         const response = await backend.update(`/users/${context.state.user_id}/`, payload)

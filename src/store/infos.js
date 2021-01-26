@@ -1,10 +1,10 @@
-import Vue from 'vue'
 import * as backend from '@/utils/backend'
 
 const infos = {
   module: {
     namespaced: true,
     state: {
+      cluster_name: '',
       cluster_request_info: [
         'portal_user_count',
         'portal_version',
@@ -17,75 +17,35 @@ const infos = {
         'k8s_apiserver_url',
         'k8s_cluster_name'
       ],
-      cluster_info: [],
-      infos: [
-        { portal_user_count: '' }
-      ]
+      cluster_info: []
     },
 
     getters: {
-      get_cluster_request_info (state) {
-        return state.cluster_request_info
-      },
-      get_cluster_info (state) {
-        return state.cluster_info
-      },
-      get_infos (state) {
-        return state.infos
-      }
+      get_cluster_request_info (state) { return state.cluster_request_info },
+      get_cluster_info (state) { return state.cluster_info },
+      get_infos (state) { return state.infos },
+      get_cluster_name (state) { return state.cluster_name }
     },
 
     mutations: {
-      update_cluster_info (state, info) {
-        state.cluster_info.push(info)
-      },
-      set_cluster_info (state, info) {
-        state.cluster_info = info
-      },
-      push_cluster_info (state, info) {
-        state.cluster_info.push(info)
-      },
-      set_info (state, name, info) {
-        state.infos[name] = info
-      }
+      set_cluster_info (state, info) { state.cluster_info = info },
+      push_cluster_info (state, info) { state.cluster_info.push(info) },
+      set_info (state, name, info) { state.infos[name] = info },
+      set_cluster_name (state, name) { state.cluster_name = name }
     },
 
     actions: {
       async request_cluster_infos (context, infos) {
-        // const request_info = context.getters['get_cluster_request_info']
-        // const cluster_info = context.getters['get_cluster_info']
-        // console.log(request_info)
-
-        // // let arr = request_info.filter(element => cluster_info.includes())
-        // let arr = cluster_info.filter(element => {
-        //   return Object.keys(element)[0]
-        // })
-        // console.log(arr)
-        // for (const name of arr) {
-        //   backend.read(`/cluster/${name}/`).then(response => {
-        //     console.log('abc', response.data)
-        //     context.commit('push_cluster_info', response.data)
-        //   })
-        // }
-        // let index = tmp.findIndex( element => {
-        //   if (element.keys()[0] == name)
-        // });
-        // if (tmp[name] === '') {
-        // console.log(tmp[name])
-        // backend.read(`/cluster/${name}/`).then(response => {
-        //   console.log('abc',response.data)
-        //   context.commit('set_info', name, response.data[name])
-        // })
-        // }
-        // const newClusterInfo = []
         for (const field of infos) {
           backend.read(`/cluster/${field}/`).then(response => {
             context.commit('push_cluster_info', response.data)
           })
-        //console.log(info)
-        //newClusterInfo.push(info.data)
         }
-        //context.commit('set_cluster_info', newClusterInfo)
+      },
+      async request_cluster_name (context) {
+        let response = await backend.read(`/cluster/k8s_cluster_name/`)
+        console.log('CLUSTER NAME', response)
+        context.commit('set_cluster_name', response.data.k8s_cluster_name)
       }
     }
   }
