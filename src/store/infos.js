@@ -37,13 +37,13 @@ const infos = {
     actions: {
       async request_cluster_infos (context, infos) {
         for (const field of infos) {
-          backend.read(`/cluster/${field}/`).then(response => {
+          backend.get(`/cluster/${field}/`).then(response => {
             context.commit('push_cluster_info', response.data)
           })
         }
       },
       async request_cluster_name (context) {
-        let response = await backend.read(`/cluster/k8s_cluster_name/`)
+        let response = await backend.get(`/cluster/k8s_cluster_name/`)
         console.log('CLUSTER NAME', response)
         context.commit('set_cluster_name', response.data.k8s_cluster_name)
       }

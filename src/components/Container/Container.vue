@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     async get_pods () {
-      let response = await backend.read('pods/default/')
+      let response = await backend.get('pods/default/')
       console.log(response)
     }
   },

@@ -32,7 +32,7 @@ let config = {
 const axiosInstance = axios.create(config)
 // const precall = axios.create(config) // only used for the initial request
 
-export async function read (relative_path) {
+export async function get (relative_path) {
   _check_header()
   if(relative_path === '/api/') {
     const defaultUrl = 'https://cluster.datexis.com'
@@ -47,16 +47,16 @@ export async function read (relative_path) {
   return response
 }
 
-export async function create (relative_path, payload) {
+export async function post (relative_path, payload) {
   _check_header()
   let [error, response] = await to(axiosInstance.post(relative_path, payload))
   response === undefined ? console.log(error.message) : console.log(response)
   return response
 }
 
-export async function update (relative_path, payload) {
+export async function put (relative_path, payload) {
   _check_header()
-  let [error, response] = await to(axiosInstance.patch(relative_path, payload))
+  let [error, response] = await to(axiosInstance.put(relative_path, payload))
   response === undefined ? console.log(error.message) : console.log(response)
   return response
 }

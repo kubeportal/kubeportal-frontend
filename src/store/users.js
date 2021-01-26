@@ -45,13 +45,13 @@ const users_container = {
 
     actions: {
       async get_details (context) {
-        const response = await backend.read(`/users/${context.state.user_id}/`)
+        const response = await backend.get(`/users/${context.state.user_id}/`)
         console.log('USER DETAILS', response.data)
         response !== undefined ? context.commit('set_details', response.data) : console.log('login failed')
         return response
       },
       async post_login_data (context, request_body) {
-        const response = await backend.create('/login/', request_body)
+        const response = await backend.post('/login/', request_body)
         if (response) {
           console.log('POST LOGIN DATA', response.data)
           context.commit('set_user_id', response.data['user_id'])
@@ -63,7 +63,7 @@ const users_container = {
       },
 
       async authorize_google_user (context, auth_response) {
-        const response = await backend.create('/google_login/', auth_response)
+        const response = await backend.post('/google_login/', auth_response)
         // @ TODO
         return response
       },
@@ -71,7 +71,7 @@ const users_container = {
         const current_user = context.getters['get_details']
         console.log('WEBAPP IDS', current_user['webapp_ids'])
         for (const webapp_id of current_user['webapp_ids']) {
-          const response = await backend.read(`/webapps/${webapp_id}/`)
+          const response = await backend.get(`/webapps/${webapp_id}/`)
           context.commit('push_webapp', response.data)
         }
       },
@@ -79,15 +79,17 @@ const users_container = {
         const group_ids = context.getters['get_group_ids']
         console.log('GROUP IDS', group_ids)
         for (const group_id of group_ids) {
-          const response = await backend.read(`/groups/${group_id}/`)
+          const response = await backend.get(`/groups/${group_id}/`)
           console.log('GROUP RESPONSE', response)
           context.commit('push_group', response.data)
         }
       },
       async update_user (context, payload) {
-        const response = await backend.update(`/users/${context.state.user_id}/`, payload)
+        const response = await backend.put(`/users/${context.state.user_id}/`, payload)
         context.commit('set_details', response.data)
-        return response
+      },
+      log_out () {
+        backend.post('/logout/')
       },
       async switch_dark_mode (context) {
         context.commit('set_dark_mode')

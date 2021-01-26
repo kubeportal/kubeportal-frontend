@@ -23,7 +23,7 @@ const api_container = {
 
     actions: {
       async get_basic_api_information (context) {
-        let response = await backend.read('/api/')
+        let response = await backend.get('/api/')
         context.commit('set_csrf_token', response.data['csrf_token'])
         context.commit('set_api_version', response.data['default_api_version'])
       }

@@ -86,17 +86,17 @@ export default {
       this.$vuetify.theme.dark = await this.$store.dispatch('users/switch_dark_mode')
     },
     logout () {
+      this.$store.dispatch('users/log_out')
       this.$store.commit('users/set_user_id', null)
       this.$store.commit('users/set_details', {})
       this.$store.commit('users/set_webapps', [])
       this.$store.commit('infos/set_cluster_info', [])
       this.$store.commit('api/set_csrf_token', '')
       this.$store.commit('users/set_access_token', '')
-
       this.$router.push({ name: 'Home' })
     },
     open_admin () {
-      window.open('https://cluster.datexis.com/admin/', '_blank')
+      window.open(`${process.env['VUE_APP_BASE_URL']}/admin/`, '_blank')
     },
     push_route (name) {
       if (this.$route.name !== name) {
