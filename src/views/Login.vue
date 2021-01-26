@@ -33,7 +33,7 @@
 
 <script>
 import to from 'await-to-js'
-import * as backend from '@/api/backend'
+import * as backend from '@/utils/backend'
 import RequestSpinner from '../components/RequestSpinner'
 export default {
   name: 'Login',
@@ -54,7 +54,7 @@ export default {
       const response = await this.$store.dispatch('users/post_login_data', request_body)
       console.log(response)
 
-      await this.handle_login_response(response)
+      this.handle_login_response(response)
     },
     async signInWithGoogle () {
       let error, googleUser
@@ -68,7 +68,7 @@ export default {
       console.log('getAuthResponse', this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse())
       this.isSignedIn = this.$gAuth.isAuthorized
       const response = await this.$store.dispatch('users/authorize_google_user', auth_response)
-      await this.handle_login_response(response)
+      this.handle_login_response(response)
     },
     async handle_login_response (response) {
       console.log(response)
