@@ -55,7 +55,7 @@ const users_container = {
         if (response) {
           console.log('POST LOGIN DATA', response.data)
           context.commit('set_user_id', response.data['user_id'])
-          context.commit('set_namespace', response.data['namespace'])
+          context.commit('set_namespace', response.data['k8s_namespace'])
           context.commit('set_access_token', response.data['access_token'])
           context.commit('set_group_ids', response.data['group_ids'])
         }
@@ -69,18 +69,19 @@ const users_container = {
       },
       async request_webapps (context) {
         const current_user = context.getters['get_details']
-        console.log('WEBAPP IDS', current_user['webapp_ids'])
         for (const webapp_id of current_user['webapp_ids']) {
           const response = await backend.get(`/webapps/${webapp_id}/`)
+          let res_data = response.data
+          if (res_data.link_url.includes('{{namespace}}')) {
+            res_data.link_url = res_data.link_url.replace('{{namespace}}', context.getters['get_namespace'])
+          }
           context.commit('push_webapp', response.data)
         }
       },
       async request_groups (context) {
         const group_ids = context.getters['get_group_ids']
-        console.log('GROUP IDS', group_ids)
         for (const group_id of group_ids) {
           const response = await backend.get(`/groups/${group_id}/`)
-          console.log('GROUP RESPONSE', response)
           context.commit('push_group', response.data)
         }
       },
