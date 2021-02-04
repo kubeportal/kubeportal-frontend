@@ -1,9 +1,56 @@
 <template>
-  <div>
-    <v-card>
-      <DataHolder :pods_data="pods_data" :deployment_data="deployment_data" />
-    </v-card>
-    <v-card class="form">
+  <v-card>
+    <div>
+    <v-tabs
+      fixed-tabs
+      >
+      <v-tab>
+        <v-icon>mdi-transit-connection</v-icon>
+        Services
+      </v-tab>
+      <v-tab>
+        <v-icon>mdi-lan-pending</v-icon>
+        Ingresses
+      </v-tab>
+
+      <v-tab-item>
+        <v-data-table
+          :headers="services_headers"
+          :items="services_data"
+          :items-per-page="5"
+          class="elevation-1"
+          :search="search_services"
+        >
+          <template v-slot:top>
+            <v-text-field
+              v-model="search_services"
+              label="Search"
+              class="mx-4"
+            ></v-text-field>
+          </template>
+        </v-data-table>
+      </v-tab-item>
+      <v-tab-item>
+        <v-data-table
+          :headers="ingresses_headers"
+          :items="ingresses_data"
+          :items-per-page="5"
+          class="elevation-1"
+          :search="search_ingresses"
+        >
+          <template v-slot:top>
+            <v-text-field
+              v-model="search_ingresses"
+              label="Search"
+              class="mx-4"
+            ></v-text-field>
+          </template>
+        </v-data-table>
+      </v-tab-item>
+    </v-tabs>
+  </div>
+  </v-card>
+  <!-- <v-card class="form">
       <v-card-title>
         Create Service
       </v-card-title>
@@ -53,8 +100,7 @@
           Submit
         </v-btn>
       </v-form>
-    </v-card>
-  </div>
+    </v-card> -->
 </template>
 
 <script>
@@ -67,10 +113,38 @@ export default {
   components: { TopBar, DataHolder },
   data () {
     return {
+      services_data: [],
+      ingresses_data: [],
+      search_services: '',
+      search_ingresses: '',
+      services_headers: [{
+        text: 'Name', algin:'start', sortable: false, value:'name'
+      },
+      {
+        text: 'Type', value: 'type'
+      },
+      {
+        text: 'Selector', value: 'selector'
+      },
+      {
+        text: 'Ports', value: 'ports'
+      }],
+      ingresses_headers: [{
+        text: 'Name', algin:'start', sortable: false, value:'name'
+      },
+      {
+        text: 'TLS', value: 'tls'
+      },
+      {
+        text: 'Domain', value: 'domain'
+      },
+      {
+        text: 'Routes', value: 'routes'
+      }],
       name: '',
       name_rules: [
-        v => !!v || 'Name is required',
-        v => (v && v.length <= 25) || 'Name must be less than 25 characters'
+        (v) => !!v || 'Name is required',
+        (v) => (v && v.length <= 25) || 'Name must be less than 25 characters'
       ],
       type: '',
       type_items: ['NodePort', 'CluserIP', 'LoadBalancer'],
@@ -80,42 +154,6 @@ export default {
       port: null
     }
   },
-  computed: {
-    pods_data () {
-      return [{
-        name: 'Pod1',
-        status: 'running',
-        cpu_usage: '99%'
-      },
-      {
-        name: 'Pod2',
-        status: 'sleeping',
-        cpu_usage: '1%'
-      },
-      {
-        name: 'not a pod',
-        status: 'not running',
-        cpu_usage: '110%'
-      }]
-    },
-    deployment_data () {
-      return [{
-        name: 'deployment',
-        status: 'running',
-        cpu_usage: '99%'
-      },
-      {
-        name: 'deployment2',
-        status: 'sleeping',
-        cpu_usage: '1%'
-      },
-      {
-        name: 'not a deployment',
-        status: 'not running',
-        cpu_usage: '110%'
-      }]
-    }
-  },
   methods: {
     async post_service (e) {
       e.preventDefault()
@@ -123,7 +161,7 @@ export default {
       let response = await backend.post('services/default/', {
         name: this.name,
         type: this.type,
-        selector : {
+        selector: {
           app: this.app
         },
         ports: [
@@ -135,22 +173,63 @@ export default {
       })
       console.log('POST SERVICE', response)
     },
-    async request_services () {
+    async get_services () {
       let response = await backend.get('services/default/')
-      console.log('GET SERVICES', response)
+      console.log('GET SERVICES', response.data)
+      let services = []
+      for (const service of response.data) {
+        let data = {}
+        data['name'] = service.name
+        data['type'] = service.type
+        let selectors = []
+        for (let key in service.selector) {
+          selectors.push(`${key}:${service.selector[key]}`)
+        }
+        data['selector'] = selectors.join('\n')
+        let ports = []
+        for (const port_data of service.ports) {
+          ports.push(`${port_data['protocol']}:${port_data['port']}`)
+        }
+        data['ports'] = ports.join('\n')
+        services.push(data)
+      }
+      this.services_data = services
+    },
+    async get_ingresses () {
+      let response = await backend.get('ingresses/default/')
+      console.log('GET INGRESSES', response.data)
+      let ingresses = []
+      for (const ingress of response.data) {
+        let data = {}
+        data['name'] = ingress.name
+        data['tls'] = ingress.tls
+        let domains = []
+        let routes = []
+        for (let key in ingress.rules) {
+          domains.push(key)
+          for (let rule_data in ingress.rules[key]) {
+            let tmp = ingress.rules[key][rule_data]
+            routes.push(`${rule_data}/${tmp['service_name']}:${tmp['service_port']}`)
+          }
+        }
+        data['domains'] = domains.join('\n')
+        data['routes'] = routes
+        ingresses.push(data)
+      }
+      this.ingresses_data = ingresses
     }
   },
   mounted () {
-    this.request_services()
+    this.get_services()
+    this.get_ingresses()
   }
 }
 </script>
 
 <style scoped>
-  .form {
-    width: 50%;
-    margin: 1em auto;
-    padding: 1em;
-  }
-
+.form {
+  width: 50%;
+  margin: 1em auto;
+  padding: 1em;
+}
 </style>
