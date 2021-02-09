@@ -29,6 +29,18 @@
           </v-data-table>
         </v-tab-item>
         <v-tab-item>
+          <div>
+            <v-btn
+              color="green"
+              dark
+              icon
+              @click="overlay = true"
+              x-large
+            >
+            <v-icon>mdi-plus-circle</v-icon>
+          </v-btn>
+            <DeploymentModal @close="overlay = false" :overlay="overlay" />
+          </div>
           <v-data-table
             :headers="deployment_headers"
             :items="deployment_data"
@@ -52,15 +64,16 @@
 
 <script>
 import TopBar from '@/components/TopBar'
-import DataHolder from '@/components/DataHolder'
 import * as backend from '@/utils/backend'
+import DeploymentModal from './DeploymentModal'
 import moment from 'moment'
 
 export default {
   name: 'Container',
-  components: { TopBar, DataHolder },
+  components: { TopBar, DeploymentModal },
   data () {
     return {
+      overlay: false,
       pods_data: [],
       deployment_data: [],
       search_pods: '',
@@ -122,7 +135,9 @@ export default {
       for (const deployment of response.data) {
         let data = {}
         data['name'] = deployment.name
-        data['creation_timestamp'] = moment(deployment.creation_timestamp).format('MMM DD hh:mm:ss')
+        data['creation_timestamp'] = moment(
+          deployment.creation_timestamp
+        ).format('MMM DD hh:mm:ss')
         data['replicas'] = deployment.replicas
         deployments.push(data)
       }
