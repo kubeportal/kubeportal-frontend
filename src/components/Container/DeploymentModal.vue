@@ -32,7 +32,7 @@
 import * as backend from '@/utils/backend'
 export default {
   name: 'DeploymentModal',
-  props: { overlay: Boolean },
+  props: { overlay: Boolean, namespace: String },
   data () {
     return {
       name: '',
@@ -43,7 +43,7 @@ export default {
     async post_deployment (e) {
       e.preventDefault()
       console.log(this.name, this.replicas)
-      let response = await backend.post('deployments/default/', {
+      let response = await backend.post(`deployments/${this.namespace}/`, {
         name: this.name,
         replicas: this.replicas
       })

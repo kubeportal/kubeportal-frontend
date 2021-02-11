@@ -39,7 +39,7 @@
             >
             <v-icon>mdi-plus-circle</v-icon>
           </v-btn>
-            <DeploymentModal @close="overlay = false" :overlay="overlay" />
+            <DeploymentModal @close="overlay = false" :overlay="overlay" :namespace="namespace" />
           </div>
           <v-data-table
             :headers="deployment_headers"
@@ -71,6 +71,11 @@ import moment from 'moment'
 export default {
   name: 'Container',
   components: { TopBar, DeploymentModal },
+  computed: {
+    namespace () {
+      return this.$store.getters['users/get_namespace']
+    }
+  },
   data () {
     return {
       overlay: false,
@@ -114,7 +119,7 @@ export default {
   },
   methods: {
     async get_pods () {
-      let response = await backend.get('pods/default/')
+      let response = await backend.get(`pods/${this.namespace}/`)
       console.log('PODS', response)
       let pods = []
       for (const pod of response.data) {
@@ -129,7 +134,7 @@ export default {
       this.pods_data = pods
     },
     async get_deployments () {
-      let response = await backend.get('deployments/default/')
+      let response = await backend.get(`deployments/${this.namespace}/`)
       console.log('DEPLOYMENTS', response)
       let deployments = []
       for (const deployment of response.data) {

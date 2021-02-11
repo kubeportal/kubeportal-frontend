@@ -16,7 +16,7 @@
             <v-btn color="green" dark icon @click="overlay = true" x-large>
               <v-icon>mdi-plus-circle</v-icon>
             </v-btn>
-            <ServiceModal @close="overlay = false" :overlay="overlay" />
+            <ServiceModal @close="overlay = false" :overlay="overlay" :namespace="namespace" />
           </div>
           <v-data-table
             :headers="services_headers"
@@ -64,6 +64,11 @@ import * as backend from '@/utils/backend'
 export default {
   name: 'Network',
   components: { TopBar, ServiceModal },
+  computed: {
+    namespace () {
+      return this.$store.getters['users/get_namespace']
+    }
+  },
   data () {
     return {
       overlay: false,
@@ -115,7 +120,7 @@ export default {
   },
   methods: {
     async get_services () {
-      let response = await backend.get('services/default/')
+      let response = await backend.get(`services/${this.namespace}/`)
       console.log('GET SERVICES', response.data)
       let services = []
       for (const service of response.data) {
@@ -137,7 +142,7 @@ export default {
       this.services_data = services
     },
     async get_ingresses () {
-      let response = await backend.get('ingresses/default/')
+      let response = await backend.get(`ingresses/${this.namespace}/`)
       console.log('GET INGRESSES', response.data)
       let ingresses = []
       for (const ingress of response.data) {
