@@ -2,6 +2,8 @@ import axios from 'axios'
 import to from 'await-to-js'
 import store from '../store/store.js'
 
+const defaultUrl = 'https://cluster.datexis.com'
+
 function canReadURLFromEnv () {
   return !!process.env['VUE_APP_BASE_URL']
 }
@@ -17,7 +19,6 @@ function _set_header () {
 }
 
 export function setBaseURLWithDefaultOrEnvValue () {
-  const defaultUrl = 'https://cluster.datexis.com'
   const baseUrl = process.env['VUE_APP_BASE_URL'] ? process.env['VUE_APP_BASE_URL'] : defaultUrl
   // const API_VERSION = store.getters['api/get_api_version']
   const API_VERSION = 'v1.4.0'
@@ -36,10 +37,17 @@ let config = {
 const axiosInstance = axios.create(config)
 
 export async function read (relative_path) {
-  _set_header()
-  let [error, response] = await to(axiosInstance.get(relative_path))
-  response === undefined ? console.log(error.message) : console.log(response)
-  return response
+  if(relative_path === '/api/') {
+    let baseURL = canReadURLFromEnv() ? process.env['VUE_APP_BASE_URL'] : defaultUrl
+    let [error, response] = await to(axios.get(baseURL + relative_path))
+    response === undefined ? console.log(error.message) : console.log(response)
+    return response
+  } else {
+    _set_header()
+    let [error, response] = await to(axiosInstance.get(relative_path))
+    response === undefined ? console.log(error.message) : console.log(response)
+    return response
+  }
 }
 
 export async function create (relative_path, payload) {

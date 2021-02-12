@@ -52,8 +52,6 @@ export default {
       this.loading = true
       const request_body = { username: this.username, password: this.password }
       const response = await this.$store.dispatch('users/post_login_data', request_body)
-      console.log(response)
-
       this.handle_login_response(response)
     },
     async signInWithGoogle () {
@@ -75,7 +73,6 @@ export default {
       if(response === undefined) {
         this.loading = false
         this.is_authenticated = 'false'
-        // await this.$router.push({ name: 'Home' })
       } else if (response.status === 200) {
         this.$store.commit('users/set_is_authenticated', 'true')
         this.$store.dispatch('users/get_user_details', response.data['id'])

@@ -4,6 +4,8 @@ import Home from '../views/Home.vue'
 import Kubeportal from '../views/Kubeportal.vue'
 import Login from '../views/Login.vue'
 import Settings from '../views/Settings'
+import users_container from "@/store/users";
+import store from "@/store/store";
 
 Vue.use(Router)
 
@@ -14,22 +16,34 @@ const router = new Router({
       name: 'Home',
       path: '/',
       redirect: '/login',
-      component: Home
+      component: Home,
+      meta: {
+        requiresAuth: false
+      }
     },
     {
       name: 'Kubeportal',
       path: '/kubeportal',
-      component: Kubeportal
+      component: Kubeportal,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       name: 'Login',
       path: '/login',
-      component: Login
+      component: Login,
+      meta: {
+        requiresAuth: false
+      }
     },
     {
       name: 'Settings',
       path: '/kubeportal/settings',
-      component: Settings
+      component: Settings,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       name: 'invalidUrl',
@@ -38,6 +52,20 @@ const router = new Router({
       component: Login
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(route => route.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!store.getters['users/get_is_authenticated']) {
+      next({ name: 'Login' })
+    } else {
+      next() // go to wherever I'm going
+    }
+  } else {
+    next() // does not require auth, make sure to always call next()!
+  }
 })
 
 export default router
