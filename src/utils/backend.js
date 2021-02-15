@@ -2,7 +2,8 @@ import axios from 'axios'
 import to from 'await-to-js'
 import store from '../store/store.js'
 
-function _check_header () {
+function _set_header () {
+
   console.log('HEADER', axiosInstance.defaults.headers)
   if (!axiosInstance.defaults.headers['authorization'] || !axiosInstance.defaults.headers['X-CSRFToken']) {
     let token = store.getters['users/get_access_token']
@@ -30,10 +31,9 @@ let config = {
 }
 
 const axiosInstance = axios.create(config)
-// const precall = axios.create(config) // only used for the initial request
 
 export async function get (relative_path) {
-  _check_header()
+  /*
   if(relative_path === '/api/') {
     const defaultUrl = 'https://cluster.datexis.com'
     let baseURL = process.env['VUE_APP_BASE_URL'] ? process.env['VUE_APP_BASE_URL'] : defaultUrl
@@ -42,20 +42,26 @@ export async function get (relative_path) {
     response === undefined ? console.log(error.message) : console.log(response)
     return response
   }
+  */
+  _set_header()
   let [error, response] = await to(axiosInstance.get(relative_path))
   response === undefined ? console.log(error.message) : console.log(response)
   return response
 }
 
+
 export async function post (relative_path, payload) {
-  _check_header()
+  _set_header()
+  if (relative_path === '/login/') {
+    axiosInstance.defaults.headers['authorization'] = undefined
+  }
   let [error, response] = await to(axiosInstance.post(relative_path, payload))
   response === undefined ? console.log(error.message) : console.log(response)
   return response
 }
 
 export async function put (relative_path, payload) {
-  _check_header()
+  _set_header()
   let [error, response] = await to(axiosInstance.put(relative_path, payload))
   response === undefined ? console.log(error.message) : console.log(response)
   return response
