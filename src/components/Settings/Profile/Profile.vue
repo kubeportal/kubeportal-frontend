@@ -25,7 +25,6 @@
         </v-col>
         <v-col>
           <v-select
-            class="w-75"
             dense
             solo
             :items="current_user['all_emails']"
@@ -38,26 +37,24 @@
         <v-col> Namespaces shown </v-col>
         <v-col>
           <!-- <v-checkbox v-for="(namespace, i) in [current_user['k8s_namespace']]" color="green" :key=i :label="namespace" :value="namespace" v-model="selected_namespace"></v-checkbox> -->
-          <!-- TODO -->
-          <!-- Instead use: -->
-          <!-- https://vuetifyjs.com/en/components/selects/#selection -->
           <v-select
+            dense
+            solo
             v-model="selected_namespace"
             :items="[current_user['k8s_namespace']]"
-            :menu-props="{ maxHeight: '400' }"
+            :label="current_user['k8s_namespace']"
             multiple
-            persistent-hint
           ></v-select>
         </v-col>
       </v-row>
       <v-row>
         <v-spacer />
-        <v-col sm="1">
+        <v-col sm="2">
           <v-btn class="btn" color="#9f3838" @click="cancel"
             >cancel</v-btn
           ></v-col
         >
-        <v-col sm="1">
+        <v-col sm="2">
           <v-btn class="btn" color="#689F38" type="submit">save</v-btn></v-col
         >
       </v-row>
@@ -75,21 +72,43 @@ export default {
     }
   },
   computed: {
-    current_user () { return this.$store.getters['users/get_user_details'] },
-    user_groups () { return this.$store.getters['users/get_user_groups'] }
+    current_user () { return this.$store.getters['users/get_details'] },
+    user_groups () { return this.$store.getters['users/get_groups'] }
   },
   methods: {
     cancel () {
       this.$router.push({ name: 'Kubeportal' })
     },
+    request_groups () {
+      if (this.user_groups.length === 0) {
+        this.$store.dispatch('users/request_groups')
+      }
+    },
     user_form (e) {
       e.preventDefault()
-      console.log(this.selected_namespace)
-      console.log(this.selected_email)
+      const data = {
+        firstname: this.current_user['firstname'],
+        name: this.current_user['name']
+      }
+      if (this.selected_namespace.length !== 0) {
+        console.log('NAMESPACE', this.selected_namespace)
+        data['k8s_namespace'] = this.selected_namespace[0]
+      }
+      if (this.selected_email) {
+        console.log('EMAIL', this.selected_email)
+        data['primary_email'] = this.selected_email
+      }
+      this.$store.dispatch('users/update_user', data)
     }
+  },
+  mounted () {
+    this.request_groups()
   }
 }
 </script>
 
-<style>
+<style scoped >
+  .btn{
+    color: floralwhite;
+  }
 </style>

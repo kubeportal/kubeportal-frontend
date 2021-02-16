@@ -34,7 +34,7 @@ export default {
   components: { RequestSpinner },
   computed: {
     webapps () {
-      return this.$store.getters['users/get_user_webapps']
+      return this.$store.getters['users/get_webapps']
     }
   },
   methods: {

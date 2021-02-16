@@ -17,9 +17,9 @@
         </template>
 
         <v-list flat>
-          <v-subheader>Signed in as: {{user_firstname}}</v-subheader>
+          <v-subheader>Signed in as: {{current_user['username']}}</v-subheader>
 
-          <v-list-item @click="push_route('Kubeportal')">
+          <v-list-item @click="push_route('Kubeportal')" class="listItem">
               <v-list-item-icon>
                 <v-icon>mdi-view-dashboard-variant</v-icon>
               </v-list-item-icon>
@@ -29,8 +29,7 @@
               </v-list-item-content>
             </v-list-item>
 
-          <v-list-item-group>
-            <v-list-item @click="push_route('Settings')">
+            <v-list-item @click="push_route('Settings')" class="listItem">
               <v-list-item-icon>
                 <v-icon>mdi-account</v-icon>
               </v-list-item-icon>
@@ -39,7 +38,7 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item @click="switch_dark_mode">
+            <v-list-item @click="switch_dark_mode" class="listItem">
               <v-list-item-icon>
                 <v-icon>mdi-brightness-6</v-icon>
               </v-list-item-icon>
@@ -49,7 +48,7 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item  v-if="user_is_admin" @click="open_admin">
+            <v-list-item  v-if="current_user['admin']" @click="open_admin" class="listItem">
               <v-list-item-icon>
                 <v-icon>mdi-tools</v-icon>
               </v-list-item-icon>
@@ -58,7 +57,7 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item @click="logout">
+            <v-list-item @click="logout" class="listItem">
               <v-list-item-icon>
                 <v-icon>mdi-logout-variant</v-icon>
               </v-list-item-icon>
@@ -67,7 +66,6 @@
               </v-list-item-content>
             </v-list-item>
 
-          </v-list-item-group>
         </v-list>
       </v-menu>
     </div>
@@ -78,15 +76,9 @@
 export default {
   name: 'TopBar',
   props: ['title'],
-  data () {
-    return {
-      user_firstname: this.$store.getters['users/get_user_firstname']
-    }
-  },
   computed: {
-    user_is_admin () {
-      let current_user = this.$store.getters['users/get_user_details']
-      return current_user['admin']
+    current_user () {
+      return this.$store.getters['users/get_details']
     }
   },
   methods: {
@@ -94,19 +86,17 @@ export default {
       this.$vuetify.theme.dark = await this.$store.dispatch('users/switch_dark_mode')
     },
     logout () {
+      this.$store.dispatch('users/log_out')
       this.$store.commit('users/set_user_id', null)
-      this.$store.commit('users/set_user_firstname', '')
-      this.$store.commit('users/set_is_authenticated', '')
-      this.$store.commit('users/set_user_details', {})
-      this.$store.commit('users/set_user_webapps', [])
+      this.$store.commit('users/set_details', {})
+      this.$store.commit('users/set_webapps', [])
       this.$store.commit('infos/set_cluster_info', [])
       this.$store.commit('api/set_csrf_token', '')
-      this.$store.commit('api/set_access_token', '')
-
+      this.$store.commit('users/set_access_token', '')
       this.$router.push({ name: 'Home' })
     },
     open_admin () {
-      window.open('https://cluster.datexis.com/admin/', '_blank')
+      window.open(`${process.env['VUE_APP_BASE_URL']}/admin/`, '_blank')
     },
     push_route (name) {
       if (this.$route.name !== name) {
@@ -120,6 +110,10 @@ export default {
 <style scoped>
   .topBar {
     max-width: 100vw;
+  }
+
+  .listItem {
+    margin-right: 1em;
   }
 
 </style>

@@ -13,7 +13,7 @@
               <v-icon class="icon">mdi-view-dashboard-variant</v-icon>
             </v-col>
             <v-col sm="10">
-              <div class="title"><small>Data Science Cluster</small></div>
+              <div class="title"><small>{{cluster_name}}</small></div>
             </v-col>
           </v-row>
         </div>
@@ -55,6 +55,9 @@ export default {
       if (this.$route.name !== 'Kubeportal') {
         this.$router.push({ name: 'Kubeportal' })
       }
+    },
+    request_cluster_name () {
+      this.$store.dispatch('infos/request_cluster_name')
     }
   },
   components: { showAt, Node },
@@ -62,10 +65,14 @@ export default {
   computed: {
     filtered_tabs () {
       return this.tabs.filter((tab) => tab.has_access)
+    },
+    cluster_name () {
+      return this.$store.getters['infos/get_cluster_name']
     }
   },
   created () {
     this.$vuetify.theme.dark = this.$store.getters['users/get_dark_mode']
+    if (this.cluster_name === '') this.request_cluster_name()
   }
 }
 </script>

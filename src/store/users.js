@@ -7,69 +7,90 @@ const users_container = {
     namespaced: true,
 
     state: {
+      access_token: '',
       user_id: null,
-      user_firstname: '',
-      is_authenticated: '',
-      user_details: {},
-      user_webapps: [],
-      user_groups: [],
+      namespace: '',
+      group_ids: [],
+      details: {
+        webapp_ids: []
+      },
+      webapps: [],
+      groups: [],
       dark_mode: false
     },
 
     getters: {
-      get_user_details (state) { return state.user_details },
+      get_access_token (state) { return state.access_token },
       get_user_id (state) { return state.user_id },
-      get_user_firstname (state) { return state.user_firstname },
-      get_user_webapps (state) { return state.user_webapps },
-      get_is_authenticated (state) { return state.is_authenticated },
-      get_user_groups (state) { return state.user_groups },
+      get_namespace (state) { return state.namespace },
+      get_details (state) { return state.details },
+      get_webapps (state) { return state.webapps },
+      get_group_ids (state) { return state.group_ids },
+      get_groups (state) { return state.groups },
       get_dark_mode (state) { return state.dark_mode }
     },
 
     mutations: {
+      set_access_token (state, token) { state.access_token = token },
       set_user_id (state, id) { state.user_id = id },
-      set_user_firstname (state, name) { state.user_firstname = name },
-      set_user_details (state, user_details) { state.user_details = user_details },
-      set_user_webapps (state, webapps) { state.user_webapps = webapps },
-      set_is_authenticated (state, is_authenticated) { state.is_authenticated = is_authenticated },
+      set_group_ids (state, group_ids) { state.group_ids = group_ids },
+      set_namespace (state, namespace) { state.namespace = namespace },
+      set_details (state, details) { state.details = details },
+      push_webapp (state, webapp) { state.webapps.push(webapp) },
+      push_group (state, group) { state.groups.push(group) },
+      set_webapps (state, webapps) { state.webapps = webapps },
       set_dark_mode (state) { state.dark_mode = !state.dark_mode },
-      set_user_groups (state, user_groups) { state.user_groups = user_groups }
+      set_groups (state, groups) { state.groups = groups }
     },
 
     actions: {
-      async get_user_details (context, id) {
-        const response = await backend.read(`/users/${id}/`)
-        response !== undefined ? context.commit('set_user_details', response.data) : console.log('login failed')
+      async get_details (context) {
+        const response = await backend.get(`/users/${context.state.user_id}/`)
+        console.log('USER DETAILS', response.data)
+        response !== undefined ? context.commit('set_details', response.data) : console.log('login failed')
         return response
       },
       async post_login_data (context, request_body) {
-        const response = await backend.create('/login/', request_body)
+        const response = await backend.post('/login/', request_body)
         if (response) {
-          context.commit('set_user_id', response.data['id'])
-          context.commit('set_user_firstname', response.data['firstname'])
-          store.commit('api/set_access_token', response.data['access_token'])
+          console.log('POST LOGIN DATA', response.data)
+          context.commit('set_user_id', response.data['user_id'])
+          context.commit('set_namespace', response.data['k8s_namespace'])
+          context.commit('set_access_token', response.data['access_token'])
+          context.commit('set_group_ids', response.data['group_ids'])
         }
         return response
       },
+
       async authorize_google_user (context, auth_response) {
-        const response = await backend.create('/google_login/', auth_response)
+        const response = await backend.post('/google_login/', auth_response)
         // @ TODO
         return response
       },
-      async request_user_webapps (context) {
-        const response = await backend.read(`/users/${context.state.user_id}/webapps/`)
-        response !== undefined ? context.commit('set_user_webapps', response.data) : console.log('no webapps found')
-        return response
+      async request_webapps (context) {
+        const current_user = context.getters['get_details']
+        for (const webapp_id of current_user['webapp_ids']) {
+          const response = await backend.get(`/webapps/${webapp_id}/`)
+          let res_data = response.data
+          if (res_data.link_url.includes('{{namespace}}')) {
+            res_data.link_url = res_data.link_url.replace('{{namespace}}', context.getters['get_namespace'])
+          }
+          context.commit('push_webapp', response.data)
+        }
       },
-      async get_user_groups (context) {
-        const response = await backend.read(`/users/${context.state.user_id}/groups/`)
-        context.commit('set_user_groups', response.data)
-        return response
+      async request_groups (context) {
+        const group_ids = context.getters['get_group_ids']
+        for (const group_id of group_ids) {
+          const response = await backend.get(`/groups/${group_id}/`)
+          context.commit('push_group', response.data)
+        }
       },
       async update_user (context, payload) {
-        const response = await backend.update(`/users/${context.state.user_id}/`, payload)
-        context.commit('set_user_details', response.data)
-        return response
+        const response = await backend.put(`/users/${context.state.user_id}/`, payload)
+        context.commit('set_details', response.data)
+      },
+      log_out () {
+        backend.post('/logout/')
       },
       async switch_dark_mode (context) {
         context.commit('set_dark_mode')
