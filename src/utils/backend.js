@@ -3,7 +3,6 @@ import to from 'await-to-js'
 import store from '../store/store.js'
 
 function _set_header () {
-
   console.log('HEADER', axiosInstance.defaults.headers)
   if (!axiosInstance.defaults.headers['authorization'] || !axiosInstance.defaults.headers['X-CSRFToken']) {
     let token = store.getters['users/get_access_token']
@@ -33,7 +32,6 @@ let config = {
 const axiosInstance = axios.create(config)
 
 export async function get (relative_path) {
-  /*
   if(relative_path === '/api/') {
     const defaultUrl = 'https://cluster.datexis.com'
     let baseURL = process.env['VUE_APP_BASE_URL'] ? process.env['VUE_APP_BASE_URL'] : defaultUrl
@@ -42,13 +40,11 @@ export async function get (relative_path) {
     response === undefined ? console.log(error.message) : console.log(response)
     return response
   }
-  */
   _set_header()
   let [error, response] = await to(axiosInstance.get(relative_path))
   response === undefined ? console.log(error.message) : console.log(response)
   return response
 }
-
 
 export async function post (relative_path, payload) {
   _set_header()
