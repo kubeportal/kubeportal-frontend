@@ -67,7 +67,7 @@ export default {
     async post_service (e) {
       e.preventDefault()
       console.log(this.name, this.type, this.app, this.protocol, this.port)
-      let response = await backend.post(`services/${this.namespace}/`, {
+      let response = await backend.post(`/services/${this.namespace}/`, {
         name: this.name,
         type: this.type,
         selector: {

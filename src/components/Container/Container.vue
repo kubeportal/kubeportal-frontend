@@ -119,7 +119,7 @@ export default {
   },
   methods: {
     async get_pods () {
-      let response = await backend.get(`pods/${this.namespace}/`)
+      let response = await backend.get(`/pods/${this.namespace}/`)
       console.log('PODS', response)
       let pods = []
       for (const pod of response.data) {
@@ -134,7 +134,7 @@ export default {
       this.pods_data = pods
     },
     async get_deployments () {
-      let response = await backend.get(`deployments/${this.namespace}/`)
+      let response = await backend.get(`/deployments/${this.namespace}/`)
       console.log('DEPLOYMENTS', response)
       let deployments = []
       for (const deployment of response.data) {

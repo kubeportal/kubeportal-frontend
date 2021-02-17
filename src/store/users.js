@@ -86,7 +86,7 @@ const users_container = {
         }
       },
       async update_user (context, payload) {
-        const response = await backend.put(`/users/${context.state.user_id}/`, payload)
+        const response = await backend.patch(`/users/${context.state.user_id}/`, payload)
         context.commit('set_details', response.data)
       },
       log_out () {
