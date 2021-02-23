@@ -1,5 +1,8 @@
 <template>
   <v-card>
+    <v-card-text>
+        current namespace: {{ namespace }}
+    </v-card-text>
     <div>
       <v-tabs fixed-tabs>
         <v-tab>
