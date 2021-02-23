@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     async get_services () {
-      let response = await backend.get(`services/${this.namespace}/`)
+      let response = await backend.get(`/services/${this.namespace}/`)
       console.log('GET SERVICES', response.data)
       let services = []
       for (const service of response.data) {
@@ -142,7 +142,7 @@ export default {
       this.services_data = services
     },
     async get_ingresses () {
-      let response = await backend.get(`ingresses/${this.namespace}/`)
+      let response = await backend.get(`/ingresses/${this.namespace}/`)
       console.log('GET INGRESSES', response.data)
       let ingresses = []
       for (const ingress of response.data) {

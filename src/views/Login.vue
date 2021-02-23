@@ -56,8 +56,8 @@ export default {
       this.handle_login_response(response)
     },
     async signInWithGoogle () {
-      let [error, googleUser] = await to(this.$gAuth.signIn())
-      if (!googleUser || error) {
+      let googleUser = await this.$gAuth.signIn()
+      if (!googleUser) {
         console.log('google login failed')
         this.is_authenticated = false
         return undefined

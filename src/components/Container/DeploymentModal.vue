@@ -43,7 +43,7 @@ export default {
     async post_deployment (e) {
       e.preventDefault()
       console.log(this.name, this.replicas)
-      let response = await backend.post(`deployments/${this.namespace}/`, {
+      let response = await backend.post(`/deployments/${this.namespace}/`, {
         name: this.name,
         replicas: this.replicas
       })
