@@ -4,8 +4,7 @@ import Home from '../views/Home.vue'
 import Kubeportal from '../views/Kubeportal.vue'
 import Login from '../views/Login.vue'
 import Settings from '../views/Settings'
-import users_container from "@/store/users";
-import store from "@/store/store";
+import store from '@/store/store'
 
 Vue.use(Router)
 
@@ -58,7 +57,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(route => route.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    if (!store.getters['users/get_is_authenticated']) {
+    if (!store.getters['users/get_user_id']) {
       next({ name: 'Login' })
     } else {
       next() // go to wherever I'm going
