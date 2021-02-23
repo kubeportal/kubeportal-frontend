@@ -8,7 +8,7 @@
             <div class="app" :class="{ 'on-hover': hover }" @click="open_link(app.link_url)">
               <v-card class="app-icon" :elevation="hover ? 12 : 2">
                 <v-card-text class="app-icon-text">
-                  <v-icon large color="white">mdi-view-quilt</v-icon>
+                  <v-icon large color="white">{{app_icon(app['category'])}}</v-icon>
                 </v-card-text>
               </v-card>
 
@@ -40,7 +40,19 @@ export default {
   methods: {
     open_link (link) {
       window.open(link, '_blank')
+    },
+    app_icon (category) {
+      switch (category) {
+        case 'GENERIC': return 'mdi-view-quilt'
+        case 'DOCUMENTATION': return 'mdi-text-box-multiple'
+        case 'COMMUNICATION': return 'mdi-comment-account'
+        case 'KUBERNETES': return 'mdi-kubernetes'
+        case 'DEVELOPER': return 'mdi-developer-board'
+        case 'DATABASE': return 'mdi-database'
+        case 'MONITORING': return 'mdi-monitor-share'
+      }
     }
+
   }
 }
 </script>
