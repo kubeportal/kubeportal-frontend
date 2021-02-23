@@ -52,7 +52,6 @@ export default {
       const request_body = { username: this.username, password: this.password }
       const response = await this.$store.dispatch('users/post_login_data', request_body)
       console.log('LOGIN', response)
-
       this.handle_login_response(response)
     },
     async signInWithGoogle () {

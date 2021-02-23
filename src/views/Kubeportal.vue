@@ -5,9 +5,7 @@
 </template>
 
 <script>
-import { showAt } from 'vue-breakpoints'
 import Welcome from '@/components/Welcome/Welcome'
-import TopBar from '@/components/TopBar'
 import Container from '@/components/Container/Container'
 import Storage from '@/components/Storage/Storage'
 import Network from '@/components/Network/Network'
