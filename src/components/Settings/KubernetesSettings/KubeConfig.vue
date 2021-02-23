@@ -12,7 +12,7 @@ export default {
   name: 'KubeConfig',
   computed: {
     current_user () {
-      return this.$store.getters['users/get_user_details']
+      return this.$store.getters['users/get_details']
     },
     yamlfile () {
       let string =

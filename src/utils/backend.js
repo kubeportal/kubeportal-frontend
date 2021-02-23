@@ -1,68 +1,47 @@
 import axios from 'axios'
-import to from 'await-to-js'
 import store from '../store/store.js'
 
-const defaultUrl = 'https://cluster.datexis.com'
-
-function canReadURLFromEnv () {
-  return !!process.env['VUE_APP_BASE_URL']
-}
+let base_url = process.env['VUE_APP_BASE_URL']
 
 function _set_header () {
-  console.log('HEADER', axiosInstance.defaults.headers)
-  if (!axiosInstance.defaults.headers['authorization'] || !axiosInstance.defaults.headers['X-CSRFToken']) {
-    let token = store.getters['api/get_access_token']
+  console.log('HEADER', axios.defaults.headers)
+  if (!axios.defaults.headers['authorization'] || !axios.defaults.headers['X-CSRFToken']) {
+    let token = store.getters['users/get_access_token']
     // eslint-disable-next-line
-    axiosInstance.defaults.headers['authorization'] = !!token ? 'Bearer ' + token : undefined
-    axiosInstance.defaults.headers['X-CSRFToken'] = store.getters['api/get_csrf_token']
+    axios.defaults.headers['authorization'] = !!token ? 'Bearer ' + token : undefined
+    axios.defaults.headers['X-CSRFToken'] = store.getters['api/get_csrf_token']
+    base_url = process.env['VUE_APP_BASE_URL'] + '/api/' + store.getters['api/get_api_version']
+    console.log('BASE_URL_SET_HEADER', base_url)
   }
 }
 
-export function setBaseURLWithDefaultOrEnvValue () {
-  const baseUrl = process.env['VUE_APP_BASE_URL'] ? process.env['VUE_APP_BASE_URL'] : defaultUrl
-  // const API_VERSION = store.getters['api/get_api_version']
-  const API_VERSION = 'v1.4.0'
-  console.log(`BASEURL: ${baseUrl}/api/${API_VERSION}`)
-  return `${baseUrl}/api/${API_VERSION}`
-}
-
-let config = {
-  baseURL: setBaseURLWithDefaultOrEnvValue(),
-  withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json'
-  }
-}
-
-const axiosInstance = axios.create(config)
-
-export async function read (relative_path) {
-  if(relative_path === '/api/') {
-    let baseURL = canReadURLFromEnv() ? process.env['VUE_APP_BASE_URL'] : defaultUrl
-    let [error, response] = await to(axios.get(baseURL + relative_path))
-    response === undefined ? console.log(error.message) : console.log(response)
-    return response
-  } else {
-    _set_header()
-    let [error, response] = await to(axiosInstance.get(relative_path))
-    response === undefined ? console.log(error.message) : console.log(response)
-    return response
-  }
-}
-
-export async function create (relative_path, payload) {
+export async function get (relative_path) {
   _set_header()
-  if (relative_path === '/login/') {
-    axiosInstance.defaults.headers['authorization'] = undefined
+  if (relative_path === '') {
+    let response = await axios.get(process.env['VUE_APP_BASE_URL'] + '/api/')
+    base_url = process.env['VUE_APP_BASE_URL'] + '/api/' + response.data['default_api_version']
+    console.log('GET' + relative_path, response)
+    return response
   }
-  let [error, response] = await to(axiosInstance.post(relative_path, payload))
-  response === undefined ? console.log(error.message) : console.log(response)
+  let response = await axios.get(base_url + relative_path)
+  console.log('GET' + relative_path, response)
   return response
 }
 
-export async function update (relative_path, payload) {
+export async function post (relative_path, payload) {
   _set_header()
-  let [error, response] = await to(axiosInstance.patch(relative_path, payload))
-  response === undefined ? console.log(error.message) : console.log(response)
+  if (relative_path === '/login/') {
+    axios.defaults.headers['authorization'] = undefined
+  }
+  console.log('LOGIN BASE_URL', base_url)
+  let response = await axios.post(base_url + relative_path, payload)
+  console.log('POST' + relative_path, response)
+  return response
+}
+
+export async function patch (relative_path, payload) {
+  _set_header()
+  let response = await axios.patch(base_url + relative_path, payload)
+  console.log('PATCH' + relative_path, response)
   return response
 }

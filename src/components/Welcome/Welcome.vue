@@ -50,10 +50,10 @@ export default {
   },
   methods: {
     async request_webapps () {
-      let apps = this.$store.getters['users/get_user_webapps']
+      let apps = this.$store.getters['users/get_webapps']
 
       if (apps.length === 0) {
-        this.$store.dispatch('users/request_user_webapps')
+        this.$store.dispatch('users/request_webapps')
       }
     }
   },
