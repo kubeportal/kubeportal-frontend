@@ -41,8 +41,8 @@
             dense
             solo
             v-model="selected_namespace"
-            :items="[current_user['k8s_namespace']]"
-            :label="current_user['k8s_namespace']"
+            :items="current_user['k8s_accounts'].map(acc => acc['namespace'])"
+            :label="namespace"
             multiple
           ></v-select>
         </v-col>
@@ -73,7 +73,8 @@ export default {
   },
   computed: {
     current_user () { return this.$store.getters['users/get_details'] },
-    user_groups () { return this.$store.getters['users/get_groups'] }
+    user_groups () { return this.$store.getters['users/get_groups'] },
+    namespace () { return this.$store.getters['users/get_namespace'] }
   },
   methods: {
     cancel () {

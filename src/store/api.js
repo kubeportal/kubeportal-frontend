@@ -26,6 +26,7 @@ const api_container = {
         let response = await backend.get('')
         context.commit('set_csrf_token', response.data['csrf_token'])
         context.commit('set_api_version', response.data['default_api_version'])
+        context.commit('set_portal_version', response.data['portal_version'])
       }
     }
   }
