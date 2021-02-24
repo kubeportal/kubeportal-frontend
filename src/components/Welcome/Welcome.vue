@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="m-4">
     <v-card>
       <WebAppContainer />
     </v-card>
@@ -10,15 +10,18 @@
           <v-list-item-content>
             <v-row>
               <v-col sm=8>
-                <v-icon v-if="item.importance > 0" color="red">mdi-alert-box-outline</v-icon>
-                {{ item.content }}
+                <v-icon v-if="item.priority === 2" color="red">mdi-alert-box-outline</v-icon>
+                <v-icon v-if="item.priority === 1" color="orange">mdi-alert-box-outline</v-icon>
+                {{ item.title }}
               </v-col>
               <v-spacer></v-spacer>
               <v-col sm=2>
-                {{item.by}}
-                {{item.date}}
+                {{item.author}}
+                {{item.created}}
               </v-col>
             </v-row>
+            <hr />
+            <div v-html="item.content" ></div>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -29,23 +32,15 @@
 <script>
 import WebAppContainer from './WebAppContainer'
 import TopBar from '@/components/TopBar'
+import * as backend from '@/utils/backend'
+import moment from 'moment'
 
 export default {
   name: 'Welcome',
   components: { WebAppContainer, TopBar },
-  computed: {
-    news () {
-      return [{
-        by: 'troeger',
-        content: 'I like frontend',
-        importance: 1, //0, 1, 2?,
-        date: '15.12.2020'
-      }, {
-        by: 'xyz',
-        content: 'update on 20.12',
-        importance: 0,
-        date: '15.12.2020'
-      }]
+  data () {
+    return {
+      news: []
     }
   },
   methods: {
@@ -55,10 +50,22 @@ export default {
       if (apps.length === 0) {
         this.$store.dispatch('users/request_webapps')
       }
+    },
+    async request_news () {
+      let response = await backend.get('/news/')
+      console.log('NEWS', response)
+      for(let news of response.data) {
+        let author = await backend.get(`/users/${news['author']}/`)
+        console.log('AUHTOR', author)
+        news['author'] = author.data['name']
+        news['created'] = moment(news['created']).format()
+        this.news.push(news)
+      }
     }
   },
   mounted () {
     this.request_webapps()
+    this.request_news()
   }
 }
 </script>

@@ -1,10 +1,8 @@
 <template>
   <v-card>
-    <v-card-text>
-        current namespace: {{ namespace }}
-    </v-card-text>
+    <v-card-text> current namespace: {{ namespace }} </v-card-text>
     <div>
-     <v-tabs fixed-tabs>
+      <v-tabs fixed-tabs>
         <v-tab>
           <v-icon>mdi-desktop-classic</v-icon>
           Pods
@@ -33,16 +31,14 @@
         </v-tab-item>
         <v-tab-item>
           <div>
-            <v-btn
-              color="green"
-              dark
-              icon
-              @click="overlay = true"
-              x-large
-            >
-            <v-icon>mdi-plus-circle</v-icon>
-          </v-btn>
-            <DeploymentModal @close="overlay = false" :overlay="overlay" :namespace="namespace" />
+            <v-btn color="green" dark icon @click="overlay = true" x-large>
+              <v-icon>mdi-plus-circle</v-icon>
+            </v-btn>
+            <DeploymentModal
+              @close="overlay = false"
+              :overlay="overlay"
+              :namespace="namespace"
+            />
           </div>
           <v-data-table
             :headers="deployment_headers"
@@ -128,9 +124,7 @@ export default {
       for (const pod of response.data) {
         let data = {}
         data['name'] = pod.name
-        data['creation_timestamp'] = moment(pod.creation_timestamp).format(
-          'MMM DD hh:mm:ss'
-        )
+        data['creation_timestamp'] = moment(pod.creation_timestamp).format()
         data['containers'] = pod.containers.map((container) => container.name)
         pods.push(data)
       }
@@ -145,7 +139,7 @@ export default {
         data['name'] = deployment.name
         data['creation_timestamp'] = moment(
           deployment.creation_timestamp
-        ).format('MMM DD hh:mm:ss')
+        ).format()
         data['replicas'] = deployment.replicas
         deployments.push(data)
       }
