@@ -8,6 +8,9 @@ import router from './utils/router'
 import GAuth from 'vue-google-oauth2'
 import VueClipboard from 'vue-clipboard2'
 import '@/assets/css/tailwind.css'
+import moment from 'moment'
+
+moment.defaultFormat = 'MMM DD hh:mm:ss'
 
 const gauthOption = {
   clientId: '516982342717-6ri9qn82ucchr13ftdec279bm2if82n0.apps.googleusercontent.com',

@@ -63,7 +63,7 @@ const users_container = {
       },
 
       async authorize_google_user (context, auth_response) {
-        const response = await backend.post('/google_login/', auth_response)
+        const response = await backend.post('/login_google/', auth_response)
         // @ TODO
         return response
       },

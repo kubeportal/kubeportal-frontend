@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import to from 'await-to-js'
 import RequestSpinner from '../components/RequestSpinner'
 export default {
   name: 'Login',
