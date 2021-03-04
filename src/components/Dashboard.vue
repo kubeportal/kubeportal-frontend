@@ -1,12 +1,14 @@
 <template>
   <v-card>
-    <v-tabs vertical class="sidenav" dark active-class="activeTab">
+    <v-tabs :vertical="desktop" class="sidenav" dark active-class="activeTab">
       <v-img
         src="../assets/mountain.jpeg"
         gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)"
-        width="25vh"
+        width="25em"
         height="100vh"
+        :class="!desktop ? 'mobileImage' : ''"
       >
+      <div v-if="desktop">
         <div class="logo text-center" @click="go_to_dashboard">
           <v-row align="center" >
             <v-col sm="2">
@@ -20,12 +22,13 @@
         <v-container>
           <hr />
         </v-container>
-        <v-tab v-for="tab in filtered_tabs" :key="tab.name">
-          <v-row>
+      </div>
+       <v-tab v-for="tab in filtered_tabs" :key="tab.name">
+          <v-row align="center">
             <v-col sm="2">
               <v-icon class="icon">{{ tab.icon }}</v-icon>
             </v-col>
-            <v-col sm="10">
+            <v-col sm="10" v-if="desktop">
               <div class="title">
                 <small>{{ tab.name }}</small>
               </div>
@@ -50,6 +53,13 @@ import Node from './Node'
 
 export default {
   name: 'Dashboard',
+  components: { showAt, Node },
+  props: ['tabs'],
+  data () {
+    return {
+      width: window.outerWidth
+    }
+  },
   methods: {
     go_to_dashboard () {
       if (this.$route.name !== 'Kubeportal') {
@@ -58,21 +68,29 @@ export default {
     },
     request_cluster_name () {
       this.$store.dispatch('infos/request_cluster_name')
+    },
+    resize (e) {
+      this.width = e.currentTarget.outerWidth
     }
   },
-  components: { showAt, Node },
-  props: ['tabs'],
   computed: {
     filtered_tabs () {
       return this.tabs.filter((tab) => tab.has_access)
     },
     cluster_name () {
       return this.$store.getters['infos/get_cluster_name']
+    },
+    desktop () {
+      return this.width > 900
     }
   },
   created () {
     this.$vuetify.theme.dark = this.$store.getters['users/get_dark_mode']
     if (this.cluster_name === '') this.request_cluster_name()
+    window.addEventListener('resize', this.resize)
+  },
+  destroyed () {
+    window.removeEventListener('resize', this.resize)
   }
 }
 </script>
@@ -87,6 +105,13 @@ export default {
   left: -2px;
   top: -2px;
   min-width: 100px;
+}
+.mobileImage {
+  // display: none;
+  // opacity: 0;
+  img {
+    opacity: 0 !important;
+  }
 }
 
 .activeTab {
