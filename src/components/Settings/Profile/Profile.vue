@@ -72,7 +72,7 @@ export default {
     }
   },
   computed: {
-    current_user () { return this.$store.getters['users/get_details'] },
+    current_user () { return this.$store.getters['users/get_user'] },
     user_groups () { return this.$store.getters['users/get_groups'] },
     namespace () { return this.$store.getters['users/get_namespace'] }
   },

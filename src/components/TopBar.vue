@@ -78,7 +78,7 @@ export default {
   props: ['title'],
   computed: {
     current_user () {
-      return this.$store.getters['users/get_details']
+      return this.$store.getters['users/get_user']
     }
   },
   methods: {
@@ -87,8 +87,7 @@ export default {
     },
     logout () {
       this.$store.dispatch('users/log_out')
-      this.$store.commit('users/set_user_id', null)
-      this.$store.commit('users/set_details', {})
+      this.$store.commit('users/set_user', {})
       this.$store.commit('users/set_webapps', [])
       this.$store.commit('infos/set_cluster_info', [])
       this.$store.commit('api/set_csrf_token', '')
