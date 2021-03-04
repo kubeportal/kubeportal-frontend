@@ -20,24 +20,24 @@ function _set_header () {
     // eslint-disable-next-line
     axiosInstance.defaults.headers['authorization'] = !!token ? 'Bearer ' + token : undefined
     axiosInstance.defaults.headers['X-CSRFToken'] = store.getters['api/get_csrf_token']
-    // base_url = process.env['VUE_APP_BASE_URL'] + '/api/' + store.getters['api/get_api_version']
     console.log('BASE_URL_SET_HEADER', base_url)
   }
 }
 
 export async function get (absolute_url) {
   _set_header()
-  if (absolute_url === '') {
-    axiosInstance.defaults.headers['authorization'] = undefined
-    let response = await axiosInstance.get(process.env['VUE_APP_BASE_URL'] + '/api/' + API_VERSION + '/')
-    axiosInstance.defaults.headers['authorization'] = undefined
-    // base_url = process.env['VUE_APP_BASE_URL'] + '/api/' + response.data['default_api_version']
+  try {
+    if (absolute_url === '') {
+      let response = await axiosInstance.get(process.env['VUE_APP_BASE_URL'] + '/api/' + API_VERSION + '/')
+      console.log('GET' + absolute_url, response)
+      return response
+    }
+    let response = await axiosInstance.get(absolute_url)
     console.log('GET' + absolute_url, response)
     return response
+  } catch {
+    return undefined
   }
-  let response = await axiosInstance.get(absolute_url)
-  console.log('GET' + absolute_url, response)
-  return response
 }
 
 export async function post (absolute_url, payload) {
@@ -45,15 +45,22 @@ export async function post (absolute_url, payload) {
   if (absolute_url.includes('/login/')) {
     axiosInstance.defaults.headers['authorization'] = undefined
   }
-  console.log('LOGIN BASE_URL', base_url)
-  let response = await axiosInstance.post(absolute_url, payload)
-  console.log('POST' + absolute_url, response)
-  return response
+  try {
+    let response = await axiosInstance.post(absolute_url, payload)
+    console.log('POST' + absolute_url, response)
+    return response
+  } catch {
+    return undefined
+  }
 }
 
 export async function patch (absolute_url, payload) {
   _set_header()
-  let response = await axiosInstance.patch(absolute_url, payload)
-  console.log('PATCH' + absolute_url, response)
-  return response
+  try {
+    let response = await axiosInstance.patch(absolute_url, payload)
+    console.log('PATCH' + absolute_url, response)
+    return response
+  } catch {
+    return undefined
+  }
 }

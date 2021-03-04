@@ -27,8 +27,6 @@ const api_container = {
         context.commit('set_csrf_token', response.data['csrf_token'])
         context.commit('set_login_url', response.data['links']['login'])
         context.commit('set_login_google_url', response.data['links']['login_google'])
-        console.log(context.getters['get_login_url'])
-        console.log(context.getters['get_login_google_url'])
       }
     }
   }

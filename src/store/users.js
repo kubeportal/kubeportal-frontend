@@ -10,7 +10,6 @@ const users_container = {
       access_token: '',
       refresh_token: '',
       url: '',
-      namespace: '',
       user: {
         webapp_ids: []
       },
@@ -23,10 +22,8 @@ const users_container = {
       get_access_token (state) { return state.access_token },
       get_refresh_token (state) { return state.refresh_token },
       get_url (state) { return state.url },
-      get_namespace (state) { return state.namespace },
       get_user (state) { return state.user },
       get_webapps (state) { return state.webapps },
-      get_group_ids (state) { return state.group_ids },
       get_groups (state) { return state.groups },
       get_dark_mode (state) { return state.dark_mode }
     },
@@ -35,14 +32,12 @@ const users_container = {
       set_access_token (state, token) { state.access_token = token },
       set_refresh_token (state, token) { state.refresh_token = token },
       set_url (state, url) { state.url = url },
-      set_group_ids (state, group_ids) { state.group_ids = group_ids },
-      set_namespace (state, namespace) { state.namespace = namespace },
       set_user (state, user) { state.user = user },
       push_webapp (state, webapp) { state.webapps.push(webapp) },
       push_group (state, group) { state.groups.push(group) },
       set_webapps (state, webapps) { state.webapps = webapps },
-      set_dark_mode (state) { state.dark_mode = !state.dark_mode },
-      set_groups (state, groups) { state.groups = groups }
+      set_groups (state, groups) { state.groups = groups },
+      set_dark_mode (state) { state.dark_mode = !state.dark_mode }
     },
 
     actions: {
