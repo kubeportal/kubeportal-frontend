@@ -2,46 +2,58 @@ import axios from 'axios'
 import store from '../store/store.js'
 
 let base_url = process.env['VUE_APP_BASE_URL']
+const API_VERSION = 'v2.0.0'
+
+let config = {
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+}
+
+const axiosInstance = axios.create(config)
 
 function _set_header () {
-  console.log('HEADER', axios.defaults.headers)
-  if (!axios.defaults.headers['authorization'] || !axios.defaults.headers['X-CSRFToken']) {
+  console.log('HEADER', axiosInstance.defaults.headers)
+  if (!axiosInstance.defaults.headers['authorization'] || !axiosInstance.defaults.headers['X-CSRFToken']) {
     let token = store.getters['users/get_access_token']
     // eslint-disable-next-line
-    axios.defaults.headers['authorization'] = !!token ? 'Bearer ' + token : undefined
-    axios.defaults.headers['X-CSRFToken'] = store.getters['api/get_csrf_token']
-    base_url = process.env['VUE_APP_BASE_URL'] + '/api/' + store.getters['api/get_api_version']
+    axiosInstance.defaults.headers['authorization'] = !!token ? 'Bearer ' + token : undefined
+    axiosInstance.defaults.headers['X-CSRFToken'] = store.getters['api/get_csrf_token']
+    // base_url = process.env['VUE_APP_BASE_URL'] + '/api/' + store.getters['api/get_api_version']
     console.log('BASE_URL_SET_HEADER', base_url)
   }
 }
 
-export async function get (relative_path) {
+export async function get (absolute_url) {
   _set_header()
-  if (relative_path === '') {
-    let response = await axios.get(process.env['VUE_APP_BASE_URL'] + '/api/')
-    base_url = process.env['VUE_APP_BASE_URL'] + '/api/' + response.data['default_api_version']
-    console.log('GET' + relative_path, response)
+  if (absolute_url === '') {
+    axiosInstance.defaults.headers['authorization'] = undefined
+    let response = await axiosInstance.get(process.env['VUE_APP_BASE_URL'] + '/api/' + API_VERSION + '/')
+    axiosInstance.defaults.headers['authorization'] = undefined
+    // base_url = process.env['VUE_APP_BASE_URL'] + '/api/' + response.data['default_api_version']
+    console.log('GET' + absolute_url, response)
     return response
   }
-  let response = await axios.get(base_url + relative_path)
-  console.log('GET' + relative_path, response)
+  let response = await axiosInstance.get(absolute_url)
+  console.log('GET' + absolute_url, response)
   return response
 }
 
-export async function post (relative_path, payload) {
+export async function post (absolute_url, payload) {
   _set_header()
-  if (relative_path === '/login/') {
-    axios.defaults.headers['authorization'] = undefined
+  if (absolute_url.includes('/login/')) {
+    axiosInstance.defaults.headers['authorization'] = undefined
   }
   console.log('LOGIN BASE_URL', base_url)
-  let response = await axios.post(base_url + relative_path, payload)
-  console.log('POST' + relative_path, response)
+  let response = await axiosInstance.post(absolute_url, payload)
+  console.log('POST' + absolute_url, response)
   return response
 }
 
-export async function patch (relative_path, payload) {
+export async function patch (absolute_url, payload) {
   _set_header()
-  let response = await axios.patch(base_url + relative_path, payload)
-  console.log('PATCH' + relative_path, response)
+  let response = await axiosInstance.patch(absolute_url, payload)
+  console.log('PATCH' + absolute_url, response)
   return response
 }

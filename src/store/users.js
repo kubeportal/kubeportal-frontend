@@ -44,20 +44,17 @@ const users_container = {
     },
 
     actions: {
-      async get_details (context) {
-        const response = await backend.get(`/users/${context.state.user_id}/`)
-        console.log('USER DETAILS', response.data)
-        response !== undefined ? context.commit('set_details', response.data) : console.log('login failed')
-        return response
-      },
       async post_login_data (context, request_body) {
         const response = await backend.post('/login/', request_body)
         if (response) {
           console.log('POST LOGIN DATA', response.data)
-          context.commit('set_user_id', response.data['user_id'])
-          context.commit('set_namespace', response.data['k8s_namespace'])
           context.commit('set_access_token', response.data['access_token'])
-          context.commit('set_group_ids', response.data['group_ids'])
+          const user_details = await backend.get(response.data['user'].split('v2.0.0')[1])
+          console.log('USER DETAILS', user_details.data)
+          context.commit('set_details', user_details.data)
+          // context.commit('set_user_id', response.data['user_id'])
+          // context.commit('set_namespace', response.data['k8s_namespace'])
+          // context.commit('set_group_ids', response.data['group_ids'])
         }
         return response
       },
