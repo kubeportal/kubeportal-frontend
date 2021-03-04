@@ -11,7 +11,6 @@ const users_container = {
       refresh_token: '',
       url: '',
       namespace: '',
-      group_ids: [],
       user: {
         webapp_ids: []
       },
@@ -83,9 +82,10 @@ const users_container = {
         }
       },
       async request_groups (context) {
-        const group_ids = context.getters['get_group_ids']
-        for (const group_id of group_ids) {
-          const response = await backend.get(`/groups/${group_id}/`)
+        const current_user = context.getters['get_user']
+        for (const group_url of current_user['portal_groups']) {
+          const response = await backend.get(group_url)
+          console.log('GROUP', response.data)
           context.commit('push_group', response.data)
         }
       },
