@@ -53,6 +53,8 @@ const users_container = {
         if (response) {
           console.log('POST LOGIN DATA', response.data)
           context.commit('set_access_token', response.data['access_token'])
+          context.commit('set_refresh_token', response.data['refresh_token'])
+          context.commit('set_url', response.data['user'])
           const user_details = await backend.get(response.data['user'])
           console.log('USER DETAILS', user_details.data)
           context.commit('set_user', user_details.data)
@@ -91,7 +93,7 @@ const users_container = {
       },
       async update_user (context, payload) {
         const response = await backend.patch(context.state.url, payload)
-        context.commit('set_details', response.data)
+        context.commit('set_user', response.data)
       },
       log_out () {
         backend.post('/logout/')
