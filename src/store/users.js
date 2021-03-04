@@ -45,7 +45,9 @@ const users_container = {
 
     actions: {
       async post_login_data (context, request_body) {
-        const response = await backend.post('/login/', request_body)
+        let login_url = store.getters['api/get_login_url']
+        console.log('LOGIN URL', login_url)
+        const response = await backend.post(store.getters['api/get_login_url'], request_body)
         if (response) {
           console.log('POST LOGIN DATA', response.data)
           context.commit('set_access_token', response.data['access_token'])
