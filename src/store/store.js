@@ -4,6 +4,7 @@ import wizard from './wizard.js'
 import infos from './infos.js'
 import users from './users.js'
 import api from './api.js'
+import news from './news.js'
 import pods from './pods.js'
 import deployments from './deployments.js'
 
@@ -19,6 +20,7 @@ const store = new Vuex.Store({
     infos: infos.module,
     wizard: wizard.module,
     api: api.module,
+    news: news.module,
     pods: pods.module,
     deployments: deployments.module
   }

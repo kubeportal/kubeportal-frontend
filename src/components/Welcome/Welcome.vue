@@ -38,9 +38,9 @@ import moment from 'moment'
 export default {
   name: 'Welcome',
   components: { WebAppContainer, TopBar },
-  data () {
-    return {
-      news: []
+  computed: {
+    news () {
+      return this.$store.getters['news/get_news']
     }
   },
   methods: {
@@ -50,22 +50,11 @@ export default {
       if (apps.length === 0) {
         this.$store.dispatch('users/request_webapps')
       }
-    },
-    async request_news () {
-      let response = await backend.get('/news/')
-      console.log('NEWS', response)
-      for(let news of response.data) {
-        let author = await backend.get(`/users/${news['author']}/`)
-        console.log('AUHTOR', author)
-        news['author'] = author.data['name']
-        news['created'] = moment(news['created']).format()
-        this.news.push(news)
-      }
     }
   },
   mounted () {
     this.request_webapps()
-    this.request_news()
+    this.$store.dispatch('news/request_news')
   }
 }
 </script>

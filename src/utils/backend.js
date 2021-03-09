@@ -28,6 +28,7 @@ export async function get (absolute_url) {
   _set_header()
   try {
     if (absolute_url === '') {
+      axiosInstance.defaults.headers['authorization'] = undefined
       let response = await axiosInstance.get(process.env['VUE_APP_BASE_URL'] + '/api/' + API_VERSION + '/')
       console.log('GET' + absolute_url, response)
       return response
