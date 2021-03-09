@@ -54,6 +54,7 @@ const users_container = {
           const user_details = await backend.get(response.data['links']['user'])
           console.log('USER DETAILS', user_details.data)
           context.commit('set_user', user_details.data)
+          context.dispatch('request_namespaces')
         }
         return response
       },
@@ -86,6 +87,13 @@ const users_container = {
           console.log('GROUP', response.data)
           context.commit('push_group', response.data)
         }
+      },
+      async request_namespaces (context) {
+        const current_user = context.getters['get_user']
+        const response = await backend.get(current_user['k8s_namespaces'][0])
+        console.log('NAMESPACE RESPONSE', response.data)
+        store.commit('pods/set_pod_links', response.data['pods'])
+        store.commit('deployments/set_deployment_links', response.data['deployments'])
       },
       async update_user (context, payload) {
         const response = await backend.patch(context.state.url, payload)

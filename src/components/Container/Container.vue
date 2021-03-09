@@ -42,7 +42,7 @@
           </div>
           <v-data-table
             :headers="deployment_headers"
-            :items="deployment_data"
+            :items="deployments_data"
             :items-per-page="15"
             class="elevation-1"
             :search="search_deployments"
@@ -73,13 +73,17 @@ export default {
   computed: {
     namespace () {
       return this.$store.getters['users/get_user']['k8s_namespace_names'].join(', ')
+    },
+    pods_data () {
+      return this.$store.getters['pods/get_pods']
+    },
+    deployments_data () {
+      return this.$store.getters['deployments/get_deployments']
     }
   },
   data () {
     return {
       overlay: false,
-      pods_data: [],
-      deployment_data: [],
       search_pods: '',
       search_deployments: '',
       pods_headers: [
@@ -116,39 +120,13 @@ export default {
       ]
     }
   },
-  methods: {
-    async get_pods () {
-      let response = await backend.get(`/pods/${this.namespace}/`)
-      console.log('PODS', response)
-      let pods = []
-      for (const pod of response.data) {
-        let data = {}
-        data['name'] = pod.name
-        data['creation_timestamp'] = moment(pod.creation_timestamp).format()
-        data['containers'] = pod.containers.map((container) => container.name)
-        pods.push(data)
-      }
-      this.pods_data = pods
-    },
-    async get_deployments () {
-      let response = await backend.get(`/deployments/${this.namespace}/`)
-      console.log('DEPLOYMENTS', response)
-      let deployments = []
-      for (const deployment of response.data) {
-        let data = {}
-        data['name'] = deployment.name
-        data['creation_timestamp'] = moment(
-          deployment.creation_timestamp
-        ).format()
-        data['replicas'] = deployment.replicas
-        deployments.push(data)
-      }
-      this.deployment_data = deployments
-    }
-  },
   mounted () {
-    this.get_pods()
-    this.get_deployments()
+    if (this.pods_data.length === 0) {
+      this.$store.dispatch('pods/request_pods')
+    }
+    if (this.deployments_data.length === 0) {
+      this.$store.dispatch('deployments/request_deployments')
+    }
   }
 }
 </script>

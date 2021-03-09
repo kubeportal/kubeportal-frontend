@@ -89,6 +89,8 @@ export default {
       this.$store.dispatch('users/log_out')
       this.$store.commit('users/set_user', {})
       this.$store.commit('users/set_webapps', [])
+      this.$store.commit('pods/set_pods', [])
+      this.$store.commit('deployments/set_deployments', [])
       this.$store.commit('infos/set_cluster_info', [])
       this.$store.commit('api/set_csrf_token', '')
       this.$store.commit('users/set_access_token', '')
