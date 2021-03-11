@@ -13,7 +13,19 @@ import Profile from '@/components/Settings/Profile/Profile'
 export default {
   name: 'Settings',
   components: { Dashboard },
+  data () {
+    return {
+      NEW: 'not requested',
+      ACCESS_REQUESTED: 'requested',
+      ACCESS_REJECTED: 'rejected',
+      ACCESS_APPROVED: 'approved'
+    }
+  },
+
   computed: {
+    user_state () {
+      return this.$store.getters['users/get_user']['state']
+    },
     tabs () {
       return [
         {
@@ -24,12 +36,12 @@ export default {
         }, {
           icon: 'mdi-kubernetes',
           name: 'Kubernetes',
-          has_access: true,
+          has_access: this.user_state === this.ACCESS_APPROVED,
           component: KubernetesSettings
         }, {
           icon: 'mdi-information-outline',
           name: 'Infos',
-          has_access: true,
+          has_access: this.user_state === this.ACCESS_APPROVED,
           component: Info
         }
       ]
