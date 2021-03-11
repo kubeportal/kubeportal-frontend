@@ -72,7 +72,6 @@ export default {
         this.is_authenticated = false
       } else if (response.status === 200) {
         this.is_authenticated = true
-        await this.$store.dispatch('users/get_details')
         this.$router.push({ name: 'Kubeportal' })
       }
     }

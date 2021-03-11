@@ -69,7 +69,7 @@ export default {
   components: { TopBar, ServiceModal },
   computed: {
     namespace () {
-      return this.$store.getters['users/get_namespace']
+      return this.$store.getters['users/get_user']['k8s_namespace_names'].join(', ')
     }
   },
   data () {
