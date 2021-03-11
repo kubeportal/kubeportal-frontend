@@ -4,6 +4,7 @@ const infos = {
   module: {
     namespaced: true,
     state: {
+      infos_url: '',
       cluster_name: '',
       cluster_request_info: [
         'portal_user_count',
@@ -21,6 +22,7 @@ const infos = {
     },
 
     getters: {
+      get_infos_url (state) { return state.infos_url },
       get_cluster_request_info (state) { return state.cluster_request_info },
       get_cluster_info (state) { return state.cluster_info },
       get_infos (state) { return state.infos },
@@ -28,6 +30,7 @@ const infos = {
     },
 
     mutations: {
+      set_infos_url (state, infos_url) { state.infos_url = infos_url },
       set_cluster_info (state, info) { state.cluster_info = info },
       push_cluster_info (state, info) { state.cluster_info.push(info) },
       set_info (state, name, info) { state.infos[name] = info },
@@ -35,10 +38,12 @@ const infos = {
     },
 
     actions: {
-      async request_cluster_infos (context, infos) {
-        for (const field of infos) {
-          backend.get(`/cluster/${field}/`).then(response => {
-            context.commit('push_cluster_info', response.data)
+      async request_cluster_infos (context) {
+        const response = await backend.get(context.state.infos_url)
+        const links = response.data['links']
+        for (const key in links) {
+          backend.get(links[key]).then(info_response => {
+            context.commit('push_cluster_info', info_response.data)
           })
         }
       },

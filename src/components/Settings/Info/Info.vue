@@ -18,10 +18,6 @@
               <tr v-for="(item, index) in all_statistics" :key="index">
                 <td>{{ Object.keys(item)[0] }}</td>
                 <td>
-                    <!-- <RequestSpinner v-if="Object.values(item)[0] === ''"/>
-                  <p v-else>
-                    {{ Object.values(item)[0] }}
-                  </p> -->
                     {{ Object.values(item)[0] }}
                 </td>
               </tr>
@@ -48,17 +44,12 @@ export default {
   computed: {
     all_statistics () {
       return this.$store.getters['infos/get_cluster_info']
-      // let tmp = this.$store.getters['infos/get_infos']
-      // console.log(tmp)
-      // return tmp
     }
   },
   methods: {
     request_cluster_infos () {
-      // this.$store.dispatch('infos/request_cluster_infos', 'cluster_infos')
       if (this.all_statistics.length === 0) {
-        let cluster_infos = this.$store.getters['infos/get_cluster_request_info']
-        this.$store.dispatch('infos/request_cluster_infos', cluster_infos)
+        this.$store.dispatch('infos/request_cluster_infos')
       }
     }
   },
