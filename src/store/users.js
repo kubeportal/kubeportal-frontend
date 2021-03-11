@@ -51,6 +51,7 @@ const users_container = {
           context.commit('set_refresh_token', response.data['refresh_token'])
           context.commit('set_url', response.data['links']['user'])
           store.commit('news/set_news_url', response.data['links']['news'])
+          store.commit('infos/set_infos_url', response.data['links']['infos'])
           const user_details = await backend.get(response.data['links']['user'])
           console.log('USER DETAILS', user_details.data)
           context.commit('set_user', user_details.data)
