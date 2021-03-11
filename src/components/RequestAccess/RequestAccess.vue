@@ -37,6 +37,9 @@ export default {
   computed: {
     supervisors () {
       return this.get_supervisors()
+    },
+    current_user () {
+      return this.$store.getters['users/get_user']
     }
   },
   methods: {
@@ -50,6 +53,9 @@ export default {
         console.log(this.selected)
       }
     }
+  },
+  mounted () {
+    this.$store.dispatch('users/request_user')
   }
 }
 </script>

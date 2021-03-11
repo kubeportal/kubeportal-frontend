@@ -95,6 +95,10 @@ const users_container = {
         store.commit('pods/set_pod_links', response.data['pods'])
         store.commit('deployments/set_deployment_links', response.data['deployments'])
       },
+      async request_user (context) {
+        const response = await backend.get(context.state.url)
+        context.commit('set_user', response.data)
+      },
       async update_user (context, payload) {
         const response = await backend.patch(context.state.url, payload)
         context.commit('set_user', response.data)
