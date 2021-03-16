@@ -4,16 +4,19 @@ const pods_container = {
   module: {
     namespaced: true,
     state: {
+      pods_link: [],
       pod_links: [],
       pods: []
     },
 
     getters: {
+      get_pods_link (state) { return state.pods_link },
       get_pod_links (state) { return state.pod_links },
       get_pods (state) { return state.pods }
     },
 
     mutations: {
+      set_pods_link (state, pods_link) { state.pods_link = pods_link },
       set_pod_links (state, pod_links) { state.pod_links = pod_links },
       set_pods (state, pods) { state.pods = pods },
       push_pod (state, pod) { state.pods.push(pod) }
@@ -21,8 +24,9 @@ const pods_container = {
 
     actions: {
       async request_pods (context) {
-        const pod_links = context.getters['get_pod_links']
-        pod_links.forEach(link => {
+        const pods_link = context.getters['get_pod_links']
+        let pod_links = await backend.get(pods_link)
+        pod_links.data['pod_urls'].forEach(link => {
           backend.get(link).then(response => {
             let pod = response.data
             console.log('PODS', pod)

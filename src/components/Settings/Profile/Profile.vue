@@ -41,8 +41,8 @@
             dense
             solo
             v-model="selected_namespace"
-            :items="current_user['k8s_namespace_names']"
-            :label="current_user['k8s_namespace_names'].join(', ')"
+            :items="current_user['namespace_names']"
+            :label="current_user['namespace_names'].join(', ')"
             multiple
           ></v-select>
         </v-col>

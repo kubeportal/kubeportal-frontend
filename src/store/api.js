@@ -28,9 +28,9 @@ const api_container = {
       async get_basic_api_information (context) {
         let response = await backend.get('')
         context.commit('set_csrf_token', response.data['csrf_token'])
-        context.commit('set_login_url', response.data['links']['login'])
-        context.commit('set_login_google_url', response.data['links']['login_google'])
-        context.commit('set_logout_url', response.data['links']['logout'])
+        context.commit('set_login_url', response.data['login_url'])
+        context.commit('set_login_google_url', response.data['login_google_url'])
+        context.commit('set_logout_url', response.data['logout_url'])
       }
     }
   }

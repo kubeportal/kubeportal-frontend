@@ -1,5 +1,6 @@
 <template>
   <v-card>
+    <v-card-text> current namespace: {{ namespace }} </v-card-text>
     <div>
       <v-tabs fixed-tabs>
         <v-tab>
@@ -57,6 +58,9 @@ export default {
     }
   },
   computed: {
+    namespace () {
+      return this.$store.getters['users/get_user']['namespace_names'].join(', ')
+    },
     pvcs_data () {
       return [
         {

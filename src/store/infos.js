@@ -30,7 +30,7 @@ const infos = {
     actions: {
       async request_cluster_infos (context) {
         const response = await backend.get(context.state.infos_url)
-        const links = response.data['links']
+        const links = response.data['info_urls']
         context.commit('set_cluster_links', links)
         for (const key in links) {
           backend.get(links[key]).then(info_response => {

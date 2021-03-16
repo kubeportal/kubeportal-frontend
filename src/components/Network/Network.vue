@@ -16,10 +16,10 @@
 
         <v-tab-item>
           <div>
-            <v-btn color="green" dark icon @click="overlay = true" x-large>
+            <v-btn color="green" icon @click="service_overlay = true" x-large disabled>
               <v-icon>mdi-plus-circle</v-icon>
             </v-btn>
-            <ServiceModal @close="overlay = false" :overlay="overlay" :namespace="namespace" />
+            <ServiceModal @close="service_overlay = false" :overlay="service_overlay" :namespace="namespace" />
           </div>
           <v-data-table
             :headers="services_headers"
@@ -38,7 +38,12 @@
           </v-data-table>
         </v-tab-item>
         <v-tab-item>
-          <v-data-table
+          <div>
+            <v-btn color="green" icon @click="ingress_overlay = true" x-large disabled>
+              <v-icon>mdi-plus-circle</v-icon>
+            </v-btn>
+          </div>
+        <v-data-table
             :headers="ingresses_headers"
             :items="ingresses_data"
             :items-per-page="5"
@@ -62,13 +67,14 @@
 <script>
 import TopBar from '@/components/TopBar'
 import ServiceModal from './ServiceModal'
+import IngressModal from './IngressModal'
 
 export default {
   name: 'Network',
-  components: { TopBar, ServiceModal },
+  components: { TopBar, ServiceModal, IngressModal },
   computed: {
     namespace () {
-      return this.$store.getters['users/get_user']['k8s_namespace_names'].join(', ')
+      return this.$store.getters['users/get_user']['namespace_names'].join(', ')
     },
     services_data () {
       return this.$store.getters['services/get_services']
@@ -79,7 +85,8 @@ export default {
   },
   data () {
     return {
-      overlay: false,
+      service_overlay: false,
+      ingress_overlay: false,
       search_services: '',
       search_ingresses: '',
       services_headers: [
