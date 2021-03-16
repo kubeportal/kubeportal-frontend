@@ -1,7 +1,7 @@
 <template>
   <div>
       <v-subheader>
-        You can send an access request to an administrator of your choice:
+        {{display_message()}}
       </v-subheader>
       <v-card class="my-4">
           <v-card-title>
@@ -31,10 +31,15 @@ export default {
   components: { TopBar, RequestSpinner },
   data () {
     return {
-      selected: []
+      selected: [],
+      NEW: 'not requested',
+      ACCESS_REQUESTED: 'requested',
+      ACCESS_REJECTED: 'rejected',
+      ACCESS_APPROVED: 'approved'
     }
   },
   computed: {
+
     supervisors () {
       return this.get_supervisors()
     },
@@ -43,6 +48,13 @@ export default {
     }
   },
   methods: {
+    display_message () {
+      switch (this.current_user['state']) {
+        case this.NEW: return 'You can send an access request to an administrator of your choice:'
+        case this.ACCESS_REQUESTED: return 'Your request for cluster access was already sent to the administrators.\nIf needed, you can re-send an access request to an administrator of your choice:'
+        case this.ACCESS_REJECTED: return 'Sorry, you have no access to the cluster.'
+      }
+    },
     get_supervisors () {
       //TODO: read api
       return ['troeger', 'sachs', 'xyz']
