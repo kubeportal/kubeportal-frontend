@@ -63,9 +63,7 @@
 
 <script>
 import TopBar from '@/components/TopBar'
-import * as backend from '@/utils/backend'
 import DeploymentModal from './DeploymentModal'
-import moment from 'moment'
 
 export default {
   name: 'Container',

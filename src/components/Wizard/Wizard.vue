@@ -56,8 +56,8 @@
               <v-btn text color="primary" @click="e1 = 2"> back </v-btn>
             </v-col>
 
-            <v-col md="1">
-              <v-btn text color="primary" @click="deploy"> deploy? </v-btn>
+            <v-col md="2">
+              <v-btn text color="primary" @click="deploy" disabled> deploy </v-btn>
             </v-col>
           </v-row>
         </v-stepper-content>
@@ -67,14 +67,13 @@
 </template>
 
 <script>
-import TopBar from '@/components/TopBar'
 import Deployment from '@/components/Wizard/Deployment'
 import Service from '@/components/Wizard/Service'
 import Ingress from '@/components/Wizard/Ingress'
 import EventBus from '@/utils/eventbus.js'
 export default {
   name: 'Wizard',
-  components: { TopBar, Deployment, Service, Ingress, EventBus },
+  components: { Deployment, Service, Ingress, EventBus },
   data () {
     return {
       e1: 1,

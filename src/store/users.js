@@ -95,6 +95,9 @@ const users_container = {
         console.log('NAMESPACE RESPONSE', response.data)
         store.commit('pods/set_pod_links', response.data['pods'])
         store.commit('deployments/set_deployment_links', response.data['deployments'])
+        store.commit('services/set_service_links', response.data['services'])
+        store.commit('ingresses/set_ingress_links', response.data['ingresses'])
+        store.commit('pvcs/set_pvc_links', response.data['pvcs'])
       },
       async update_user (context, payload) {
         const response = await backend.patch(context.state.url, payload)

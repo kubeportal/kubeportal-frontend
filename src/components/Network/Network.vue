@@ -62,7 +62,6 @@
 <script>
 import TopBar from '@/components/TopBar'
 import ServiceModal from './ServiceModal'
-import * as backend from '@/utils/backend'
 
 export default {
   name: 'Network',
@@ -70,13 +69,17 @@ export default {
   computed: {
     namespace () {
       return this.$store.getters['users/get_user']['k8s_namespace_names'].join(', ')
+    },
+    services_data () {
+      return this.$store.getters['services/get_services']
+    },
+    ingresses_data () {
+      return this.$store.getters['ingresses/get_ingresses']
     }
   },
   data () {
     return {
       overlay: false,
-      services_data: [],
-      ingresses_data: [],
       search_services: '',
       search_ingresses: '',
       services_headers: [
@@ -111,68 +114,19 @@ export default {
           value: 'tls'
         },
         {
-          text: 'Domain',
-          value: 'domain'
-        },
-        {
-          text: 'Routes',
-          value: 'routes'
+          text: 'Hosts',
+          value: 'hosts'
         }
       ]
     }
   },
-  methods: {
-    async get_services () {
-      let response = await backend.get(`/services/${this.namespace}/`)
-      console.log('GET SERVICES', response.data)
-      let services = []
-      for (const service of response.data) {
-        let data = {}
-        data['name'] = service.name
-        data['type'] = service.type
-        let selectors = []
-        for (let key in service.selector) {
-          selectors.push(`${key}:${service.selector[key]}`)
-        }
-        data['selector'] = selectors.join('\n')
-        let ports = []
-        for (const port_data of service.ports) {
-          ports.push(`${port_data['protocol']}:${port_data['port']}`)
-        }
-        data['ports'] = ports.join('\n')
-        services.push(data)
-      }
-      this.services_data = services
-    },
-    async get_ingresses () {
-      let response = await backend.get(`/ingresses/${this.namespace}/`)
-      console.log('GET INGRESSES', response.data)
-      let ingresses = []
-      for (const ingress of response.data) {
-        let data = {}
-        data['name'] = ingress.name
-        data['tls'] = ingress.tls
-        let domains = []
-        let routes = []
-        for (let key in ingress.rules) {
-          domains.push(key)
-          for (let rule_data in ingress.rules[key]) {
-            let tmp = ingress.rules[key][rule_data]
-            routes.push(
-              `${rule_data}/${tmp['service_name']}:${tmp['service_port']}`
-            )
-          }
-        }
-        data['domains'] = domains.join('\n')
-        data['routes'] = routes
-        ingresses.push(data)
-      }
-      this.ingresses_data = ingresses
-    }
-  },
   mounted () {
-    this.get_services()
-    this.get_ingresses()
+    if (this.services_data.length === 0) {
+      this.$store.dispatch('services/request_services')
+    }
+    if (this.ingresses_data.length === 0) {
+      this.$store.dispatch('ingresses/request_ingresses')
+    }
   }
 }
 </script>
