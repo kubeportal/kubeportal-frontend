@@ -37,7 +37,6 @@ export default {
   data () {
     return {
       overlay: false,
-      // pvc_data: [],
       search_pvc: '',
       pvc_headers: [
         {
@@ -76,6 +75,11 @@ export default {
           cpu_usage: '110%'
         }
       ]
+    }
+  },
+  mounted () {
+    if (this.pvcs_data.length === 0) {
+      this.$store.dispatch('pvcs/request_pvcs')
     }
   }
 }
