@@ -5,7 +5,7 @@
     </v-card>
     <v-card class="mt-7">
       <v-card-title> NEWS </v-card-title>
-      <v-list>
+      <v-list class="news">
         <v-list-item v-for="(item, index) in news" :key="index">
           <v-list-item-content>
             <v-row>
@@ -32,8 +32,6 @@
 <script>
 import WebAppContainer from './WebAppContainer'
 import TopBar from '@/components/TopBar'
-import * as backend from '@/utils/backend'
-import moment from 'moment'
 
 export default {
   name: 'Welcome',
@@ -64,7 +62,8 @@ export default {
 p {
   color: black !important;
 }
-.wrapper {
-  height: auto !important;
+.news {
+  height: 25vh;
+  overflow-y: scroll;
 }
 </style>

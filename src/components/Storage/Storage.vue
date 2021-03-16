@@ -57,7 +57,7 @@ export default {
     }
   },
   computed: {
-    pvc_data () {
+    pvcs_data () {
       return [
         {
           name: 'pvc1',
