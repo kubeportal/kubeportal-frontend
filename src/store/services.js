@@ -29,8 +29,11 @@ const services_container = {
             let data = {}
             data['name'] = service.name
             data['type'] = service.type
-            data['selector'] = service.selector.map(sel => `${sel['key']} ${sel['value']} ,`)
-            data['ports'] = service.ports.map(port => `${port['protocol']}:${port['port']} ,`)
+            if(service.selector) {
+              data['selector'] = `${service.selector['key']}=${service.selector['value']}`
+            }
+            // data['selector'] = JSON.stringify(service.selector)
+            data['ports'] = service.ports.map(port => `${port['protocol']}:${port['port']} `)
             context.commit('push_service', data)
           })
         })
