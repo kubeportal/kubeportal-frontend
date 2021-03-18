@@ -3,7 +3,7 @@ const services_container = {
   module: {
     namespaced: true,
     state: {
-      services_link: [],
+      services_link: '',
       services: []
     },
 
