@@ -10,7 +10,7 @@
         <v-tab-item>
           <v-data-table
             :headers="pvc_headers"
-            :items="pvc_data"
+            :items="pvcs_data"
             :items-per-page="15"
             class="elevation-1"
             :search="search_pvc"
@@ -48,11 +48,11 @@ export default {
         },
         {
           text: 'Created at',
-          value: 'status'
+          value: 'creation_timestamp'
         },
         {
-          text: 'Container',
-          value: 'cpu_usage'
+          text: 'Size',
+          value: 'size'
         }
       ]
     }
@@ -62,28 +62,12 @@ export default {
       return this.$store.getters['users/get_user']['namespace_names'].join(', ')
     },
     pvcs_data () {
-      return [
-        {
-          name: 'pvc1',
-          status: 'running',
-          cpu_usage: '99%'
-        },
-        {
-          name: 'pvc2',
-          status: 'sleeping',
-          cpu_usage: '1%'
-        },
-        {
-          name: 'not a pvc',
-          status: 'not running',
-          cpu_usage: '110%'
-        }
-      ]
+      return this.$store.getters['persistentvolumeclaims/get_persistentvolumeclaims']
     }
   },
   mounted () {
     if (this.pvcs_data.length === 0) {
-      this.$store.dispatch('pvcs/request_pvcs')
+      this.$store.dispatch('persistentvolumeclaims/request_persistentvolumeclaims')
     }
   }
 }

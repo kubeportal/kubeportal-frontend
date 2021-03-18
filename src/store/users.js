@@ -97,7 +97,7 @@ const users_container = {
         store.commit('deployments/set_deployments_link', response.data['deployments_url'])
         store.commit('services/set_services_link', response.data['services_url'])
         store.commit('ingresses/set_ingresses_link', response.data['ingresses_url'])
-        store.commit('pvcs/set_pvc_links', response.data['pvcs_url'])
+        store.commit('persistentvolumeclaims/set_persistentvolumeclaims_link', response.data['persistentvolumeclaims_url'])
       },
       async update_user (context, payload) {
         const response = await backend.patch(context.state.url, payload)
