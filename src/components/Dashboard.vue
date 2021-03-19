@@ -90,7 +90,7 @@ export default {
 }
 
 .activeTab {
-  background-color: green;
+  background: linear-gradient(to top right, #b3b3b3, #4d4d4d)
 }
 
 .logo {
