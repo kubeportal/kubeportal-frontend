@@ -1,18 +1,15 @@
 <template>
   <v-card>
     <v-tabs vertical class="sidenav" dark active-class="activeTab">
-      <v-img
+      <v-img class="img"
         src="../assets/mountain.jpeg"
-        gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)"
-        width="25vh"
-        height="100vh"
-      >
+        gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)">
         <div class="logo text-center" @click="go_to_dashboard">
           <v-row align="center" >
-            <v-col sm="2">
+            <v-col>
               <v-icon class="icon">mdi-view-dashboard-variant</v-icon>
             </v-col>
-            <v-col sm="10">
+            <v-col>
               <div class="title"><small>{{cluster_name}}</small></div>
             </v-col>
           </v-row>
@@ -22,10 +19,10 @@
         </v-container>
         <v-tab v-for="tab in filtered_tabs" :key="tab.name">
           <v-row>
-            <v-col sm="2">
+            <v-col sm="4">
               <v-icon class="icon">{{ tab.icon }}</v-icon>
             </v-col>
-            <v-col sm="10">
+            <v-col sm="6">
               <div class="title">
                 <small>{{ tab.name }}</small>
               </div>
@@ -36,8 +33,7 @@
         <v-tab-item
           v-for="(tab, index) in filtered_tabs"
           :key="tab.name + index"
-          class="items"
-        >
+          class="items">
           <Node :tab="tab" />
         </v-tab-item>
     </v-tabs>
@@ -86,7 +82,6 @@ export default {
   position: absolute;
   left: -2px;
   top: -2px;
-  min-width: 100px;
 }
 
 .activeTab {
@@ -109,7 +104,11 @@ hr {
   text-align: center;
 }
 .items {
-  margin-left: 1vw;
   max-height: 100vh;
+}
+.img {
+  width: 12vw;
+  height: 100vh;
+  min-width: 200px;
 }
 </style>

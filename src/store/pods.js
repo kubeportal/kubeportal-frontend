@@ -30,7 +30,9 @@ const pods_container = {
             let data = {}
             data['name'] = pod.name
             data['creation_timestamp'] = moment(pod.creation_timestamp).format()
-            data['containers'] = pod.containers.map((container) => container.image)
+            data['containers'] = pod.containers.map((container) => container.name)
+            data['images'] = pod.containers.map((container) => container.image)
+
             context.commit('push_pod', data)
           })
         })

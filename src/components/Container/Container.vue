@@ -104,6 +104,10 @@ export default {
         {
           text: 'Container',
           value: 'containers'
+        },
+        {
+          text: 'Image',
+          value: 'images'
         }
       ],
       deployment_headers: [
