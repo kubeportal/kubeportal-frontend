@@ -1,8 +1,17 @@
 import axios from 'axios'
 import store from '../store/store.js'
 
-let base_url = process.env['VUE_APP_BASE_URL']
-const API_VERSION = 'v2.0.0'
+function canReadURLFromEnv () {
+  return !!process.env['VUE_APP_BASE_URL']
+}
+export function setBaseURLWithDefaultOrEnvValue () {
+  const defaultUrl = 'https://cluster.datexis.com'
+  return canReadURLFromEnv() ? process.env['VUE_APP_BASE_URL'] : defaultUrl
+}
+
+let base_url = setBaseURLWithDefaultOrEnvValue()
+
+const API_VERSION = 'v2.1.0'
 
 let config = {
   withCredentials: true,
@@ -27,7 +36,7 @@ export async function get (absolute_url) {
   try {
     if (absolute_url === '') {
       axiosInstance.defaults.headers['authorization'] = undefined
-      let response = await axiosInstance.get(process.env['VUE_APP_BASE_URL'] + '/api/' + API_VERSION + '/')
+      let response = await axiosInstance.get(base_url + '/api/' + API_VERSION + '/')
       console.log('GET ' + absolute_url, response)
       return response
     }

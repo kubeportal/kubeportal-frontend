@@ -96,10 +96,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: 4rem;
   border-radius: 40px;
-  // background-color:   #fff5cc;
-  // background-image: linear-gradient(to bottom left,  #cccc00,  #666600);
+  min-width: 100px;
 }
 
 .v-card.on-hover.theme--dark{
