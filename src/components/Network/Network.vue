@@ -123,6 +123,14 @@ export default {
         {
           text: 'Hosts',
           value: 'hosts'
+        },
+        {
+          text: 'Paths',
+          value: 'path'
+        },
+        {
+          text: 'Service',
+          value: 'services'
         }
       ]
     }
