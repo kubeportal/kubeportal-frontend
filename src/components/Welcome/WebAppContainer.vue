@@ -43,10 +43,8 @@ export default {
   },
   methods: {
     modify_webapps (webapps) {
-      let index = 0
-      webapps.forEach(webapp => {
-        index >= 2 ? index = 0 : index += 1
-        webapp['color'] = this.$data.classes[index]
+      webapps.forEach((webapp, index) => {
+        webapp['color'] = this.$data.classes[index % 3]
       })
       return webapps
     },
@@ -84,12 +82,10 @@ export default {
   z-index: 1;
   left: 5%;
   bottom: 70%;
-  border-color: green;
 }
 
 .app-icon-text{
   padding: 5px;
-  background-color: green;
 }
 
 .app-text{
