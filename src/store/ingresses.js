@@ -30,14 +30,16 @@ const ingresses_container = {
             let data = {}
             data['name'] = ingress.name
             data['tls'] = ingress.tls
-            data['annotations'] = ingress.annotations.map(anno => `${anno['key']}=${anno['value']}  `)
+            data['annotations'] = ingress.annotations.map(anno => `${anno['key']}=${anno['value']}`)
             data['hosts'] = ingress.rules.map(rule => { return rule.host })
-            data['services'] = ingress.rules.map(rule => {
-              return rule.paths.map(path => `${path['service_name']}:${path['service_port']}  `)
+            let services = ingress.rules.map(rule => {
+              return rule.paths.map(path => `${path['service_name']}:${path['service_port']}`)
             })
-            data['path'] = ingress.rules.map(rule => {
-              return rule.paths.map(path => `${path['path']}  `)
+            data['services'] = services[0] === 'null' ? '-' : services
+            let path = ingress.rules.map(rule => {
+              return rule.paths.map(path => `${path['path']}`).join(' ')
             })
+            data['path'] = path[0] === 'null' ? '-' : path
             context.commit('push_ingress', data)
           })
         })
