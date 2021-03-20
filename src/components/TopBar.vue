@@ -93,7 +93,7 @@ export default {
       this.$store.commit('deployments/set_deployments', [])
       this.$store.commit('services/set_services', [])
       this.$store.commit('ingresses/set_ingresses', [])
-      this.$store.commit('persistentvolumeclaims/set_persistentvolumeclaims', [])
+      this.$store.commit('pvcs/set_persistentvolumeclaims', [])
       this.$store.commit('infos/set_cluster_info', [])
       this.$store.commit('api/set_csrf_token', '')
       this.$store.commit('users/set_access_token', '')

@@ -35,6 +35,8 @@ const persistentvolumeclaims_container = {
             data['name'] = persistentvolumeclaim.name
             data['creation_timestamp'] = moment(persistentvolumeclaim.creation_timestamp).format()
             data['size'] = persistentvolumeclaim.size
+            data['access_mode'] = persistentvolumeclaim.access_modes
+            data['phase'] = persistentvolumeclaim.phase
             context.commit('push_persistentvolumeclaim', data)
           })
         })

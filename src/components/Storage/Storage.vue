@@ -47,12 +47,20 @@ export default {
           value: 'name'
         },
         {
-          text: 'Created at',
-          value: 'creation_timestamp'
+          text: 'Access Mode',
+          value: 'access_mode'
+        },
+        {
+          text: 'Phase',
+          value: 'phase'
         },
         {
           text: 'Size',
           value: 'size'
+        },
+        {
+          text: 'Created at',
+          value: 'creation_timestamp'
         }
       ]
     }
@@ -62,12 +70,12 @@ export default {
       return this.$store.getters['users/get_user']['namespace_names'].join(', ')
     },
     pvcs_data () {
-      return this.$store.getters['persistentvolumeclaims/get_persistentvolumeclaims']
+      return this.$store.getters['pvcs/get_persistentvolumeclaims']
     }
   },
   mounted () {
     if (this.pvcs_data.length === 0) {
-      this.$store.dispatch('persistentvolumeclaims/request_persistentvolumeclaims')
+      this.$store.dispatch('pvcs/request_persistentvolumeclaims')
     }
   }
 }
