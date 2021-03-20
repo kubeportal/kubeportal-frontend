@@ -50,6 +50,16 @@
             class="elevation-1"
             :search="search_ingresses"
           >
+          <template v-slot:item="props">
+            <tr>
+              <td>{{props.item.name}}</td>
+              <td> <span v-html=props.item.annotations /></td>
+              <td>{{props.item.tls}}</td>
+              <td><span v-html=props.item.hosts /></td>
+              <td><span v-html=props.item.path /></td>
+              <td><span v-html=props.item.services /></td>
+            </tr>
+          </template>
             <template v-slot:top>
               <v-text-field
                 v-model="search_ingresses"
@@ -93,7 +103,7 @@ export default {
         {
           text: 'Name',
           algin: 'start',
-          sortable: false,
+          sortable: true,
           value: 'name'
         },
         {
@@ -113,8 +123,12 @@ export default {
         {
           text: 'Name',
           algin: 'start',
-          sortable: false,
+          sortable: true,
           value: 'name'
+        },
+        {
+          text: 'Annotations',
+          value: 'annotations'
         },
         {
           text: 'TLS',
