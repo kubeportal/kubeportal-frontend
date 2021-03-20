@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Dashboard from '@/components/Dashboard'
+import Dashboard from '@/components/Sidenav'
 import Info from '@/components/Settings/Info/Info'
 import KubernetesSettings from '@/components/Settings/KubernetesSettings/KubernetesSettings'
 import Profile from '@/components/Settings/Profile/Profile'

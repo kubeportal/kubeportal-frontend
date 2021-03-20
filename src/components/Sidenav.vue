@@ -78,10 +78,11 @@ export default {
   color: floralwhite;
 }
 .sidenav {
-  height: 100vh;
+  height: 100rem;
   position: absolute;
   left: -2px;
   top: -2px;
+  overflow-x: hidden
 }
 
 .activeTab {
