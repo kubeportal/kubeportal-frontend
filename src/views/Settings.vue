@@ -14,6 +14,9 @@ export default {
   name: 'Settings',
   components: { Dashboard },
   computed: {
+    user_state () {
+      return this.$store.getters['users/get_user']['state']
+    },
     tabs () {
       return [
         {
@@ -24,12 +27,12 @@ export default {
         }, {
           icon: 'mdi-kubernetes',
           name: 'Kubernetes',
-          has_access: true,
+          has_access: this.user_state === 'ACCESS_APPROVED',
           component: KubernetesSettings
         }, {
           icon: 'mdi-information-outline',
           name: 'Infos',
-          has_access: true,
+          has_access: this.user_state === 'ACCESS_APPROVED',
           component: Info
         }
       ]
