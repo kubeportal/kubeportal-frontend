@@ -137,6 +137,7 @@ const users_container = {
         admin_urls.forEach(url => {
           backend.post(context.state.url + 'approval/', { approving_admin_url: url }).then(res => {
             console.log('SEND ADMIN APPROVAL RESPONSE', res)
+            context.dispatch('request_current_user')
           })
         })
       }

@@ -3,7 +3,7 @@
       <v-form @submit.prevent="login">
         <v-card-title>
           <v-icon class="icon" left>mdi-login-variant</v-icon>
-          Kubeportal
+          {{cluster_branding}}
         </v-card-title>
         <v-card-text v-if="loading">
           <RequestSpinner />
@@ -43,6 +43,11 @@ export default {
       password: '',
       isSignedIn: '',
       loading: false
+    }
+  },
+  computed: {
+    cluster_branding () {
+      return this.$store.getters['api/get_branding']
     }
   },
   methods: {
