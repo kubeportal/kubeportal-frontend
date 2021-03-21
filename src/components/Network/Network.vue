@@ -52,12 +52,16 @@
           >
           <template v-slot:item="props">
             <tr>
+              <td><span class='host' v-html=props.item.hosts /></td>
+              <td>
+                <v-icon v-if='props.item.status === 200' style="color: #689F38" class="icon ">mdi-checkbox-blank-circle</v-icon>
+                <v-icon v-else class="icon" style="color: #a10000" >mdi-checkbox-blank-circle</v-icon>
+              </td>
               <td>{{props.item.name}}</td>
               <td> <span v-html=props.item.annotations /></td>
               <td>{{props.item.tls}}</td>
-              <td><span v-html=props.item.hosts /></td>
-              <td><span v-html=props.item.path /></td>
               <td><span v-html=props.item.services /></td>
+              <td><span v-html=props.item.creation_timestamp /></td>
             </tr>
           </template>
             <template v-slot:top>
@@ -121,9 +125,17 @@ export default {
       ],
       ingresses_headers: [
         {
-          text: 'Name',
+          text: 'Hosts',
+          value: 'hosts',
           algin: 'start',
-          sortable: true,
+          sortable: true
+        },
+        {
+          text: 'Status',
+          value: 'status'
+        },
+        {
+          text: 'Name',
           value: 'name'
         },
         {
@@ -135,30 +147,32 @@ export default {
           value: 'tls'
         },
         {
-          text: 'Hosts',
-          value: 'hosts'
-        },
-        {
-          text: 'Paths',
-          value: 'path'
-        },
-        {
           text: 'Service',
           value: 'services'
+        },
+        {
+          text: 'Created at',
+          value: 'creation_timestamp'
         }
       ]
     }
   },
-  mounted () {
+  beforeMount () {
     if (this.services_data.length === 0) {
       this.$store.dispatch('services/request_services')
     }
     if (this.ingresses_data.length === 0) {
       this.$store.dispatch('ingresses/request_ingresses')
     }
+  },
+
+  methods: {
   }
 }
 </script>
 
 <style scoped>
+.host a {
+  font-size: larger;
+}
 </style>
