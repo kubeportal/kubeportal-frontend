@@ -103,6 +103,10 @@ const users_container = {
         const response = await backend.patch(context.state.url, payload)
         context.commit('set_user', response.data)
       },
+      async request_current_user (context) {
+        const response = await backend.get(context.state.url)
+        context.commit('set_user', response.data)
+      },
       log_out () {
         backend.post(store.getters['api/get_logout_url'])
       },
