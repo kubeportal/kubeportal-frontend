@@ -10,7 +10,7 @@
           <v-form @submit="send_request">
             <RequestSpinner v-if="supervisors.length === 0"/>
             <v-container v-else>
-              <v-checkbox v-for="(supervisor, i) in supervisors" color="green" :key=i :label="supervisor" :value="supervisor" v-model="selected"></v-checkbox>
+              <v-checkbox v-for="(admin, i) in request_admins" color="green" :key=i :label="admin" :value="admin" v-model="selected"></v-checkbox>
               <v-row>
                 <v-spacer/>
                 <v-col sm="2">
@@ -35,18 +35,14 @@ export default {
     }
   },
   computed: {
-    supervisors () {
-      return this.get_supervisors()
+    request_admins () {
+      return this.$store.getters['users/get_request_admins']
     },
     current_user () {
       return this.$store.getters['users/get_user']
     }
   },
   methods: {
-    get_supervisors () {
-      //TODO: read api
-      return ['troeger', 'sachs', 'xyz']
-    },
     send_request (e) {
       e.preventDefault()
       if (this.selected.length) {
@@ -63,6 +59,7 @@ export default {
   },
   mounted () {
     this.$store.dispatch('users/request_current_user')
+    this.$store.dispatch('users/request_approval_info')
   }
 }
 </script>

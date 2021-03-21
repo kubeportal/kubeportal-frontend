@@ -15,7 +15,9 @@ const users_container = {
       },
       webapps: [],
       groups: [],
-      dark_mode: false
+      approval_url: '',
+      dark_mode: false,
+      approving_admins: []
     },
 
     getters: {
@@ -25,7 +27,9 @@ const users_container = {
       get_user (state) { return state.user },
       get_webapps (state) { return state.webapps },
       get_groups (state) { return state.groups },
-      get_dark_mode (state) { return state.dark_mode }
+      get_approval_url (state) { return state.approval_url },
+      get_dark_mode (state) { return state.dark_mode },
+      get_approving_admins (state) { return state.approving_admins }
     },
 
     mutations: {
@@ -37,7 +41,10 @@ const users_container = {
       push_group (state, group) { state.groups.push(group) },
       set_webapps (state, webapps) { state.webapps = webapps },
       set_groups (state, groups) { state.groups = groups },
-      set_dark_mode (state) { state.dark_mode = !state.dark_mode }
+      set_approval_url (state, url) { state.approval_url = url },
+      set_dark_mode (state) { state.dark_mode = !state.dark_mode },
+      push_approving_admin (state, admin) { state.approving_admins.push(admin) },
+      set_approving_admins (state, admins) { state.approving_admins = admins }
     },
 
     actions: {
@@ -50,6 +57,7 @@ const users_container = {
           context.commit('set_access_token', response.data['access_token'])
           context.commit('set_refresh_token', response.data['refresh_token'])
           context.commit('set_url', response.data['user_url'])
+          context.commit('set_approval_url', response.data['approval_url'])
           store.commit('news/set_news_url', response.data['news_url'])
           store.commit('infos/set_infos_url', response.data['infos_url'])
           const user_details = await backend.get(response.data['user_url'])
@@ -71,9 +79,9 @@ const users_container = {
         for (const webapp_url of current_user['webapp_urls']) {
           const response = await backend.get(webapp_url)
           let res_data = response.data
-          // if (res_data.link_url.includes('{{namespace}}')) {
-          //   res_data.link_url = res_data.link_url.replace('{{namespace}}', current_user['namespace_names'][0])
-          // }
+          if (res_data.link_url.includes('{{namespace}}')) {
+            res_data.link_url = res_data.link_url.replace('{{namespace}}', current_user['namespace_names'][0])
+          }
           // @TODO: Service accounts are currently urls
           // if (res_data.link_url.includes('{{serviceaccount}}')) {
           //   res_data.link_url = res_data.link_url.replace('{{serviceaccount}}', current_user['get_namespace'])
@@ -113,6 +121,14 @@ const users_container = {
       async switch_dark_mode (context) {
         context.commit('set_dark_mode')
         return context.getters['get_dark_mode']
+      },
+      async request_approval_info (context) {
+        const response = await backend.get(context.state.approval_url)
+        response.data['approving_admin_urls'].forEach(admin_url => {
+          backend.get(admin_url).then(admin_res => {
+            context.commit('push_approving_admin', { admin: admin_res.data, url: admin_url })
+          })
+        })
       }
     }
   }
