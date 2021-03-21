@@ -11,7 +11,7 @@ import Storage from '@/components/Storage/Storage'
 import Network from '@/components/Network/Network'
 import RequestAccess from '@/components/RequestAccess/RequestAccess'
 import Wizard from '@/components/Wizard/Wizard'
-import Dashboard from '@/components/Sidenav'
+import Dashboard from '@/components/Dashboard'
 
 export default {
   name: 'App',

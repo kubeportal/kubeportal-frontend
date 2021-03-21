@@ -52,7 +52,7 @@
           >
           <template v-slot:item="props">
             <tr>
-              <td><span class='host' v-html=props.item.hosts /></td>
+              <td><span class='host' v-html=props.item.host_links /></td>
               <td>
                 <v-icon v-if='props.item.status === 200' style="color: #689F38" class="icon ">mdi-checkbox-blank-circle</v-icon>
                 <v-icon v-else class="icon" style="color: #a10000" >mdi-checkbox-blank-circle</v-icon>
@@ -126,7 +126,7 @@ export default {
       ingresses_headers: [
         {
           text: 'Hosts',
-          value: 'hosts',
+          value: 'host_links',
           algin: 'start',
           sortable: true
         },
@@ -157,7 +157,7 @@ export default {
       ]
     }
   },
-  beforeMount () {
+  mounted () {
     if (this.services_data.length === 0) {
       this.$store.dispatch('services/request_services')
     }
