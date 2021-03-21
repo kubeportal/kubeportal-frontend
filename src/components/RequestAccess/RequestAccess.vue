@@ -5,12 +5,12 @@
       </v-subheader>
       <v-card class="my-4">
           <v-card-title>
-              Supervisor
+              Admins
           </v-card-title>
           <v-form @submit="send_request">
-            <RequestSpinner v-if="supervisors.length === 0"/>
+            <RequestSpinner v-if="approving_admins.length === 0"/>
             <v-container v-else>
-              <v-checkbox v-for="(admin, i) in request_admins" color="green" :key=i :label="admin" :value="admin" v-model="selected"></v-checkbox>
+              <v-checkbox v-for="(admin, i) in approving_admins" color="green" :key=i :label="admin.admin.name" :value="admin.url" v-model="selected"></v-checkbox>
               <v-row>
                 <v-spacer/>
                 <v-col sm="2">
@@ -35,8 +35,8 @@ export default {
     }
   },
   computed: {
-    request_admins () {
-      return this.$store.getters['users/get_request_admins']
+    approving_admins () {
+      return this.$store.getters['users/get_approving_admins']
     },
     current_user () {
       return this.$store.getters['users/get_user']
@@ -46,8 +46,10 @@ export default {
     send_request (e) {
       e.preventDefault()
       if (this.selected.length) {
-        console.log(this.selected)
+        console.log('SELECTED APPROVAL ADMIN', this.selected)
+        this.$store.dispatch('users/send_approval_request', this.selected)
       }
+      this.selected = []
     },
     display_message () {
       switch (this.current_user['state']) {
@@ -59,7 +61,9 @@ export default {
   },
   mounted () {
     this.$store.dispatch('users/request_current_user')
-    this.$store.dispatch('users/request_approval_info')
+    if (this.approving_admins.length === 0) {
+      this.$store.dispatch('users/request_approving_info')
+    }
   }
 }
 </script>

@@ -122,11 +122,21 @@ const users_container = {
         context.commit('set_dark_mode')
         return context.getters['get_dark_mode']
       },
-      async request_approval_info (context) {
-        const response = await backend.get(context.state.approval_url)
+      async request_approving_info (context) {
+        //const response = await backend.get(context.state.approval_url)
+        console.log('APPROVING ADMINS GET', context.state.url + 'approval/')
+        const response = await backend.get(context.state.url + 'approval/')
         response.data['approving_admin_urls'].forEach(admin_url => {
           backend.get(admin_url).then(admin_res => {
+            console.log('APPROVING ADMINS GET', admin_res.data)
             context.commit('push_approving_admin', { admin: admin_res.data, url: admin_url })
+          })
+        })
+      },
+      async send_approval_request (context, admin_urls) {
+        admin_urls.forEach(url => {
+          backend.post(context.state.url + 'approval/', { approving_admin_url: url }).then(res => {
+            console.log('SEND ADMIN APPROVAL RESPONSE', res)
           })
         })
       }
