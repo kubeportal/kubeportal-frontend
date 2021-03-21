@@ -13,7 +13,7 @@ const infos = {
       get_infos_url (state) { return state.infos_url },
       get_cluster_links (state) { return state.cluster_links },
       get_cluster_info (state) { return state.cluster_info },
-      get_infos (state) { return state.infos },
+      get_infos (state) { return state.infos }
     },
 
     mutations: {
@@ -21,7 +21,7 @@ const infos = {
       set_cluster_links (state, links) { state.cluster_links = links },
       set_cluster_info (state, info) { state.cluster_info = info },
       push_cluster_info (state, info) { state.cluster_info.push(info) },
-      set_info (state, name, info) { state.infos[name] = info },
+      set_info (state, name, info) { state.infos[name] = info }
     },
 
     actions: {
