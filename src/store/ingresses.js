@@ -35,18 +35,22 @@ const ingresses_container = {
             data['annotations'] = ingress.annotations.map(anno => { return `${anno['key']}: ${anno['value']}` })
             data['hosts'] = ingress.rules.map(rule => {
               return rule.paths.map(path => {
-                return data['tls'] === true
+                return data['tls']
                   ? `https://${rule.host}${path['path']}`
                   : `http://${rule.host}${path['path']}`
               })
             })
+            data['host_links'] = data['hosts'][0].map(host => {
+              return `<a href=${host}>${host}</a>`
+            })
+
             data['services'] = ingress.rules.map(rule => {
               return rule.paths.map(path => `${path['service_name']}:${path['service_port']}`)
             })
             data['path'] = ingress.rules.map(rule => {
               return rule.paths.map(path => `${path['path']}`)
             })
-            // @TODO this should happen inside of Network.vue to get the newest data
+            // @TODO this should happen inside of Network.vue or we need a refresh button
             data['status'] = data['hosts'][0].map(async host => {
               const XHR = new XMLHttpRequest()
               XHR.open('OPTIONS', host)
@@ -67,7 +71,7 @@ const ingresses_container = {
             data['hosts'] = data['hosts'].join('<br>').replace(',', '<br>')
             data['services'] = data['services'].join('<br>').replace(',', '<br>')
             data['path'] = data['path'].join('<br>').replace(',', '<br>')
-
+            data['host_links'] = data['host_links'].join('<br>').replace(',', '<br>')
             context.commit('push_ingress', data)
           })
         })
