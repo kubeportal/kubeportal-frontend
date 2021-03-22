@@ -57,7 +57,7 @@ const users_container = {
           context.commit('set_access_token', response.data['access_token'])
           context.commit('set_refresh_token', response.data['refresh_token'])
           context.commit('set_url', response.data['user_url'])
-          context.commit('set_approval_url', response.data['approval_url'])
+          context.commit('set_approval_url', response.data['user_approval_url'])
           store.commit('news/set_news_url', response.data['news_url'])
           store.commit('infos/set_infos_url', response.data['infos_url'])
           const user_details = await backend.get(response.data['user_url'])
@@ -99,13 +99,15 @@ const users_container = {
       },
       async request_namespaces (context) {
         const current_user = context.getters['get_user']
-        const response = await backend.get(current_user['namespace_urls'][0])
-        console.log('NAMESPACE RESPONSE', response.data)
-        store.commit('pods/set_pods_link', response.data['pods_url'])
-        store.commit('deployments/set_deployments_link', response.data['deployments_url'])
-        store.commit('services/set_services_link', response.data['services_url'])
-        store.commit('ingresses/set_ingresses_link', response.data['ingresses_url'])
-        store.commit('pvcs/set_pvc_link', response.data['persistentvolumeclaims_url'])
+        if (current_user['state'] === 'ACCESS_APPROVED') {
+          const response = await backend.get(current_user['namespace_urls'][0])
+          console.log('NAMESPACE RESPONSE', response.data)
+          store.commit('pods/set_pods_link', response.data['pods_url'])
+          store.commit('deployments/set_deployments_link', response.data['deployments_url'])
+          store.commit('services/set_services_link', response.data['services_url'])
+          store.commit('ingresses/set_ingresses_link', response.data['ingresses_url'])
+          store.commit('pvcs/set_pvc_link', response.data['persistentvolumeclaims_url'])
+        }
       },
       async update_user (context, payload) {
         const response = await backend.patch(context.state.url, payload)
@@ -123,9 +125,9 @@ const users_container = {
         return context.getters['get_dark_mode']
       },
       async request_approving_info (context) {
-        //const response = await backend.get(context.state.approval_url)
-        console.log('APPROVING ADMINS GET', context.state.url + 'approval/')
-        const response = await backend.get(context.state.url + 'approval/')
+        const response = await backend.get(context.state.approval_url)
+        // console.log('APPROVING ADMINS GET', context.state.url + 'approval/')
+        // const response = await backend.get(context.state.url + 'approval/')
         response.data['approving_admin_urls'].forEach(admin_url => {
           backend.get(admin_url).then(admin_res => {
             console.log('APPROVING ADMINS GET', admin_res.data)
@@ -135,7 +137,7 @@ const users_container = {
       },
       async send_approval_request (context, admin_urls) {
         admin_urls.forEach(url => {
-          backend.post(context.state.url + 'approval/', { approving_admin_url: url }).then(res => {
+          backend.post(context.state.approval_url, { approving_admin_url: url }).then(res => {
             console.log('SEND ADMIN APPROVAL RESPONSE', res)
             context.dispatch('request_current_user')
           })

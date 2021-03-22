@@ -5,7 +5,7 @@
       </v-subheader>
       <v-card class="my-4">
           <v-card-title>
-              Admins
+              Administrators:
           </v-card-title>
           <v-form @submit="send_request">
             <RequestSpinner v-if="approving_admins.length === 0"/>
@@ -13,7 +13,7 @@
               <v-checkbox v-for="(admin, i) in approving_admins" color="green" :key=i :label="admin.admin.name" :value="admin.url" v-model="selected"></v-checkbox>
               <v-row>
                 <v-spacer/>
-                <v-col sm="2">
+                <v-col sm="4">
                   <v-btn type="submit" class="btn" color="#689F38">send request</v-btn>
                 </v-col>
               </v-row>
