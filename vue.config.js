@@ -1,6 +1,12 @@
+const webpack = require('webpack')
 module.exports = {
   configureWebpack: {
-    performance: { hints: false }
+    performance: { hints: false },
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env.VUE_APP_BASE_URL': JSON.stringify(process.env.VUE_APP_BASE_URL)
+      })
+    ]
   },
   devServer: {
     overlay: {
@@ -13,4 +19,3 @@ module.exports = {
     host: '0.0.0.0'
   }
 }
-
