@@ -2,8 +2,8 @@
     <v-card class="logincard">
       <v-form @submit.prevent="login">
         <v-card-title>
-          <v-icon class="icon" left>mdi-login-variant</v-icon>
-          {{cluster_branding}}
+          <v-icon class="icon ml-3 mb-7 mt-4" left>mdi-login-variant</v-icon>
+          <span class="mb-7 mt-4">{{cluster_branding}}</span>
         </v-card-title>
         <v-card-text v-if="loading">
           <RequestSpinner />
