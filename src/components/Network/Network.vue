@@ -16,10 +16,10 @@
 
         <v-tab-item>
           <div>
-            <v-btn color="green" dark icon @click="overlay = true" x-large>
+            <v-btn color="green" icon @click="service_overlay = true" x-large disabled>
               <v-icon>mdi-plus-circle</v-icon>
             </v-btn>
-            <ServiceModal @close="overlay = false" :overlay="overlay" :namespace="namespace" />
+            <ServiceModal @close="service_overlay = false" :overlay="service_overlay" :namespace="namespace" />
           </div>
           <v-data-table
             :headers="services_headers"
@@ -38,13 +38,32 @@
           </v-data-table>
         </v-tab-item>
         <v-tab-item>
-          <v-data-table
+          <div>
+            <v-btn color="green" icon @click="ingress_overlay = true" x-large disabled>
+              <v-icon>mdi-plus-circle</v-icon>
+            </v-btn>
+          </div>
+        <v-data-table
             :headers="ingresses_headers"
             :items="ingresses_data"
             :items-per-page="5"
             class="elevation-1"
             :search="search_ingresses"
           >
+          <template v-slot:item="props">
+            <tr>
+              <td><span class='host' v-html=props.item.host_links /></td>
+              <td>
+                <v-icon v-if='props.item.status === 200' style="color: #689F38" class="icon ">mdi-checkbox-blank-circle</v-icon>
+                <v-icon v-else class="icon" style="color: #a10000" >mdi-checkbox-blank-circle</v-icon>
+              </td>
+              <td>{{props.item.name}}</td>
+              <td> <span v-html=props.item.annotations /></td>
+              <td>{{props.item.tls}}</td>
+              <td><span v-html=props.item.services /></td>
+              <td><span v-html=props.item.creation_timestamp /></td>
+            </tr>
+          </template>
             <template v-slot:top>
               <v-text-field
                 v-model="search_ingresses"
@@ -62,13 +81,14 @@
 <script>
 import TopBar from '@/components/TopBar'
 import ServiceModal from './ServiceModal'
+import IngressModal from './IngressModal'
 
 export default {
   name: 'Network',
-  components: { TopBar, ServiceModal },
+  components: { TopBar, ServiceModal, IngressModal },
   computed: {
     namespace () {
-      return this.$store.getters['users/get_user']['k8s_namespace_names'].join(', ')
+      return this.$store.getters['users/get_user']['namespace_names'].join(', ')
     },
     services_data () {
       return this.$store.getters['services/get_services']
@@ -79,14 +99,15 @@ export default {
   },
   data () {
     return {
-      overlay: false,
+      service_overlay: false,
+      ingress_overlay: false,
       search_services: '',
       search_ingresses: '',
       services_headers: [
         {
           text: 'Name',
           algin: 'start',
-          sortable: false,
+          sortable: true,
           value: 'name'
         },
         {
@@ -104,18 +125,34 @@ export default {
       ],
       ingresses_headers: [
         {
-          text: 'Name',
+          text: 'Hosts',
+          value: 'host_links',
           algin: 'start',
-          sortable: false,
+          sortable: true
+        },
+        {
+          text: 'Status',
+          value: 'status'
+        },
+        {
+          text: 'Name',
           value: 'name'
+        },
+        {
+          text: 'Annotations',
+          value: 'annotations'
         },
         {
           text: 'TLS',
           value: 'tls'
         },
         {
-          text: 'Hosts',
-          value: 'hosts'
+          text: 'Service',
+          value: 'services'
+        },
+        {
+          text: 'Created at',
+          value: 'creation_timestamp'
         }
       ]
     }
@@ -127,9 +164,15 @@ export default {
     if (this.ingresses_data.length === 0) {
       this.$store.dispatch('ingresses/request_ingresses')
     }
+  },
+
+  methods: {
   }
 }
 </script>
 
 <style scoped>
+.host a {
+  font-size: larger;
+}
 </style>

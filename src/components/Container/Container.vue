@@ -13,6 +13,11 @@
         </v-tab>
 
         <v-tab-item>
+           <div>
+            <v-btn color="green" icon @click="pod_overlay = true" x-large disabled>
+              <v-icon>mdi-plus-circle</v-icon>
+            </v-btn>
+          </div>
           <v-data-table
             :headers="pods_headers"
             :items="pods_data"
@@ -31,12 +36,12 @@
         </v-tab-item>
         <v-tab-item>
           <div>
-            <v-btn color="green" dark icon @click="overlay = true" x-large>
+            <v-btn color="green" icon @click="deployment_overlay = true" x-large disabled>
               <v-icon>mdi-plus-circle</v-icon>
             </v-btn>
             <DeploymentModal
-              @close="overlay = false"
-              :overlay="overlay"
+              @close="deployment_overlay = false"
+              :overlay="deployment_overlay"
               :namespace="namespace"
             />
           </div>
@@ -70,7 +75,7 @@ export default {
   components: { TopBar, DeploymentModal },
   computed: {
     namespace () {
-      return this.$store.getters['users/get_user']['k8s_namespace_names'].join(', ')
+      return this.$store.getters['users/get_user']['namespace_names'].join(', ')
     },
     pods_data () {
       return this.$store.getters['pods/get_pods']
@@ -81,7 +86,8 @@ export default {
   },
   data () {
     return {
-      overlay: false,
+      deployment_overlay: false,
+      pod_overlay: false,
       search_pods: '',
       search_deployments: '',
       pods_headers: [
@@ -98,6 +104,10 @@ export default {
         {
           text: 'Container',
           value: 'containers'
+        },
+        {
+          text: 'Image',
+          value: 'images'
         }
       ],
       deployment_headers: [

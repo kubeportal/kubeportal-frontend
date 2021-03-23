@@ -1,19 +1,16 @@
 <template>
   <v-card>
     <v-tabs vertical class="sidenav" dark active-class="activeTab">
-      <v-img
+      <v-img class="img"
         src="../assets/mountain.jpeg"
-        gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)"
-        width="25vh"
-        height="100vh"
-      >
+        gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)">
         <div class="logo text-center" @click="go_to_dashboard">
           <v-row align="center" >
-            <v-col sm="2">
+            <v-col>
               <v-icon class="icon">mdi-view-dashboard-variant</v-icon>
             </v-col>
-            <v-col sm="10">
-              <div class="title"><small>{{cluster_name}}</small></div>
+            <v-col>
+              <div class="title"><small>{{cluster_branding}}</small></div>
             </v-col>
           </v-row>
         </div>
@@ -22,10 +19,10 @@
         </v-container>
         <v-tab v-for="tab in filtered_tabs" :key="tab.name">
           <v-row>
-            <v-col sm="2">
+            <v-col sm="4">
               <v-icon class="icon">{{ tab.icon }}</v-icon>
             </v-col>
-            <v-col sm="10">
+            <v-col sm="6">
               <div class="title">
                 <small>{{ tab.name }}</small>
               </div>
@@ -36,8 +33,7 @@
         <v-tab-item
           v-for="(tab, index) in filtered_tabs"
           :key="tab.name + index"
-          class="items"
-        >
+          class="items">
           <Node :tab="tab" />
         </v-tab-item>
     </v-tabs>
@@ -55,9 +51,6 @@ export default {
       if (this.$route.name !== 'Kubeportal') {
         this.$router.push({ name: 'Kubeportal' })
       }
-    },
-    request_cluster_name () {
-      this.$store.dispatch('infos/request_cluster_name')
     }
   },
   components: { showAt, Node },
@@ -66,13 +59,12 @@ export default {
     filtered_tabs () {
       return this.tabs.filter((tab) => tab.has_access)
     },
-    cluster_name () {
-      return this.$store.getters['infos/get_cluster_name']
+    cluster_branding () {
+      return this.$store.getters['api/get_branding']
     }
   },
   created () {
     this.$vuetify.theme.dark = this.$store.getters['users/get_dark_mode']
-    if (this.cluster_name === '') this.request_cluster_name()
   }
 }
 </script>
@@ -86,11 +78,11 @@ export default {
   position: absolute;
   left: -2px;
   top: -2px;
-  min-width: 100px;
+  overflow: auto;
 }
 
 .activeTab {
-  background-color: green;
+  background: linear-gradient(to top right, #b3b3b3, #4d4d4d)
 }
 
 .logo {
@@ -109,7 +101,11 @@ hr {
   text-align: center;
 }
 .items {
-  margin-left: 1vw;
   max-height: 100vh;
+}
+.img {
+  width: 12vw;
+  height: 100vh;
+  min-width: 200px;
 }
 </style>

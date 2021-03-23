@@ -24,7 +24,7 @@ const news_container = {
         let response = await backend.get(context.state.news_url)
         let tmp = []
         for (const news of response.data) {
-          let author_response = await backend.get(news['author'])
+          let author_response = await backend.get(news['author_url'])
           tmp.push({
             ...news,
             created: moment(news['created']).format(),

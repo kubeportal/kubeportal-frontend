@@ -1,5 +1,6 @@
 <template>
   <v-card>
+    <v-card-text> current namespace: {{ namespace }} </v-card-text>
     <div>
       <v-tabs fixed-tabs>
         <v-tab>
@@ -9,7 +10,7 @@
         <v-tab-item>
           <v-data-table
             :headers="pvc_headers"
-            :items="pvc_data"
+            :items="pvcs_data"
             :items-per-page="15"
             class="elevation-1"
             :search="search_pvc"
@@ -46,40 +47,35 @@ export default {
           value: 'name'
         },
         {
-          text: 'Created at',
-          value: 'status'
+          text: 'Access Mode',
+          value: 'access_mode'
         },
         {
-          text: 'Container',
-          value: 'cpu_usage'
+          text: 'Phase',
+          value: 'phase'
+        },
+        {
+          text: 'Size',
+          value: 'size'
+        },
+        {
+          text: 'Created at',
+          value: 'creation_timestamp'
         }
       ]
     }
   },
   computed: {
+    namespace () {
+      return this.$store.getters['users/get_user']['namespace_names'].join(', ')
+    },
     pvcs_data () {
-      return [
-        {
-          name: 'pvc1',
-          status: 'running',
-          cpu_usage: '99%'
-        },
-        {
-          name: 'pvc2',
-          status: 'sleeping',
-          cpu_usage: '1%'
-        },
-        {
-          name: 'not a pvc',
-          status: 'not running',
-          cpu_usage: '110%'
-        }
-      ]
+      return this.$store.getters['pvcs/get_persistentvolumeclaims']
     }
   },
   mounted () {
     if (this.pvcs_data.length === 0) {
-      this.$store.dispatch('pvcs/request_pvcs')
+      this.$store.dispatch('pvcs/request_persistentvolumeclaims')
     }
   }
 }

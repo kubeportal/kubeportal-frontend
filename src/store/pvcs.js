@@ -1,32 +1,43 @@
 import * as backend from '@/utils/backend'
 import moment from 'moment'
-const pvcs_container = {
+const persistentvolumeclaims_container = {
   module: {
     namespaced: true,
     state: {
-      pvc_links: [],
-      pvcs: []
+      pvc_link: '',
+      persistentvolumeclaims: []
     },
 
     getters: {
-      get_pvc_links (state) { return state.pvc_links },
-      get_pvcs (state) { return state.pvcs }
+      get_pvc_link (state) { return state.pvc_link },
+      get_persistentvolumeclaims (state) { return state.persistentvolumeclaims }
     },
 
     mutations: {
-      set_pvc_links (state, pvc_links) { state.pvc_links = pvc_links },
-      set_pvcs (state, pvcs) { state.pvcs = pvcs },
-      push_pvc (state, pvc) { state.pvcs.push(pvc) }
+      set_pvc_link (state, pvc_link) { state.pvc_link = pvc_link },
+      set_persistentvolumeclaims (state, persistentvolumeclaims) { state.persistentvolumeclaims = persistentvolumeclaims },
+      push_persistentvolumeclaim (state, persistentvolumeclaim) { state.persistentvolumeclaims.push(persistentvolumeclaim) }
     },
 
     actions: {
-      async request_pvcs (context) {
-        const pvc_links = context.getters['get_pvc_links']
-        pvc_links.forEach(link => {
+      async request_persistentvolumeclaims (context) {
+        const pvc_link = context.getters['get_pvc_link']
+        console.log('ooooooooooooooooooooooooooooooooooooooo')
+        console.log(pvc_link)
+
+        const persistentvolumeclaim_links = await backend.get(pvc_link)
+        console.log(persistentvolumeclaim_links)
+        persistentvolumeclaim_links.data['persistentvolumeclaim_urls'].forEach(link => {
           backend.get(link).then(response => {
-            console.log('PVCS', response.data)
-            let pvc = response.data
-            context.commit('push_pvc', JSON.stringify(pvc))
+            console.log('persistentvolumeclaims', response.data)
+            let persistentvolumeclaim = response.data
+            let data = {}
+            data['name'] = persistentvolumeclaim.name
+            data['creation_timestamp'] = moment(persistentvolumeclaim.creation_timestamp).format()
+            data['size'] = persistentvolumeclaim.size
+            data['access_mode'] = persistentvolumeclaim.access_modes
+            data['phase'] = persistentvolumeclaim.phase
+            context.commit('push_persistentvolumeclaim', data)
           })
         })
       }
@@ -34,4 +45,4 @@ const pvcs_container = {
   }
 }
 
-export default pvcs_container
+export default persistentvolumeclaims_container

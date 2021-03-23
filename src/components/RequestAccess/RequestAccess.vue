@@ -1,19 +1,19 @@
 <template>
   <div>
       <v-subheader>
-        You can send an access request to an administrator of your choice:
+        {{display_message()}}
       </v-subheader>
       <v-card class="my-4">
           <v-card-title>
-              Supervisor
+              Administrators:
           </v-card-title>
           <v-form @submit="send_request">
-            <RequestSpinner v-if="supervisors.length === 0"/>
+            <RequestSpinner v-if="approving_admins.length === 0"/>
             <v-container v-else>
-              <v-checkbox v-for="(supervisor, i) in supervisors" color="green" :key=i :label="supervisor" :value="supervisor" v-model="selected"></v-checkbox>
+              <v-checkbox v-for="(admin, i) in approving_admins" color="green" :key=i :label="admin.admin.name" :value="admin.url" v-model="selected"></v-checkbox>
               <v-row>
                 <v-spacer/>
-                <v-col sm="2">
+                <v-col sm="4">
                   <v-btn type="submit" class="btn" color="#689F38">send request</v-btn>
                 </v-col>
               </v-row>
@@ -35,20 +35,34 @@ export default {
     }
   },
   computed: {
-    supervisors () {
-      return this.get_supervisors()
+    approving_admins () {
+      return this.$store.getters['users/get_approving_admins']
+    },
+    current_user () {
+      return this.$store.getters['users/get_user']
     }
   },
   methods: {
-    get_supervisors () {
-      //TODO: read api
-      return ['troeger', 'sachs', 'xyz']
-    },
     send_request (e) {
       e.preventDefault()
       if (this.selected.length) {
-        console.log(this.selected)
+        console.log('SELECTED APPROVAL ADMIN', this.selected)
+        this.$store.dispatch('users/send_approval_request', this.selected)
       }
+      this.selected = []
+    },
+    display_message () {
+      switch (this.current_user['state']) {
+        case 'NEW': return 'You can send an access request to an administrator of your choice:'
+        case 'ACCESS_REQUESTED': return 'Your request for cluster access was already sent to the administrators.\nIf needed, you can re-send an access request to an administrator of your choice:'
+        case 'ACCESS_REJECTED': return 'Sorry, you have no access to the cluster.'
+      }
+    }
+  },
+  mounted () {
+    this.$store.dispatch('users/request_current_user')
+    if (this.approving_admins.length === 0) {
+      this.$store.dispatch('users/request_approving_info')
     }
   }
 }

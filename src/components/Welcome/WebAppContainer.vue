@@ -11,9 +11,8 @@
                   <v-icon large color="white">{{app_icon(app['category'])}}</v-icon>
                 </v-card-text>
               </v-card>
-
-              <v-card class="app-text" :elevation="hover ? 12 : 2">
-                <v-card-text class="text-md-h5 white--text">
+              <v-card class="app-text" :class="app.color" :elevation="hover ? 12 : 2">
+                <v-card-text  :value="app.color" class="text-md-h5 white--text">
                   {{ app.link_name }}
                   <!-- {{ app.link_url }} -->
                 </v-card-text>
@@ -32,12 +31,23 @@ import RequestSpinner from '@/components/RequestSpinner'
 export default {
   name: 'WebAppContainer',
   components: { RequestSpinner },
+  data () {
+    return {
+      classes: ['blue', 'yellowgreen', 'green']
+    }
+  },
   computed: {
     webapps () {
-      return this.$store.getters['users/get_webapps']
+      return this.modify_webapps(this.$store.getters['users/get_webapps'])
     }
   },
   methods: {
+    modify_webapps (webapps) {
+      webapps.forEach((webapp, index) => {
+        webapp['color'] = this.$data.classes[index % 3]
+      })
+      return webapps
+    },
     open_link (link) {
       window.open(link, '_blank')
     },
@@ -52,7 +62,6 @@ export default {
         case 'MONITORING': return 'mdi-monitor-share'
       }
     }
-
   }
 }
 </script>
@@ -73,22 +82,19 @@ export default {
   z-index: 1;
   left: 5%;
   bottom: 70%;
-  border-color: green;
 }
 
 .app-icon-text{
   padding: 5px;
-  background-color: green;
 }
 
 .app-text{
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: 4rem;
   border-radius: 40px;
-  background-color: green;
-  //background-image: linear-gradient(to bottom left, rgba(74, 151, 74, .4), rgba(92, 185, 92, 1));
+  min-width: 100px;
 }
 
 .v-card.on-hover.theme--dark{
@@ -96,5 +102,17 @@ export default {
   .v-card__text{
     color: #000
   }
+}
+
+.blue {
+  background: dodgerblue linear-gradient(to bottom left,  #b3d9ff, #004d99);
+}
+
+.yellowgreen {
+  background: yellowgreen linear-gradient(to bottom left, #e6e600, #808000);
+}
+
+.green {
+  background: green linear-gradient(to bottom left,  #99ffbb, #009933);
 }
 </style>

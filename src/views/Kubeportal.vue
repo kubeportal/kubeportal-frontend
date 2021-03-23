@@ -18,40 +18,40 @@ export default {
 
   components: { Welcome, Container, Storage, Network, RequestAccess, Wizard, Dashboard },
   computed: {
-    has_access () {
-      return true
+    user_state () {
+      return this.$store.getters['users/get_user']['state']
     },
     tabs () {
       return [
         {
           icon: 'mdi-home-heart',
           name: 'Welcome',
-          has_access: this.has_access,
+          has_access: true,
           component: Welcome
         }, {
           icon: 'mdi-key',
           name: 'Request Access',
-          has_access: !this.has_access,
+          has_access: this.user_state !== 'ACCESS_APPROVED',
           component: RequestAccess
         }, {
           icon: 'mdi-package',
           name: 'Container',
-          has_access: this.has_access,
+          has_access: this.user_state === 'ACCESS_APPROVED',
           component: Container
         }, {
           icon: 'mdi-database',
           name: 'Storage',
-          has_access: this.has_access,
+          has_access: this.user_state === 'ACCESS_APPROVED',
           component: Storage
         }, {
           icon: 'mdi-lan',
           name: 'Network',
-          has_access: this.has_access,
+          has_access: this.user_state === 'ACCESS_APPROVED',
           component: Network
         }, {
           icon: 'mdi-wizard-hat',
           name: 'Wizard',
-          has_access: this.has_access,
+          has_access: this.user_state === 'ACCESS_APPROVED',
           component: Wizard
         }
       ]
