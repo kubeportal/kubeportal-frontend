@@ -1,11 +1,10 @@
 <template>
   <v-app >
     <v-main>
-      <!--v-toolbar flat class="blue-grey darken-4 toolbar">
-        <v-icon class="icon">mdi-view-dashboard-variant</v-icon>
-        <v-toolbar-title class="title">Data Science Cluster</v-toolbar-title>
-      </v-toolbar-->
-      <router-view />
+      <v-img class="background" src="./assets/mountain.jpg"
+             gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)">
+        <router-view />
+      </v-img>
     </v-main>
   </v-app>
 </template>
@@ -30,5 +29,9 @@ export default {
     padding: 0 1rem 0 3rem;
     color: floralwhite;
   }
-
+  .background {
+    height: 100vh;
+    width: auto;
+    object-fit: cover;
+  }
 </style>
