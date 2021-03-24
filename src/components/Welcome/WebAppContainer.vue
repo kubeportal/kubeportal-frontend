@@ -3,16 +3,18 @@
       <hide-at :breakpoints="{small: 600, medium: 800, large: 1200}"  breakpoint="small">
       <RequestSpinner v-if="webapps.length === 0" />
       <div class="mt-5 d-inline-flex justify-lg-center justify-md-center justify-sm-center flex-wrap" v-else>
-          <div v-for="app in webapps" :key="app.index">
-              <div class="app mr-7" @click="open_link(app.link_url)">
-                <v-icon class="app-icon" large color="white">{{app_icon(app['category'])}}</v-icon>
-                <v-card class="app-card pr-4 pl-7" :class="app.color" :elevation="hover ? 12 : 2">
-                  <v-card-text class="app-text white--text text-lg-button text-md-body-1 text-sm-body-1" :value="app.color">
-                    {{ app.link_name }}
-                  </v-card-text>
-                </v-card>
-              </div>
-          </div>
+        <div v-for="app in webapps" :key="app.index">
+          <v-hover v-slot="{ hover }" >
+            <div class="app mr-7" @click="open_link(app.link_url)">
+              <v-icon class="app-icon" large color="white">{{app_icon(app['category'])}}</v-icon>
+              <v-card class="app-card pr-4 pl-7" :class="app.color" :elevation="hover ? 12 : 2">
+                <v-card-text class="app-text white--text text-lg-button text-md-body-1 text-sm-body-1" :value="app.color">
+                  {{ app.link_name }}
+                </v-card-text>
+              </v-card>
+            </div>
+          </v-hover>
+        </div>
       </div>
       </hide-at>
       <show-at :breakpoints="{small: 600, medium: 800, large: 1200}"  breakpoint="small">
@@ -42,7 +44,8 @@ export default {
   components: { showAt, hideAt, RequestSpinner },
   data () {
     return {
-      classes: ['blue', 'orange', 'yellowgreen', 'green']
+      classes: ['blue', 'orange', 'yellowgreen', 'green'],
+      hover: false
     }
   },
   computed: {
@@ -89,7 +92,7 @@ export default {
   height: auto;
   display: block;
 }
-.app-icon, {
+.app-icon {
   position: absolute;
   background-color: green;
   z-index: 1;
