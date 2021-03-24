@@ -1,14 +1,14 @@
 <template>
-  <v-card>
+  <div>
     <v-card-text> current namespace: {{ namespace }} </v-card-text>
     <div>
       <v-tabs fixed-tabs>
         <v-tab>
-          <v-icon>mdi-desktop-classic</v-icon>
+          <v-icon class="mr-2">mdi-desktop-classic</v-icon>
           Pods
         </v-tab>
         <v-tab>
-          <v-icon>mdi-hexagon-multiple-outline</v-icon>
+          <v-icon class="mr-2">mdi-hexagon-multiple-outline</v-icon>
           Deployments
         </v-tab>
 
@@ -26,10 +26,7 @@
             :search="search_pods"
           >
             <template v-slot:top>
-              <v-text-field
-                v-model="search_pods"
-                label="Search"
-                class="mx-4"
+              <v-text-field v-model="search_pods" label="Search" class="mx-4"
               ></v-text-field>
             </template>
           </v-data-table>
@@ -63,7 +60,7 @@
         </v-tab-item>
       </v-tabs>
     </div>
-  </v-card>
+  </div>
 </template>
 
 <script>

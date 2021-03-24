@@ -1,10 +1,10 @@
 <template>
-  <v-card>
+  <div>
     <v-card-text> current namespace: {{ namespace }} </v-card-text>
     <div>
       <v-tabs fixed-tabs>
         <v-tab>
-          <v-icon>mdi-desktop-classic</v-icon>
+          <v-icon class="mr-2">mdi-desktop-classic</v-icon>
           PVC
         </v-tab>
         <v-tab-item>
@@ -26,7 +26,7 @@
         </v-tab-item>
       </v-tabs>
     </div>
-  </v-card>
+  </div>
 </template>
 
 <script>

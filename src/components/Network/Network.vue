@@ -1,16 +1,14 @@
 <template>
-  <v-card>
-    <v-card-text>
-        current namespace: {{ namespace }}
-    </v-card-text>
+  <div>
+    <v-card-text> current namespace: {{ namespace }}</v-card-text>
     <div>
       <v-tabs fixed-tabs>
         <v-tab>
-          <v-icon>mdi-transit-connection</v-icon>
+          <v-icon class="mr-2">mdi-transit-connection</v-icon>
           Services
         </v-tab>
         <v-tab>
-          <v-icon>mdi-lan-pending</v-icon>
+          <v-icon class="mr-2">mdi-lan-pending</v-icon>
           Ingresses
         </v-tab>
 
@@ -29,11 +27,7 @@
             :search="search_services"
           >
             <template v-slot:top>
-              <v-text-field
-                v-model="search_services"
-                label="Search"
-                class="mx-4"
-              ></v-text-field>
+              <v-text-field v-model="search_services" label="Search" class="mx-4"></v-text-field>
             </template>
           </v-data-table>
         </v-tab-item>
@@ -65,17 +59,13 @@
             </tr>
           </template>
             <template v-slot:top>
-              <v-text-field
-                v-model="search_ingresses"
-                label="Search"
-                class="mx-4"
-              ></v-text-field>
+              <v-text-field v-model="search_ingresses" label="Search" class="mx-4"></v-text-field>
             </template>
           </v-data-table>
         </v-tab-item>
       </v-tabs>
     </div>
-  </v-card>
+  </div>
 </template>
 
 <script>
