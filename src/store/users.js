@@ -9,13 +9,13 @@ const users_container = {
     state: {
       access_token: '',
       refresh_token: '',
+      access_token_refresh_url: '',
       url: '',
       user: {
         webapp_ids: []
       },
       webapps: [],
       groups: [],
-      approval_url: '',
       dark_mode: false,
       approving_admins: []
     },
@@ -23,6 +23,7 @@ const users_container = {
     getters: {
       get_access_token (state) { return state.access_token },
       get_refresh_token (state) { return state.refresh_token },
+      get_access_token_refresh_url (state) { return state.access_token_refresh_url },
       get_url (state) { return state.url },
       get_user (state) { return state.user },
       get_webapps (state) { return state.webapps },
@@ -35,6 +36,7 @@ const users_container = {
     mutations: {
       set_access_token (state, token) { state.access_token = token },
       set_refresh_token (state, token) { state.refresh_token = token },
+      set_access_token_refresh_url (state, url) { state.access_token_refresh_url = url },
       set_url (state, url) { state.url = url },
       set_user (state, user) { state.user = user },
       push_webapp (state, webapp) { state.webapps.push(webapp) },
@@ -58,7 +60,7 @@ const users_container = {
           context.commit('set_refresh_token', response.data['refresh_token'])
           context.commit('set_url', response.data['user_url'])
           context.commit('set_approval_url', response.data['user_approval_url'])
-          context.commit('set_refresh_url', response.data['refresh_url'])
+          context.commit('set_access_token_refresh_url', response.data['access_token_refresh_url'])
           store.commit('news/set_news_url', response.data['news_url'])
           store.commit('infos/set_infos_url', response.data['infos_url'])
           const user_details = await backend.get(response.data['user_url'])
