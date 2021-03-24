@@ -16,6 +16,7 @@ const users_container = {
       },
       webapps: [],
       groups: [],
+      approval_url: '',
       dark_mode: false,
       approving_admins: []
     },
