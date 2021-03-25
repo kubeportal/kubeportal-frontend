@@ -22,9 +22,6 @@ const persistentvolumeclaims_container = {
     actions: {
       async request_persistentvolumeclaims (context) {
         const pvc_link = context.getters['get_pvc_link']
-        console.log('ooooooooooooooooooooooooooooooooooooooo')
-        console.log(pvc_link)
-
         const persistentvolumeclaim_links = await backend.get(pvc_link)
         console.log(persistentvolumeclaim_links)
         persistentvolumeclaim_links.data['persistentvolumeclaim_urls'].forEach(link => {

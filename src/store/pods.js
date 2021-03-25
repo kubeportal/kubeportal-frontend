@@ -49,8 +49,6 @@ const pods_container = {
               container.volume_mounts.map(volume => volume.volume.type)[0])
             data['mountpath'] = pod.containers.map(container => container.volume_mounts.map(volume => volume.mount_path))[0]
             data['volumes'] = pod.containers.map(container => container.volume_mounts)[0]
-            console.log('ööööööööööööööööööööööö')
-            console.log(data['volumes'])
             context.commit('push_pod', data)
           })
         })

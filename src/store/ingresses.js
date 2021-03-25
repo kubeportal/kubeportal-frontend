@@ -78,15 +78,12 @@ const ingresses_container = {
                 console.warn(XHR.statusText, XHR.responseText)
                 ingress['status'].push(XHR.status)
               }
-              console.log('dddddddddddddddddddddddddddddd')
               console.log(ingress['status'])
             }
             XHR.addEventListener('load', loading)
             XHR.send()
           })
         })
-        console.log('########################################')
-        console.log(modified_ingresses)
         context.commit('set_ingresses', [])
         context.commit('set_ingresses', modified_ingresses)
       }
