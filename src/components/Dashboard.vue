@@ -1,18 +1,14 @@
 <template>
   <v-card>
-    <hide-at :breakpoints="{small: 600, medium: 1000, large: 1600}"  breakpoint="small">
+    <hide-at :breakpoints="{small: 600, medium: 1000, large: 1700}"  breakpoint="small">
       <v-tabs vertical class="sidenav" dark active-class="activeTab">
         <v-img class="vertical-img" src="../assets/mountain.jpg"
                gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)">
           <div class="logo text-center" @click="go_to_dashboard">
-            <v-row align="center" >
-              <v-col>
-                <v-icon class="vertical-icon">mdi-view-dashboard-variant</v-icon>
-              </v-col>
-              <v-col>
-                <div class="title"><small>{{cluster_branding}}</small></div>
-              </v-col>
-            </v-row>
+            <div class="d-inline-flex flex-wrap justify-center mt-4">
+              <v-icon class="vertical-icon mr-4">mdi-view-dashboard-variant</v-icon>
+              <div class="title"><small>{{cluster_branding}}</small></div>
+            </div>
           </div>
           <v-container>
             <hr />
@@ -124,7 +120,7 @@ hr {
   max-height: 100vh;
 }
 .vertical-img {
-  width: 12vw;
+  width: 14vw;
   height: 100vh;
   min-width: 200px;
 }
