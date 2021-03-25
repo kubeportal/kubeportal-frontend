@@ -1,70 +1,81 @@
 <template>
   <div>
-    <v-card-text> current namespace: {{ namespace }}</v-card-text>
-    <div>
-      <v-tabs fixed-tabs>
-        <v-tab>
-          <v-icon class="mr-2">mdi-transit-connection</v-icon>
-          Services
-        </v-tab>
-        <v-tab>
-          <v-icon class="mr-2">mdi-lan-pending</v-icon>
-          Ingresses
-        </v-tab>
+    <v-tabs fixed-tabs>
+      <v-tab>
+        <v-icon class="mr-2">mdi-transit-connection</v-icon>
+        Services
+      </v-tab>
+      <v-tab>
+        <v-icon class="mr-2">mdi-lan-pending</v-icon>
+        Ingresses
+      </v-tab>
 
-        <v-tab-item>
-          <div>
-            <v-btn color="green" icon @click="service_overlay = true" x-large disabled>
-              <v-icon>mdi-plus-circle</v-icon>
-            </v-btn>
-            <ServiceModal @close="service_overlay = false" :overlay="service_overlay" :namespace="namespace" />
-          </div>
-          <v-data-table
-            :headers="services_headers"
-            :items="services_data"
-            :items-per-page="5"
-            class="elevation-1"
-            :search="search_services"
-          >
-            <template v-slot:top>
-              <v-text-field v-model="search_services" label="Search" class="mx-4"></v-text-field>
-            </template>
-          </v-data-table>
-        </v-tab-item>
-        <v-tab-item>
-          <div>
-            <v-btn color="green" icon @click="ingress_overlay = true" x-large disabled>
-              <v-icon>mdi-plus-circle</v-icon>
-            </v-btn>
-          </div>
+      <v-tab-item>
+        <div>
+          <v-btn color="green" icon @click="service_overlay = true" x-large disabled>
+            <v-icon>mdi-plus-circle</v-icon>
+          </v-btn>
+          <ServiceModal @close="service_overlay = false" :overlay="service_overlay" :namespace="namespace" />
+        </div>
         <v-data-table
-            :headers="ingresses_headers"
-            :items="ingresses_data"
-            :items-per-page="5"
-            class="elevation-1"
-            :search="search_ingresses"
-          >
+          :headers="services_headers"
+          :items="services_data"
+          :items-per-page="5"
+          class="elevation-1"
+          :search="search_services"
+        >
           <template v-slot:item="props">
             <tr>
-              <td><span class='host' v-html=props.item.host_links /></td>
-              <td>
-                <v-icon v-if='props.item.status === 200' style="color: #689F38" class="icon ">mdi-checkbox-blank-circle</v-icon>
-                <v-icon v-else class="icon" style="color: #a10000" >mdi-checkbox-blank-circle</v-icon>
-              </td>
               <td>{{props.item.name}}</td>
-              <td> <span v-html=props.item.annotations /></td>
-              <td>{{props.item.tls}}</td>
-              <td><span v-html=props.item.services /></td>
-              <td><span v-html=props.item.creation_timestamp /></td>
+              <td>{{props.item.type}}</td>
+              <td>{{props.item.selector}}</td>
+              <td><span v-html=props.item.formatted_ports /></td>
+              <td><span v-html=props.item.formatted_target_ports /></td>
             </tr>
           </template>
-            <template v-slot:top>
-              <v-text-field v-model="search_ingresses" label="Search" class="mx-4"></v-text-field>
-            </template>
-          </v-data-table>
-        </v-tab-item>
-      </v-tabs>
-    </div>
+          <template v-slot:top>
+            <v-text-field v-model="search_services" label="Search" class="mx-4"></v-text-field>
+          </template>
+        </v-data-table>
+      </v-tab-item>
+      <v-tab-item>
+        <div>
+          <v-btn color="green" icon @click="ingress_overlay = true" x-large disabled>
+            <v-icon>mdi-plus-circle</v-icon>
+          </v-btn>
+        </div>
+      <v-data-table
+          :headers="ingresses_headers"
+          :items="ingresses_data"
+          :items-per-page="5"
+          class="elevation-1"
+          :search="search_ingresses"
+        >
+        <template v-slot:item="props">
+          <tr>
+            <td>
+              <div class="d-inline-flex flex-nowrap">
+                <v-icon class="mr-2" v-if="props.item.tls" >mdi-lock-check-outline</v-icon>
+                <v-icon small class="mr-2" v-else>mdi-lock-open-variant-outline</v-icon>
+                <span class="host mt-2" v-html=props.item.formatted_host_links />
+              </div>
+            </td>
+            <td>
+              <v-icon x-small v-if="props.item.status === 200" style="color: #689F38" class="icon ">mdi-checkbox-blank-circle</v-icon>
+              <v-icon x-small v-else class="icon" style="color: #a10000" >mdi-checkbox-blank-circle</v-icon>
+            </td>
+            <td>{{props.item.name}}</td>
+            <td> <span v-html=props.item.formatted_annotations /></td>
+            <td><span v-html=props.item.formatted_services /></td>
+            <td><span v-html=props.item.creation_timestamp /></td>
+          </tr>
+        </template>
+          <template v-slot:top>
+            <v-text-field v-model="search_ingresses" label="Search" class="mx-4"></v-text-field>
+          </template>
+        </v-data-table>
+      </v-tab-item>
+    </v-tabs>
   </div>
 </template>
 
@@ -77,14 +88,14 @@ export default {
   name: 'Network',
   components: { TopBar, ServiceModal, IngressModal },
   computed: {
-    namespace () {
-      return this.$store.getters['users/get_user']['namespace_names'].join(', ')
-    },
     services_data () {
       return this.$store.getters['services/get_services']
     },
     ingresses_data () {
       return this.$store.getters['ingresses/get_ingresses']
+    },
+    namespace () {
+      return this.$store.getters['wizard/get_namespace']
     }
   },
   data () {
@@ -111,12 +122,16 @@ export default {
         {
           text: 'Ports',
           value: 'ports'
+        },
+        {
+          text: 'Targetports',
+          value: 'target_ports'
         }
       ],
       ingresses_headers: [
         {
           text: 'Hosts',
-          value: 'host_links',
+          value: 'formatted_host_links',
           algin: 'start',
           sortable: true
         },
@@ -130,15 +145,11 @@ export default {
         },
         {
           text: 'Annotations',
-          value: 'annotations'
-        },
-        {
-          text: 'TLS',
-          value: 'tls'
+          value: 'formatted_annotations'
         },
         {
           text: 'Service',
-          value: 'services'
+          value: 'formatted_services'
         },
         {
           text: 'Created at',
@@ -152,7 +163,11 @@ export default {
       this.$store.dispatch('services/request_services')
     }
     if (this.ingresses_data.length === 0) {
+      console.log('dispatch data')
       this.$store.dispatch('ingresses/request_ingresses')
+    } else {
+      console.log('check avail in component')
+      this.$store.dispatch('ingresses/check_availablity')
     }
   },
 
@@ -162,7 +177,7 @@ export default {
 </script>
 
 <style scoped>
-.host a {
-  font-size: larger;
+.host {
+  font-size: 1rem;
 }
 </style>

@@ -32,8 +32,10 @@ const services_container = {
             if(service.selector) {
               data['selector'] = `${service.selector['key']}=${service.selector['value']}`
             }
-            // data['selector'] = JSON.stringify(service.selector)
             data['ports'] = service.ports.map(port => `${port['protocol']}:${port['port']} `)
+            data['target_ports'] = service.ports.map(port => port['target_port'])
+            data['formatted_ports'] = data['ports'].join('<br>')
+            data['formatted_target_ports'] = data['target_ports'].join('<br>')
             context.commit('push_service', data)
           })
         })

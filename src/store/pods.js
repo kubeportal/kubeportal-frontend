@@ -1,5 +1,6 @@
 import * as backend from '@/utils/backend'
 import moment from 'moment'
+
 const pods_container = {
   module: {
     namespaced: true,
@@ -9,14 +10,24 @@ const pods_container = {
     },
 
     getters: {
-      get_pods_link (state) { return state.pods_link },
-      get_pods (state) { return state.pods }
+      get_pods_link (state) {
+        return state.pods_link
+      },
+      get_pods (state) {
+        return state.pods
+      }
     },
 
     mutations: {
-      set_pods_link (state, pods_link) { state.pods_link = pods_link },
-      set_pods (state, pods) { state.pods = pods },
-      push_pod (state, pod) { state.pods.push(pod) }
+      set_pods_link (state, pods_link) {
+        state.pods_link = pods_link
+      },
+      set_pods (state, pods) {
+        state.pods = pods
+      },
+      push_pod (state, pod) {
+        state.pods.push(pod)
+      }
     },
 
     actions: {
@@ -30,9 +41,14 @@ const pods_container = {
             let data = {}
             data['name'] = pod.name
             data['creation_timestamp'] = moment(pod.creation_timestamp).format()
-            data['containers'] = pod.containers.map((container) => container.name)
-            data['images'] = pod.containers.map((container) => container.image)
-
+            data['containers'] = pod.containers.map(container => container.name)
+            data['images'] = pod.containers.map(container => container.image)
+            data['volume_names'] = pod.containers.map(container =>
+              container.volume_mounts.map(volume => volume.volume.name))[0]
+            data['volume_type'] = pod.containers.map(container =>
+              container.volume_mounts.map(volume => volume.volume.type)[0])
+            data['mountpath'] = pod.containers.map(container => container.volume_mounts.map(volume => volume.mount_path))[0]
+            data['volumes'] = pod.containers.map(container => container.volume_mounts)[0]
             context.commit('push_pod', data)
           })
         })
