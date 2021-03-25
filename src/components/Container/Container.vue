@@ -26,16 +26,16 @@
           <template v-slot:item="props">
             <tr>
               <td>{{props.item.name}}</td>
-              <td><div v-for="image in props.item.images">{{ image }}</div></td>
-              <td><div v-for="container in props.item.containers">{{ container }}</div></td>
+              <td><div v-for="image in props.item.images" :key="image">{{ image }}</div></td>
+              <td><div v-for="container in props.item.containers" :key="container">{{ container }}</div></td>
               <v-tooltip color="#2e2e2e" nudge-left="10" left>
                 <template v-slot:activator="{ on, attrs }">
                   <td>
-                    <div v-bind="attrs" v-on="on" v-for="volume in props.item.volume_names">{{ volume }}</div>
+                    <div v-bind="attrs" v-on="on" v-for="volume in props.item.volume_names" :key="volume">{{ volume }}</div>
                   </td>
                 </template>
                 <span>
-                  <div class="tooltip" v-for="volume_mount in props.item.volumes">
+                  <div class="tooltip" v-for="volume_mount in props.item.volumes" :key="volume_mount.volume.name">
                     <h3>{{ volume_mount.volume.name }}</h3>
                     <hr>
                     <p>type: {{ volume_mount.volume.type }}</p>
