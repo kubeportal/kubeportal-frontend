@@ -1,31 +1,28 @@
 <template>
   <div>
-    <v-card-text> current namespace: {{ namespace }} </v-card-text>
-    <div>
-      <v-tabs fixed-tabs>
-        <v-tab>
-          <v-icon class="mr-2">mdi-desktop-classic</v-icon>
-          PVC
-        </v-tab>
-        <v-tab-item>
-          <v-data-table
-            :headers="pvc_headers"
-            :items="pvcs_data"
-            :items-per-page="15"
-            class="elevation-1"
-            :search="search_pvc"
-          >
-            <template v-slot:top>
-              <v-text-field
-                v-model="search_pvc"
-                label="Search"
-                class="mx-4"
-              ></v-text-field>
-            </template>
-          </v-data-table>
-        </v-tab-item>
-      </v-tabs>
-    </div>
+    <v-tabs fixed-tabs>
+      <v-tab>
+        <v-icon class="mr-2">mdi-desktop-classic</v-icon>
+        PVC
+      </v-tab>
+      <v-tab-item>
+        <v-data-table
+          :headers="pvc_headers"
+          :items="pvcs_data"
+          :items-per-page="15"
+          class="elevation-1"
+          :search="search_pvc"
+        >
+          <template v-slot:top>
+            <v-text-field
+              v-model="search_pvc"
+              label="Search"
+              class="mx-4"
+            ></v-text-field>
+          </template>
+        </v-data-table>
+      </v-tab-item>
+    </v-tabs>
   </div>
 </template>
 
