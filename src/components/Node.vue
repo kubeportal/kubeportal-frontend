@@ -15,10 +15,10 @@ export default {
   props: ['tab'],
   components: { TopBar },
   computed: {
-  namespace () {
-    return this.$store.getters['users/get_user']['namespace_names'].join(', ')
-  },
-}
+    namespace () {
+      return this.$store.getters['users/get_user']['namespace_names'].join(', ')
+    }
+  }
 }
 </script>
 
