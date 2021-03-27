@@ -14,11 +14,20 @@
           :search="search_pvc"
         >
           <template v-slot:top>
-            <v-text-field
-              v-model="search_pvc"
-              label="Search"
-              class="mx-4"
-            ></v-text-field>
+            <v-row>
+              <v-col md="1">
+                <v-btn color="green" icon x-large disabled>
+                  <v-icon>mdi-plus-circle</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col md="10">
+                <v-text-field
+                  v-model="search_pvc"
+                  label="Search"
+                  class="mx-4"
+                ></v-text-field>
+              </v-col>
+            </v-row>
           </template>
         </v-data-table>
       </v-tab-item>
@@ -64,7 +73,9 @@ export default {
   },
   computed: {
     namespace () {
-      return this.$store.getters['users/get_user']['namespace_names'].join(', ')
+      return this.$store.getters['users/get_user']['namespace_names'].join(
+        ', '
+      )
     },
     pvcs_data () {
       return this.$store.getters['pvcs/get_persistentvolumeclaims']

@@ -1,6 +1,12 @@
 <template>
   <v-img content-class="vertical-img" src="../assets/mountain.jpg">
-    <v-tabs vertical class="sidenav" background-color="rgba(0, 0, 0, .5)" dark active-class="activeTab">
+    <v-tabs
+      :vertical="desktop"
+      class="sidenav"
+      background-color="rgba(0, 0, 0, .5)"
+      dark
+      active-class="activeTab"
+    >
       <div class="logo text-center" @click="go_to_dashboard">
         <div class="d-inline-flex flex-wrap justify-center mt-4">
           <v-icon class="vertical-icon mr-4">mdi-view-dashboard-variant</v-icon>
@@ -93,29 +99,44 @@ import Node from './Node'
 export default {
   name: 'Dashboard',
   components: { showAt, hideAt, Node },
+  data () {
+    return {
+      width: window.outerWidth
+    }
+  },
   methods: {
     go_to_dashboard () {
       if (this.$route.name !== 'Kubeportal') {
         this.$router.push({ name: 'Kubeportal' })
       }
+    },
+    resize (e) {
+      console.log(e.currentTarget.outerWidth)
     }
   },
   props: ['tabs'],
   computed: {
     filtered_tabs () {
-      return this.tabs.filter((tab) => tab.has_access)
+      return this.tabs.filter(tab => tab.has_access)
     },
     cluster_branding () {
       return this.$store.getters['api/get_branding']
+    },
+    desktop () {
+      return this.width > 900
     }
   },
   created () {
     this.$vuetify.theme.dark = this.$store.getters['users/get_dark_mode']
+    window.addEventListener('resize', this.resize)
+  },
+  destroyed () {
+    window.removeEventListener('resize', this.resize)
   }
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .vertical-icon {
   color: floralwhite;
 }
@@ -150,14 +171,13 @@ hr {
 }
 .items {
   max-height: 100vh;
-  background: rgba(0, 0, 0, .5) !important;
-  // opacity: 0.6;
 }
 .vertical-img {
   width: 100vw;
   height: 100vh;
 }
-.theme--light {
-  background: rgba(0, 0, 0, .5) !important;
+.v-window.v-item-group.theme--light.v-tabs-items {
+  background-color: rgba(0, 0, 0, 0);
 }
+
 </style>

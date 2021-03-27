@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar flat class="topBar">
+  <v-toolbar color="rgba(0, 0, 0, 0)" flat class="topBar">
     <v-toolbar-title>{{title}}</v-toolbar-title>
     <v-spacer/>
     <div class="text-center">
@@ -114,6 +114,7 @@ export default {
 <style scoped>
   .topBar {
     max-width: 100vw;
+    background-color: rgba(0, 0, 0, 0);
   }
 
   .listItem {

@@ -11,12 +11,11 @@
       </v-tab>
 
       <v-tab-item>
-        <div>
-          <v-btn color="green" icon @click="service_overlay = true" x-large disabled>
-            <v-icon>mdi-plus-circle</v-icon>
-          </v-btn>
-          <ServiceModal @close="service_overlay = false" :overlay="service_overlay" :namespace="namespace" />
-        </div>
+        <ServiceModal
+          @close="service_overlay = false"
+          :overlay="service_overlay"
+          :namespace="namespace"
+        />
         <v-data-table
           :headers="services_headers"
           :items="services_data"
@@ -26,52 +25,101 @@
         >
           <template v-slot:item="props">
             <tr>
-              <td>{{props.item.name}}</td>
-              <td>{{props.item.type}}</td>
-              <td>{{props.item.selector}}</td>
-              <td><span v-html=props.item.formatted_ports /></td>
-              <td><span v-html=props.item.formatted_target_ports /></td>
+              <td>{{ props.item.name }}</td>
+              <td>{{ props.item.type }}</td>
+              <td>{{ props.item.selector }}</td>
+              <td><span v-html="props.item.formatted_ports" /></td>
+              <td><span v-html="props.item.formatted_target_ports" /></td>
             </tr>
           </template>
           <template v-slot:top>
-            <v-text-field v-model="search_services" label="Search" class="mx-4"></v-text-field>
+            <v-row>
+              <v-col md="1">
+                <v-btn
+                  color="green"
+                  icon
+                  @click="service_overlay = true"
+                  x-large
+                  disabled
+                >
+                  <v-icon>mdi-plus-circle</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col md="10">
+                <v-text-field
+                  v-model="search_services"
+                  label="Search"
+                  class="mx-4"
+                ></v-text-field>
+              </v-col>
+            </v-row>
           </template>
         </v-data-table>
       </v-tab-item>
       <v-tab-item>
-        <div>
-          <v-btn color="green" icon @click="ingress_overlay = true" x-large disabled>
-            <v-icon>mdi-plus-circle</v-icon>
-          </v-btn>
-        </div>
-      <v-data-table
+        <div></div>
+        <v-data-table
           :headers="ingresses_headers"
           :items="ingresses_data"
           :items-per-page="5"
           class="elevation-1"
           :search="search_ingresses"
         >
-        <template v-slot:item="props">
-          <tr>
-            <td>
-              <div class="d-inline-flex flex-nowrap">
-                <v-icon class="mr-2" v-if="props.item.tls" >mdi-lock-check-outline</v-icon>
-                <v-icon small class="mr-2" v-else>mdi-lock-open-variant-outline</v-icon>
-                <span class="host mt-2" v-html=props.item.formatted_host_links />
-              </div>
-            </td>
-            <td>
-              <v-icon x-small v-if="props.item.status === 200" style="color: #689F38" class="icon ">mdi-checkbox-blank-circle</v-icon>
-              <v-icon x-small v-else class="icon" style="color: #a10000" >mdi-checkbox-blank-circle</v-icon>
-            </td>
-            <td>{{props.item.name}}</td>
-            <td> <span v-html=props.item.formatted_annotations /></td>
-            <td><span v-html=props.item.formatted_services /></td>
-            <td><span v-html=props.item.creation_timestamp /></td>
-          </tr>
-        </template>
+          <template v-slot:item="props">
+            <tr>
+              <td>
+                <div class="d-inline-flex flex-nowrap">
+                  <v-icon class="mr-2" v-if="props.item.tls"
+                    >mdi-lock-check-outline</v-icon
+                  >
+                  <v-icon small class="mr-2" v-else
+                    >mdi-lock-open-variant-outline</v-icon
+                  >
+                  <span
+                    class="host mt-2"
+                    v-html="props.item.formatted_host_links"
+                  />
+                </div>
+              </td>
+              <td>
+                <v-icon
+                  x-small
+                  v-if="props.item.status === 200"
+                  style="color: #689f38"
+                  class="icon"
+                  >mdi-checkbox-blank-circle</v-icon
+                >
+                <v-icon x-small v-else class="icon" style="color: #a10000"
+                  >mdi-checkbox-blank-circle</v-icon
+                >
+              </td>
+              <td>{{ props.item.name }}</td>
+              <td><span v-html="props.item.formatted_annotations" /></td>
+              <td><span v-html="props.item.formatted_services" /></td>
+              <td><span v-html="props.item.creation_timestamp" /></td>
+            </tr>
+          </template>
           <template v-slot:top>
-            <v-text-field v-model="search_ingresses" label="Search" class="mx-4"></v-text-field>
+            <v-row>
+              <v-col md="1">
+                <v-btn
+                  color="green"
+                  icon
+                  @click="ingress_overlay = true"
+                  x-large
+                  disabled
+                >
+                  <v-icon>mdi-plus-circle</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col md="10">
+                <v-text-field
+                  v-model="search_ingresses"
+                  label="Search"
+                  class="mx-4"
+                ></v-text-field>
+              </v-col>
+            </v-row>
           </template>
         </v-data-table>
       </v-tab-item>
@@ -171,8 +219,7 @@ export default {
     }
   },
 
-  methods: {
-  }
+  methods: {}
 }
 </script>
 
