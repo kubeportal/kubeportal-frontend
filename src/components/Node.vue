@@ -1,5 +1,5 @@
 <template>
-  <div class="node">
+  <div>
     <TopBar :title="tab.name"/>
     <div>
       <v-card-text> current namespace: {{ namespace }}</v-card-text>
@@ -23,8 +23,5 @@ export default {
 </script>
 
 <style scoped>
-.node {
-  opacity: 1 !important;
-}
 
 </style>

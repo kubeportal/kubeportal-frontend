@@ -1,8 +1,6 @@
 <template>
   <div class="m-4">
-    <v-card>
-      <WebAppContainer />
-    </v-card>
+    <WebAppContainer />
     <v-card class="mt-7">
       <v-card-title> NEWS </v-card-title>
       <v-list class="news">
