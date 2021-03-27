@@ -7,6 +7,7 @@
       dark
       active-class="activeTab"
     >
+    <div v-if="desktop">
       <div class="logo text-center" @click="go_to_dashboard">
         <div class="d-inline-flex flex-wrap justify-center mt-4">
           <v-icon class="vertical-icon mr-4">mdi-view-dashboard-variant</v-icon>
@@ -18,6 +19,7 @@
       <v-container>
         <hr />
       </v-container>
+    </div>
       <v-tab v-for="tab in filtered_tabs" :key="tab.name">
         <v-row>
           <v-col sm="4">
@@ -112,6 +114,7 @@ export default {
     },
     resize (e) {
       console.log(e.currentTarget.outerWidth)
+      this.width = e.currentTarget.outerWidth
     }
   },
   props: ['tabs'],
@@ -173,8 +176,8 @@ hr {
   max-height: 100vh;
 }
 .vertical-img {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 }
 .v-window.v-item-group.theme--light.v-tabs-items {
   background-color: rgba(0, 0, 0, 0);
