@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tmp">
     <v-tabs fixed-tabs>
       <v-tab>
         <v-icon class="mr-2">mdi-desktop-classic</v-icon>
@@ -168,5 +168,9 @@ export default {
 .v-tooltip__content hr {
   width: 75%;
   margin: 1rem 0 1rem 0;
+}
+.tmp {
+  background-color: rgba(0, 0, 0, 0);
+  opacity: 0;
 }
 </style>

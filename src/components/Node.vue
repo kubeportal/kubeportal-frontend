@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="node">
     <TopBar :title="tab.name"/>
-    <v-card>
+    <div>
       <v-card-text> current namespace: {{ namespace }}</v-card-text>
       <component :is="tab.component"/>
-    </v-card>
+    </div>
   </div>
 </template>
 
@@ -22,6 +22,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.node {
+  opacity: 1 !important;
+}
 
 </style>

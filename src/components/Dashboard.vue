@@ -1,5 +1,39 @@
 <template>
-  <v-card>
+  <v-img content-class="vertical-img" src="../assets/mountain.jpg">
+    <v-tabs vertical class="sidenav" background-color="rgba(0, 0, 0, .5)" dark active-class="activeTab">
+      <div class="logo text-center" @click="go_to_dashboard">
+        <div class="d-inline-flex flex-wrap justify-center mt-4">
+          <v-icon class="vertical-icon mr-4">mdi-view-dashboard-variant</v-icon>
+          <div class="title">
+            <small>{{ cluster_branding }}</small>
+          </div>
+        </div>
+      </div>
+      <v-container>
+        <hr />
+      </v-container>
+      <v-tab v-for="tab in filtered_tabs" :key="tab.name">
+        <v-row>
+          <v-col sm="4">
+            <v-icon class="vertical-icon">{{ tab.icon }}</v-icon>
+          </v-col>
+          <v-col sm="6">
+            <div class="title">
+              <small>{{ tab.name }}</small>
+            </div>
+          </v-col>
+        </v-row>
+      </v-tab>
+      <v-tab-item
+        v-for="(tab, index) in filtered_tabs"
+        :key="tab.name + index"
+        class="items"
+      >
+        <Node :tab="tab" />
+      </v-tab-item>
+    </v-tabs>
+  </v-img>
+  <!-- <v-card>
     <hide-at :breakpoints="{small: 600, medium: 1000, large: 1700}"  breakpoint="small">
       <v-tabs vertical class="sidenav" dark active-class="activeTab">
         <v-img class="vertical-img" src="../assets/mountain.jpg"
@@ -49,7 +83,7 @@
           </v-tab-item>
         </v-tabs>
     </show-at>
-  </v-card>
+  </v-card> -->
 </template>
 
 <script>
@@ -59,7 +93,6 @@ import Node from './Node'
 export default {
   name: 'Dashboard',
   components: { showAt, hideAt, Node },
-
   methods: {
     go_to_dashboard () {
       if (this.$route.name !== 'Kubeportal') {
@@ -87,12 +120,11 @@ export default {
   color: floralwhite;
 }
 .top-icon {
-  width: 14px
+  width: 14px;
 }
 
 .sidenav {
   height: 100vh;
-  position: absolute;
   left: -2px;
   top: -2px;
 }
@@ -118,11 +150,14 @@ hr {
 }
 .items {
   max-height: 100vh;
+  background: rgba(0, 0, 0, .5) !important;
+  // opacity: 0.6;
 }
 .vertical-img {
-  width: 14vw;
+  width: 100vw;
   height: 100vh;
-  min-width: 200px;
 }
-
+.theme--light {
+  background: rgba(0, 0, 0, .5) !important;
+}
 </style>
