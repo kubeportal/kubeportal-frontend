@@ -1,9 +1,9 @@
 <template>
   <div class="m-4">
     <WebAppContainer />
-    <v-card class="mt-7">
+    <v-card class="newsCard">
       <v-card-title> NEWS </v-card-title>
-      <v-list class="news">
+      <v-list class="newsContent">
         <v-list-item v-for="(item, index) in news" :key="index">
           <v-list-item-content>
             <v-row>
@@ -60,8 +60,14 @@ export default {
 p {
   color: black !important;
 }
-.news {
+.newsCard {
+  margin: 7 10 0;
+  background-color: #e8e8e8;
+}
+.newsContent {
   height: 25vh;
   overflow-y: scroll;
+  color: #f5f5f5;
 }
+
 </style>
