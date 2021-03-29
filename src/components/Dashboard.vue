@@ -6,6 +6,7 @@
       background-color="rgba(0, 0, 0, .5)"
       dark
       active-class="activeTab"
+      show-arrows
     >
     <div v-if="desktop">
       <div class="logo text-center" @click="go_to_dashboard">
@@ -22,7 +23,7 @@
     </div>
       <v-tab v-for="tab in filtered_tabs" :key="tab.name" class="tab">
         <v-row>
-          <v-col sm="4">
+          <v-col v-if="desktop" sm="4">
             <v-icon class="vertical-icon">{{ tab.icon }}</v-icon>
           </v-col>
           <v-col sm="6">

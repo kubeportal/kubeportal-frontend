@@ -61,11 +61,11 @@ p {
   color: black !important;
 }
 .newsCard {
-  margin: 7 10 0;
+  margin: 50px 100px 0;
   background-color: #e8e8e8;
 }
 .newsContent {
-  height: 25vh;
+  height: 30vh;
   overflow-y: scroll;
   color: #f5f5f5;
 }
