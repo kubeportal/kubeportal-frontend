@@ -7,6 +7,7 @@
       dark
       active-class="activeTab"
       show-arrows
+      icons-and-text
     >
     <div v-if="desktop">
       <div class="logo text-center" @click="go_to_dashboard">
@@ -22,16 +23,8 @@
       </v-container>
     </div>
       <v-tab v-for="tab in filtered_tabs" :key="tab.name" class="tab">
-        <v-row>
-          <v-col v-if="desktop" sm="4">
-            <v-icon class="vertical-icon">{{ tab.icon }}</v-icon>
-          </v-col>
-          <v-col sm="6">
-            <div class="title">
-              <small>{{ tab.name }}</small>
-            </div>
-          </v-col>
-        </v-row>
+        {{ tab.name }}
+        <v-icon class="vertical-icon">{{ tab.icon }}</v-icon>
       </v-tab>
       <v-tab-item
         v-for="(tab, index) in filtered_tabs"
