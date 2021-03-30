@@ -27,9 +27,9 @@ axiosInstance.interceptors.request.use(request => {
   let access_token = store.getters['users/get_access_token']
 
   request.headers['authorization'] = access_token !== '' ? 'Bearer ' + access_token : undefined
-  axiosInstance.defaults.headers['X-CSRFToken'] = store.getters['api/get_csrf_token']
-  if (request.url === base_url + '/api/' + API_VERSION + '/') {
-    axiosInstance.defaults.headers['authorization'] = undefined
+  request.headers['X-CSRFToken'] = store.getters['api/get_csrf_token']
+  if (request.url === base_url + '/api/' + API_VERSION + '/' || request.url.includes('/login/')) {
+    request.headers['authorization'] = undefined
   }
   console.log('HEADER', request.headers)
   return request

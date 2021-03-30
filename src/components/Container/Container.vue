@@ -11,11 +11,6 @@
       </v-tab>
 
       <v-tab-item>
-         <div>
-          <v-btn color="green" icon @click="pod_overlay = true" x-large disabled>
-            <v-icon>mdi-plus-circle</v-icon>
-          </v-btn>
-        </div>
         <v-data-table
           :headers="pods_headers"
           :items="pods_data"
@@ -25,40 +20,79 @@
         >
           <template v-slot:item="props">
             <tr>
-              <td>{{props.item.name}}</td>
-              <td><div v-for="image in props.item.images" :key="image">{{ image }}</div></td>
-              <td><div v-for="container in props.item.containers" :key="container">{{ container }}</div></td>
+              <td>{{ props.item.name }}</td>
+              <td>
+                <div v-for="image in props.item.images" :key="image">
+                  {{ image }}
+                </div>
+              </td>
+              <td>
+                <div
+                  v-for="container in props.item.containers"
+                  :key="container"
+                >
+                  {{ container }}
+                </div>
+              </td>
               <v-tooltip color="#2e2e2e" nudge-left="10" left>
                 <template v-slot:activator="{ on, attrs }">
                   <td>
-                    <div v-bind="attrs" v-on="on" v-for="volume in props.item.volume_names" :key="volume">{{ volume }}</div>
+                    <div
+                      v-bind="attrs"
+                      v-on="on"
+                      v-for="volume in props.item.volume_names"
+                      :key="volume"
+                    >
+                      {{ volume }}
+                    </div>
                   </td>
                 </template>
                 <span>
-                  <div class="tooltip" v-for="volume_mount in props.item.volumes" :key="volume_mount.volume.name">
+                  <div
+                    class="tooltip"
+                    v-for="volume_mount in props.item.volumes"
+                    :key="volume_mount.volume.name"
+                  >
                     <h3>{{ volume_mount.volume.name }}</h3>
-                    <hr>
+                    <hr />
                     <p>type: {{ volume_mount.volume.type }}</p>
                     <p>mountpath: {{ volume_mount.mount_path }}</p>
                   </div>
                 </span>
               </v-tooltip>
-              <td>{{props.item.creation_timestamp}}</td>
+              <td>{{ props.item.creation_timestamp }}</td>
             </tr>
           </template>
           <template v-slot:top>
-            <v-text-field v-model="search_pods" label="Search" class="mx-4"
-            ></v-text-field>
+            <v-row>
+              <v-col md="1">
+                <v-btn
+                  color="green"
+                  icon
+                  @click="pod_overlay = true"
+                  x-large
+                  disabled
+                >
+                  <v-icon>mdi-plus-circle</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col md="10">
+                <v-text-field
+                  v-model="search_pods"
+                  label="Search"
+                  class="mx-4"
+                ></v-text-field>
+              </v-col>
+            </v-row>
           </template>
         </v-data-table>
       </v-tab-item>
       <v-tab-item>
-        <div>
-          <v-btn color="green" icon @click="deployment_overlay = true" x-large disabled>
-            <v-icon>mdi-plus-circle</v-icon>
-          </v-btn>
-          <DeploymentModal @close="deployment_overlay = false" :overlay="deployment_overlay" :namespace="namespace"/>
-        </div>
+        <DeploymentModal
+          @close="deployment_overlay = false"
+          :overlay="deployment_overlay"
+          :namespace="namespace"
+        />
         <v-data-table
           :headers="deployment_headers"
           :items="deployments_data"
@@ -67,7 +101,26 @@
           :search="search_deployments"
         >
           <template v-slot:top>
-            <v-text-field v-model="search_deployments" label="Search" class="mx-4"></v-text-field>
+            <v-row>
+              <v-col md="1">
+                <v-btn
+                  color="green"
+                  icon
+                  @click="deployment_overlay = true"
+                  x-large
+                  disabled
+                >
+                  <v-icon>mdi-plus-circle</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col md="10">
+                <v-text-field
+                  v-model="search_deployments"
+                  label="Search"
+                  class="mx-4"
+                ></v-text-field>
+              </v-col>
+            </v-row>
           </template>
         </v-data-table>
       </v-tab-item>
@@ -84,7 +137,9 @@ export default {
   components: { TopBar, DeploymentModal },
   computed: {
     namespace () {
-      return this.$store.getters['users/get_user']['namespace_names'].join(', ')
+      return this.$store.getters['users/get_user']['namespace_names'].join(
+        ', '
+      )
     },
     pods_data () {
       return this.$store.getters['pods/get_pods']

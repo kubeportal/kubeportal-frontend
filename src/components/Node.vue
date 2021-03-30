@@ -1,10 +1,10 @@
 <template>
   <div>
     <TopBar :title="tab.name"/>
-    <v-card>
+    <div class="m-8">
       <v-card-text> current namespace: {{ namespace }}</v-card-text>
       <component :is="tab.component"/>
-    </v-card>
+    </div>
   </div>
 </template>
 
@@ -15,13 +15,13 @@ export default {
   props: ['tab'],
   components: { TopBar },
   computed: {
-  namespace () {
-    return this.$store.getters['users/get_user']['namespace_names'].join(', ')
-  },
-}
+    namespace () {
+      return this.$store.getters['users/get_user']['namespace_names'].join(', ')
+    }
+  }
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

@@ -1,98 +1,95 @@
 <template>
-  <v-card>
-    <hide-at :breakpoints="{small: 600, medium: 1000, large: 1700}"  breakpoint="small">
-      <v-tabs vertical class="sidenav" dark active-class="activeTab">
-        <v-img class="vertical-img" src="../assets/mountain.jpg"
-               gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)">
-          <div class="logo text-center" @click="go_to_dashboard">
-            <div class="d-inline-flex flex-wrap justify-center mt-4">
-              <v-icon class="vertical-icon mr-4">mdi-view-dashboard-variant</v-icon>
-              <div class="title"><small>{{cluster_branding}}</small></div>
-            </div>
+  <v-img content-class="vertical-img" src="../assets/mountain.jpeg">
+    <v-tabs
+      :vertical="desktop"
+      class="sidenav"
+      background-color="rgba(0, 0, 0, .5)"
+      dark
+      active-class="activeTab"
+      show-arrows
+      icons-and-text
+    >
+    <div v-if="desktop">
+      <div class="logo text-center" @click="go_to_dashboard">
+        <div class="d-inline-flex flex-wrap justify-center mt-4">
+          <v-icon class="vertical-icon mr-4">mdi-view-dashboard-variant</v-icon>
+          <div class="title">
+            <small>{{ cluster_branding }}</small>
           </div>
-          <v-container>
-            <hr />
-          </v-container>
-          <v-tab v-for="tab in filtered_tabs" :key="tab.name">
-            <v-row>
-              <v-col sm="4">
-                <v-icon class="vertical-icon">{{ tab.icon }}</v-icon>
-              </v-col>
-              <v-col sm="6">
-                <div class="title">
-                  <small>{{ tab.name }}</small>
-                </div>
-              </v-col>
-            </v-row>
-          </v-tab>
-        </v-img>
-          <v-tab-item v-for="(tab, index) in filtered_tabs" :key="tab.name + index" class="items">
-            <Node :tab="tab" />
-          </v-tab-item>
-      </v-tabs>
-    </hide-at>
-
-    <show-at :breakpoints="{small: 600, medium: 1000, large: 1600}"  breakpoint="small">
-        <v-tabs grow centered icons-and-text show-arrows dark active-class="activeTab">
-          <v-img src="../assets/mountain.jpg" gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)">
-            <v-row>
-              <v-tab @click="go_to_dashboard">
-                <v-icon large class="mt-4 top-icon">mdi-view-dashboard-variant</v-icon>
-              </v-tab>
-              <v-tab v-for="tab in filtered_tabs" :key="tab.name" class="d-inline-block">
-                <v-icon large class="mt-4 top-icon">{{ tab.icon }}</v-icon>
-              </v-tab>
-            </v-row>
-          </v-img>
-          <v-tab-item v-for="(tab, index) in filtered_tabs" :key="tab.name + index">
-            <Node :tab="tab" />
-          </v-tab-item>
-        </v-tabs>
-    </show-at>
-  </v-card>
+        </div>
+      </div>
+      <v-container>
+        <hr />
+      </v-container>
+    </div>
+      <v-tab v-for="tab in filtered_tabs" :key="tab.name" class="tab">
+        {{ tab.name }}
+        <v-icon class="vertical-icon">{{ tab.icon }}</v-icon>
+      </v-tab>
+      <v-tab-item
+        v-for="(tab, index) in filtered_tabs"
+        :key="tab.name + index"
+        class="items"
+      >
+        <Node :tab="tab" />
+      </v-tab-item>
+    </v-tabs>
+  </v-img>
 </template>
 
 <script>
-import { showAt, hideAt } from 'vue-breakpoints'
 import Node from './Node'
 
 export default {
   name: 'Dashboard',
-  components: { showAt, hideAt, Node },
-
+  components: { Node },
+  data () {
+    return {
+      width: window.outerWidth
+    }
+  },
   methods: {
     go_to_dashboard () {
       if (this.$route.name !== 'Kubeportal') {
         this.$router.push({ name: 'Kubeportal' })
       }
+    },
+    resize (e) {
+      this.width = e.currentTarget.outerWidth
     }
   },
   props: ['tabs'],
   computed: {
     filtered_tabs () {
-      return this.tabs.filter((tab) => tab.has_access)
+      return this.tabs.filter(tab => tab.has_access)
     },
     cluster_branding () {
       return this.$store.getters['api/get_branding']
+    },
+    desktop () {
+      return this.width > 900
     }
   },
   created () {
     this.$vuetify.theme.dark = this.$store.getters['users/get_dark_mode']
+    window.addEventListener('resize', this.resize)
+  },
+  destroyed () {
+    window.removeEventListener('resize', this.resize)
   }
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .vertical-icon {
   color: floralwhite;
 }
 .top-icon {
-  width: 14px
+  width: 14px;
 }
 
 .sidenav {
   height: 100vh;
-  position: absolute;
   left: -2px;
   top: -2px;
 }
@@ -100,7 +97,9 @@ export default {
 .activeTab {
   background: linear-gradient(to top right, #b3b3b3, #4d4d4d);
 }
-
+.tab {
+  width: 15em;
+}
 .logo {
   padding-top: 0.25em;
   width: 85%;
@@ -120,9 +119,11 @@ hr {
   max-height: 100vh;
 }
 .vertical-img {
-  width: 14vw;
-  height: 100vh;
-  min-width: 200px;
+  width: 100%;
+  height: 100%;
+}
+.v-window.v-item-group.theme--light.v-tabs-items {
+  background-color: rgba(0, 0, 0, 0);
 }
 
 </style>
