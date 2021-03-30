@@ -19,7 +19,7 @@
         <v-data-table
           :headers="services_headers"
           :items="services_data"
-          :items-per-page="5"
+          :items-per-page="15"
           class="elevation-1"
           :search="search_services"
         >
@@ -61,7 +61,7 @@
         <v-data-table
           :headers="ingresses_headers"
           :items="ingresses_data"
-          :items-per-page="5"
+          :items-per-page="15"
           class="elevation-1"
           :search="search_ingresses"
         >

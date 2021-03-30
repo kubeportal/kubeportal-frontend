@@ -1,7 +1,7 @@
 <template>
   <div>
     <TopBar :title="tab.name"/>
-    <div>
+    <div class="m-8">
       <v-card-text> current namespace: {{ namespace }}</v-card-text>
       <component :is="tab.component"/>
     </div>

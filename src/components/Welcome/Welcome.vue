@@ -1,5 +1,5 @@
 <template>
-  <div class="m-4">
+  <div>
     <WebAppContainer />
     <v-card class="newsCard">
       <v-card-title> NEWS </v-card-title>
