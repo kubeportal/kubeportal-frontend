@@ -13,7 +13,7 @@ RUN npm install
 COPY . .
 
 # set your env before the build process
-ENV VUE_APP_BASE_URL=https://cluster.datexis.com
+ENV VUE_APP_BASE_URL=https://portal.ris.beuth-hochschule.de
 
 # build app for production with minification
 RUN npm run build
