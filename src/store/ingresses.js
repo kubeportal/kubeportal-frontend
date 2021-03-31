@@ -28,34 +28,36 @@ const ingresses_container = {
           backend.get(link).then(response => {
             let ingress = response.data
             console.log('INGRESSES', ingress)
-            let data = {}
-            data['name'] = ingress.name
-            data['tls'] = ingress.tls
-            data['creation_timestamp'] = moment(ingress.creation_timestamp).format()
-            data['annotations'] = ingress.annotations.map(anno => { return `${anno['key']}: ${anno['value']}` })
-            data['hosts'] = ingress.rules.map(rule => {
-              return rule.paths.map(path => {
-                return data['tls']
-                  ? `https://${rule.host}${path['path']}`
-                  : `http://${rule.host}${path['path']}`
+            if (ingress) {
+              let data = {}
+              data['name'] = ingress.name
+              data['tls'] = ingress.tls
+              data['creation_timestamp'] = moment(ingress.creation_timestamp).format()
+              data['annotations'] = ingress.annotations.map(anno => { return `${anno['key']}: ${anno['value']}` })
+              data['hosts'] = ingress.rules.map(rule => {
+                return rule.paths.map(path => {
+                  return data['tls']
+                    ? `https://${rule.host}${path['path']}`
+                    : `http://${rule.host}${path['path']}`
+                })
+              })[0]
+              data['host_links'] = data['hosts'].map(host => {
+                return `<a href=${host}>${host}</a>`
               })
-            })[0]
-            data['host_links'] = data['hosts'].map(host => {
-              return `<a href=${host}>${host}</a>`
-            })
 
-            data['services'] = ingress.rules.map(rule => {
-              return rule.paths.map(path => `${path['service_name']}:${path['service_port']}`)
-            })[0]
-            data['path'] = ingress.rules.map(rule => {
-              return rule.paths.map(path => `${path['path']}`)
-            })[0]
-            data['status'] = []
-            data['formatted_annotations'] = data['annotations'].join('<br>')
-            data['formatted_services'] = data['services'].join('')
-            data['formatted_path'] = data['path'].join('')
-            data['formatted_host_links'] = data['host_links'].join('<br>')
-            context.commit('push_ingress', data)
+              data['services'] = ingress.rules.map(rule => {
+                return rule.paths.map(path => `${path['service_name']}:${path['service_port']}`)
+              })[0]
+              data['path'] = ingress.rules.map(rule => {
+                return rule.paths.map(path => `${path['path']}`)
+              })[0]
+              data['status'] = []
+              data['formatted_annotations'] = data['annotations'].join('<br>')
+              data['formatted_services'] = data['services'].join('')
+              data['formatted_path'] = data['path'].join('')
+              data['formatted_host_links'] = data['host_links'].join('<br>')
+              context.commit('push_ingress', data)
+            }
           })
         })
         await context.dispatch('check_availablity')
