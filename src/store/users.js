@@ -53,10 +53,8 @@ const users_container = {
     actions: {
       async post_login_data (context, request_body) {
         let login_url = store.getters['api/get_login_url']
-        console.log('LOGIN URL', login_url)
         const response = await backend.post(store.getters['api/get_login_url'], request_body)
         if (response) {
-          console.log('POST LOGIN DATA', response.data)
           context.commit('set_access_token', response.data['access_token'])
           context.commit('set_refresh_token', response.data['refresh_token'])
           context.commit('set_url', response.data['user_url'])
@@ -65,7 +63,6 @@ const users_container = {
           store.commit('news/set_news_url', response.data['news_url'])
           store.commit('infos/set_infos_url', response.data['infos_url'])
           const user_details = await backend.get(response.data['user_url'])
-          console.log('USER DETAILS', user_details.data)
           context.commit('set_user', user_details.data)
           context.dispatch('request_namespaces')
         }
@@ -79,7 +76,6 @@ const users_container = {
       },
       async request_webapps (context) {
         const current_user = context.getters['get_user']
-        console.log('CURRENT_USER', current_user)
         for (const webapp_url of current_user['webapp_urls']) {
           const response = await backend.get(webapp_url)
           let res_data = response.data
@@ -97,7 +93,6 @@ const users_container = {
         const current_user = context.getters['get_user']
         for (const group_url of current_user['group_urls']) {
           const response = await backend.get(group_url)
-          console.log('GROUP', response.data)
           context.commit('push_group', response.data)
         }
       },
@@ -105,7 +100,6 @@ const users_container = {
         const current_user = context.getters['get_user']
         if (current_user['state'] === 'ACCESS_APPROVED') {
           const response = await backend.get(current_user['namespace_urls'][0])
-          console.log('NAMESPACE RESPONSE', response.data)
           store.commit('pods/set_pods_link', response.data['pods_url'])
           store.commit('deployments/set_deployments_link', response.data['deployments_url'])
           store.commit('services/set_services_link', response.data['services_url'])
@@ -130,11 +124,8 @@ const users_container = {
       },
       async request_approving_info (context) {
         const response = await backend.get(context.state.approval_url)
-        // console.log('APPROVING ADMINS GET', context.state.url + 'approval/')
-        // const response = await backend.get(context.state.url + 'approval/')
         response.data['approving_admin_urls'].forEach(admin_url => {
           backend.get(admin_url).then(admin_res => {
-            console.log('APPROVING ADMINS GET', admin_res.data)
             context.commit('push_approving_admin', { admin: admin_res.data, url: admin_url })
           })
         })
@@ -142,7 +133,6 @@ const users_container = {
       async send_approval_request (context, admin_urls) {
         admin_urls.forEach(url => {
           backend.post(context.state.approval_url, { approving_admin_url: url }).then(res => {
-            console.log('SEND ADMIN APPROVAL RESPONSE', res)
             context.dispatch('request_current_user')
           })
         })

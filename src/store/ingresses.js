@@ -27,7 +27,7 @@ const ingresses_container = {
         ingress_links.data['ingress_urls'].forEach(link => {
           backend.get(link).then(response => {
             let ingress = response.data
-            console.log('INGRESSES', ingress)
+            // console.log('INGRESSES', ingress)
             if (ingress) {
               let data = {}
               data['name'] = ingress.name
@@ -64,23 +64,23 @@ const ingresses_container = {
       },
       async check_availablity (context) {
         const ingresses = context.getters['get_ingresses']
-        console.log('check availability')
-        console.log(ingresses)
+        // console.log('check availability')
+        // console.log(ingresses)
         let modified_ingresses = ingresses.map(ingress => {
-          console.log('ingress: ' + ingress)
+          // console.log('ingress: ' + ingress)
           ingress.hosts.map(host => {
-            console.log('host: ' + host)
+            // console.log('host: ' + host)
             const XHR = new XMLHttpRequest()
             XHR.open('OPTIONS', host)
             let loading = () => {
               if (XHR.status < 300 && XHR.status >= 200) {
-                console.log(XHR.status)
+                // console.log(XHR.status)
                 ingress['status'].push(200)
               } else {
-                console.warn(XHR.statusText, XHR.responseText)
+                // console.warn(XHR.statusText, XHR.responseText)
                 ingress['status'].push(XHR.status)
               }
-              console.log(ingress['status'])
+              // console.log(ingress['status'])
             }
             XHR.addEventListener('load', loading)
             XHR.send()

@@ -115,7 +115,6 @@ users:
       }, 1000)
     },
     onError () {
-      console.log('error')
       this.error = true
       setTimeout(() => {
         this.error = false

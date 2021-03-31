@@ -103,14 +103,12 @@ export default {
 
     },
     async viewAll () {
-      console.log('view all clicked')
       let hostname = this.form.subdomain + '.' + this.form.domainname
-      console.log(hostname)
       this.commitData()
       if(await this.checkHostName()) {
-        console.log('check ok')
+        // console.log('check ok')
       } else {
-        console.log('Hostname already exists')
+        // console.log('Hostname already exists')
       }
     },
     async checkHostName () {
