@@ -32,7 +32,6 @@ const news_container = {
             author: author_response.data['name']
           })
         }
-        console.log('NEWS', tmp)
         context.commit('set_news', tmp)
       }
     }

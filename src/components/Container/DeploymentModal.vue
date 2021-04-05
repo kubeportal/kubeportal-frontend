@@ -42,12 +42,10 @@ export default {
   methods: {
     async post_deployment (e) {
       e.preventDefault()
-      console.log(this.name, this.replicas)
       let response = await backend.post(`/deployments/${this.namespace}/`, {
         name: this.name,
         replicas: this.replicas
       })
-      console.log('DEPLOYMENT POST', response)
       this.emit_event()
     },
     emit_event () {

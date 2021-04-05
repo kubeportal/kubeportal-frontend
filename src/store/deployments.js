@@ -25,7 +25,7 @@ const deployments_container = {
         let deployment_links = await backend.get(deployments_link)
         deployment_links.data['deployment_urls'].forEach(link => {
           backend.get(link).then(response => {
-            console.log('DEPLOYMENTS', response)
+            // console.log('DEPLOYMENTS', response)
             let deployment = response.data
             let data = {}
             data['name'] = deployment.name

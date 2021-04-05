@@ -211,10 +211,8 @@ export default {
       this.$store.dispatch('services/request_services')
     }
     if (this.ingresses_data.length === 0) {
-      console.log('dispatch data')
       this.$store.dispatch('ingresses/request_ingresses')
     } else {
-      console.log('check avail in component')
       this.$store.dispatch('ingresses/check_availablity')
     }
   },

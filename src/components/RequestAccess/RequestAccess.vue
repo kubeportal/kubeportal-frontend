@@ -46,7 +46,6 @@ export default {
     send_request (e) {
       e.preventDefault()
       if (this.selected.length) {
-        console.log('SELECTED APPROVAL ADMIN', this.selected)
         this.$store.dispatch('users/send_approval_request', this.selected)
       }
       this.selected = []

@@ -37,7 +37,6 @@ const pods_container = {
         pod_links.data['pod_urls'].forEach(link => {
           backend.get(link).then(response => {
             let pod = response.data
-            console.log('PODS', pod)
             let data = {}
             data['name'] = pod.name
             data['creation_timestamp'] = moment(pod.creation_timestamp).format()

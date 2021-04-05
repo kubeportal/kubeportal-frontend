@@ -66,7 +66,6 @@ export default {
   methods: {
     async post_service (e) {
       e.preventDefault()
-      console.log(this.name, this.type, this.app, this.protocol, this.port)
       let response = await backend.post(`/services/${this.namespace}/`, {
         name: this.name,
         type: this.type,
@@ -80,7 +79,6 @@ export default {
           }
         ]
       })
-      console.log('POST SERVICE', response)
     },
     emit_event () {
       this.$emit('close', false)

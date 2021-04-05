@@ -91,11 +91,9 @@ export default {
         name: this.current_user['name']
       }
       if (this.selected_namespace.length !== 0) {
-        console.log('NAMESPACE', this.selected_namespace)
         data['k8s_namespace'] = this.selected_namespace[0]
       }
       if (this.selected_email) {
-        console.log('EMAIL', this.selected_email)
         data['primary_email'] = this.selected_email
       }
       this.$store.dispatch('users/update_user', data)

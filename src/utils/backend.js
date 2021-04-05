@@ -31,7 +31,7 @@ axiosInstance.interceptors.request.use(request => {
   if (request.url === base_url + '/api/' + API_VERSION + '/' || request.url.includes('/login/')) {
     request.headers['authorization'] = undefined
   }
-  console.log('HEADER', request.headers)
+  // console.log('HEADER', request.headers)
   return request
 })
 
@@ -41,11 +41,11 @@ export async function get (absolute_url) {
   try {
     if (absolute_url === '') {
       let response = await axiosInstance.get(base_url + '/api/' + API_VERSION + '/')
-      console.log('GET ' + absolute_url, response)
+      // console.log('GET ' + absolute_url, response)
       return response
     }
     let response = await axiosInstance.get(absolute_url)
-    console.log('GET' + absolute_url, response)
+    // console.log('GET' + absolute_url, response)
     return response
   } catch {
     return undefined
@@ -55,7 +55,7 @@ export async function get (absolute_url) {
 export async function post (absolute_url, payload) {
   try {
     let response = await axiosInstance.post(absolute_url, payload)
-    console.log('POST ' + absolute_url, response)
+    // console.log('POST ' + absolute_url, response)
     return response
   } catch {
     return undefined
@@ -65,7 +65,7 @@ export async function post (absolute_url, payload) {
 export async function patch (absolute_url, payload) {
   try {
     let response = await axiosInstance.patch(absolute_url, payload)
-    console.log('PATCH ' + absolute_url, response)
+    // console.log('PATCH ' + absolute_url, response)
     return response
   } catch {
     return undefined
