@@ -7,19 +7,29 @@
           <v-text-field v-model="name" label="Pod Name" required> </v-text-field>
           <v-row v-for="(container, index) in containers" :key="index">
             <v-col md="5">
-              <v-text-field v-model="container.name" label="Container Name" />
+              <v-text-field v-model="container.name" label="Container Name"/>
             </v-col>
             <v-col md="5">
               <v-text-field v-model="container.image" label="Container Image" />
             </v-col>
-            <v-col md="2">
+            <v-col md="2" v-if="index === containers.length-1">
               <v-btn
                 icon
                 large
                 @click="containers.push({name:'', image:''})"
               >
               <v-icon>mdi-plus-circle</v-icon>
-            </v-btn>
+              </v-btn>
+            </v-col>
+            <v-col md="2" v-else>
+              <v-btn
+                icon
+                color="red"
+                large
+                @click="containers.splice(index, 1)"
+              >
+              <v-icon>mdi-delete</v-icon>
+              </v-btn>
             </v-col>
           </v-row>
           <v-row align="center">
