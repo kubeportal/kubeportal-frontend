@@ -35,6 +35,11 @@ const persistentvolumeclaims_container = {
             context.commit('push_persistentvolumeclaim', data)
           })
         })
+      },
+      async create_pvc (context, data) {
+        const pvc_link = context.getters['get_pvc_link']
+        const response = await backend.post(pvc_link, data)
+        console.log('CREATE PVC RESPONSE', response)
       }
     }
   }

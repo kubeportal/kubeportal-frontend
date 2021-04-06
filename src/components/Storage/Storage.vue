@@ -6,6 +6,12 @@
         PVC
       </v-tab>
       <v-tab-item>
+
+        <PVCModal
+          @close="overlay = false"
+          :overlay="overlay"
+          :namespace="namespace"
+        />
         <v-data-table
           :headers="pvc_headers"
           :items="pvcs_data"
@@ -16,7 +22,7 @@
           <template v-slot:top>
             <v-row>
               <v-col md="1">
-                <v-btn color="green" icon x-large disabled>
+                <v-btn color="green" icon x-large @click="overlay = true">
                   <v-icon>mdi-plus-circle</v-icon>
                 </v-btn>
               </v-col>
@@ -36,11 +42,11 @@
 </template>
 
 <script>
-import TopBar from '@/components/TopBar'
+import PVCModal from './PVCModal'
 
 export default {
   name: 'Storage',
-  components: { TopBar },
+  components: { PVCModal },
   data () {
     return {
       overlay: false,
