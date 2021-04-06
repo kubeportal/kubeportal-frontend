@@ -56,7 +56,12 @@
         </v-data-table>
       </v-tab-item>
       <v-tab-item>
-        <div></div>
+
+        <IngressModal
+          @close="ingress_overlay = false"
+          :overlay="ingress_overlay"
+          :namespace="namespace"
+        />
         <v-data-table
           :headers="ingresses_headers"
           :items="ingresses_data"
@@ -106,7 +111,6 @@
                   icon
                   @click="ingress_overlay = true"
                   x-large
-                  disabled
                 >
                   <v-icon>mdi-plus-circle</v-icon>
                 </v-btn>

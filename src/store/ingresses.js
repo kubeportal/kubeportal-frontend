@@ -88,6 +88,11 @@ const ingresses_container = {
         })
         context.commit('set_ingresses', [])
         context.commit('set_ingresses', modified_ingresses)
+      },
+      async create_ingress (context, data) {
+        const ingresses_link = context.getters['get_ingresses_link']
+        const response = await backend.post(ingresses_link, data)
+        console.log('CREATE INGRESS RESPONSE', response)
       }
     }
   }
