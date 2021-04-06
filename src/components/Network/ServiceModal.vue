@@ -121,6 +121,7 @@ export default {
         ports: this.ports
       }
       console.log('CREATE SERVICE DATA', data)
+      this.$store.dispatch('services/create_service', data)
     },
     emit_event () {
       this.$emit('close', false)

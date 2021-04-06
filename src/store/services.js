@@ -38,6 +38,11 @@ const services_container = {
             context.commit('push_service', data)
           })
         })
+      },
+      async create_service (context, data) {
+        const services_link = context.getters['get_services_link']
+        const response = await backend.post(services_link, data)
+        console.log('CREATE SERVICE RESPONSE', response)
       }
     }
   }
