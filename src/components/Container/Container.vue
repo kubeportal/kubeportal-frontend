@@ -112,7 +112,6 @@
                   icon
                   @click="deployment_overlay = true"
                   x-large
-                  disabled
                 >
                   <v-icon>mdi-plus-circle</v-icon>
                 </v-btn>

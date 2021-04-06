@@ -12,6 +12,97 @@
             required
           >
           </v-text-field>
+
+          <!-- Match Label Input -->
+          <v-row v-for="(label, index) in match_labels" :key="index">
+            <v-col md="5">
+              <v-text-field v-model="label.key" label="Match Label Key" :rules="[rules.required]"/>
+            </v-col>
+            <v-col md="5">
+              <v-text-field v-model="label.value" label="Match Label Value" :rules="[rules.required]"/>
+            </v-col>
+            <v-col md="2" v-if="index === match_labels.length-1">
+              <v-btn
+                icon
+                large
+                @click="match_labels.push({key:'', value:''})"
+              >
+              <v-icon>mdi-plus-circle</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col md="2" v-else>
+              <v-btn
+                icon
+                color="red"
+                large
+                @click="match_labels.splice(index, 1)"
+              >
+              <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-subheader>
+            Pod Template
+          </v-subheader>
+          <v-text-field v-model="template_name" label="Template Pod Name" required> </v-text-field>
+
+          <!-- Label Input -->
+          <v-row v-for="(label, index) in template_labels" :key="index">
+            <v-col md="5">
+              <v-text-field v-model="label.key" label="Match Label Key" :rules="[rules.required]"/>
+            </v-col>
+            <v-col md="5">
+              <v-text-field v-model="label.value" label="Match Label Value" :rules="[rules.required]"/>
+            </v-col>
+            <v-col md="2" v-if="index === match_labels.length-1">
+              <v-btn
+                icon
+                large
+                @click="template_labels.push({key:'', value:''})"
+              >
+              <v-icon>mdi-plus-circle</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col md="2" v-else>
+              <v-btn
+                icon
+                color="red"
+                large
+                @click="template_labels.splice(index, 1)"
+              >
+              <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+
+          <!-- Container Input -->
+          <v-row v-for="(container, index) in template_containers" :key="index">
+            <v-col md="5">
+              <v-text-field v-model="container.name" label="Container Name" :rules="[rules.required]"/>
+            </v-col>
+            <v-col md="5">
+              <v-text-field v-model="container.image" label="Container Image" :rules="[rules.required]"/>
+            </v-col>
+            <v-col md="2" v-if="index === template_containers.length-1">
+              <v-btn
+                icon
+                large
+                @click="template_containers.push({name:'', image:''})"
+              >
+              <v-icon>mdi-plus-circle</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col md="2" v-else>
+              <v-btn
+                icon
+                color="red"
+                large
+                @click="template_containers.splice(index, 1)"
+              >
+              <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
           <v-row align="center">
             <v-col>
               <v-btn color="success" type="submit"> Submit </v-btn>
@@ -29,23 +120,27 @@
 </template>
 
 <script>
-import * as backend from '@/utils/backend'
 export default {
   name: 'DeploymentModal',
   props: { overlay: Boolean, namespace: String },
   data () {
     return {
       name: '',
-      replicas: 1
+      replicas: 1,
+      match_labels: [{ key:'', value: '' }],
+      template_name: '',
+      template_labels: [{ key: '', value: '' }],
+      template_containers: [{ name: '', image:'' }],
+      rules: {
+        required: value => !!value || 'Required.'
+      }
+
     }
   },
   methods: {
     async post_deployment (e) {
       e.preventDefault()
-      let response = await backend.post(`/deployments/${this.namespace}/`, {
-        name: this.name,
-        replicas: this.replicas
-      })
+      console.log('DEPLOYMENT CREATE DATA')
       this.emit_event()
     },
     emit_event () {
@@ -57,7 +152,7 @@ export default {
 
 <style scoped>
 .modal {
-  width: 20vw;
+  width: 50vw;
   /* background-color: var(--v-primary) !important; */
 }
 </style>
