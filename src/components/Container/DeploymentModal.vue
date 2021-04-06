@@ -14,7 +14,7 @@
           </v-text-field>
 
           <!-- Match Label Input -->
-          <v-row v-for="(label, index) in match_labels" :key="index">
+          <v-row v-for="(label, index) in match_labels" :key="'match_label'+index">
             <v-col md="5">
               <v-text-field v-model="label.key" label="Match Label Key" :rules="[rules.required]"/>
             </v-col>
@@ -47,14 +47,14 @@
           <v-text-field v-model="template_name" label="Template Pod Name" required> </v-text-field>
 
           <!-- Label Input -->
-          <v-row v-for="(label, index) in template_labels" :key="index">
+          <v-row v-for="(label, index) in template_labels" :key="'label'+index">
             <v-col md="5">
-              <v-text-field v-model="label.key" label="Match Label Key" :rules="[rules.required]"/>
+              <v-text-field v-model="label.key" label="Label Key" :rules="[rules.required]"/>
             </v-col>
             <v-col md="5">
-              <v-text-field v-model="label.value" label="Match Label Value" :rules="[rules.required]"/>
+              <v-text-field v-model="label.value" label="Label Value" :rules="[rules.required]"/>
             </v-col>
-            <v-col md="2" v-if="index === match_labels.length-1">
+            <v-col md="2" v-if="index === template_labels.length-1">
               <v-btn
                 icon
                 large
@@ -76,7 +76,7 @@
           </v-row>
 
           <!-- Container Input -->
-          <v-row v-for="(container, index) in template_containers" :key="index">
+          <v-row v-for="(container, index) in template_containers" :key="'container'+index">
             <v-col md="5">
               <v-text-field v-model="container.name" label="Container Name" :rules="[rules.required]"/>
             </v-col>
@@ -140,7 +140,19 @@ export default {
   methods: {
     async post_deployment (e) {
       e.preventDefault()
-      console.log('DEPLOYMENT CREATE DATA')
+      let data = {
+        name: this.name,
+        replicas: this.replicas,
+        match_labels: this.match_labels,
+        pod_template: {
+          name: this.template_name,
+          labels: this.template_labels,
+          containers: this.template_containers
+        }
+      }
+
+      console.log('DEPLOYMENT CREATE DATA', data)
+      this.$store.dispatch('deployments/create_deployment', data)
       this.emit_event()
     },
     emit_event () {

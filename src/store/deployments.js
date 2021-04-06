@@ -34,6 +34,11 @@ const deployments_container = {
             context.commit('push_deployment', data)
           })
         })
+      },
+      async create_deployment (context, data) {
+        const deployments_link = context.getters['get_deployments_link']
+        const response = await backend.post(deployments_link, data)
+        console.log('CREATE DEPLOYMENT RESPONSE', response)
       }
     }
   }

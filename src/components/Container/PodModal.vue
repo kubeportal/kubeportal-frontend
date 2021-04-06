@@ -68,8 +68,12 @@ export default {
   methods: {
     async post_pod (e) {
       e.preventDefault()
-      console.log('POD MODAL DATA', this.name, this.containers)
-      this.$store.dispatch('pods/create_pod', { name: this.name, containers: this.containers })
+      let data = {
+        name: this.name,
+        containers: this.containers
+      }
+      console.log('POD MODAL DATA', data)
+      this.$store.dispatch('pods/create_pod', data)
       this.emit_event()
     },
     emit_event () {
