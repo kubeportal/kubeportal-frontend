@@ -11,6 +11,11 @@
       </v-tab>
 
       <v-tab-item>
+        <PodModal
+          @close="pod_overlay = false"
+          :overlay="pod_overlay"
+          :namespace="namespace"
+        />
         <v-data-table
           :headers="pods_headers"
           :items="pods_data"
@@ -71,7 +76,6 @@
                   icon
                   @click="pod_overlay = true"
                   x-large
-                  disabled
                 >
                   <v-icon>mdi-plus-circle</v-icon>
                 </v-btn>
@@ -131,10 +135,11 @@
 <script>
 import TopBar from '@/components/TopBar'
 import DeploymentModal from './DeploymentModal'
+import PodModal from './PodModal'
 
 export default {
   name: 'Container',
-  components: { TopBar, DeploymentModal },
+  components: { TopBar, DeploymentModal, PodModal },
   computed: {
     namespace () {
       return this.$store.getters['users/get_user']['namespace_names'].join(
