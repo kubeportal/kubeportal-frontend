@@ -23,7 +23,7 @@
             <v-col md="5">
               <v-text-field v-model="annotation.value" label="Annotation Value" :rules="[rules.required]"/>
             </v-col>
-            <v-col md="2" v-if="index === annotations.length-1">
+            <v-col md="2" v-if="index === 0">
               <v-btn
                 icon
                 large
@@ -62,7 +62,7 @@
                 <v-col md="5">
                   <v-text-field v-model="path.service_port" label="Service Port" type="number" :rules="[rules.required]"/>
                 </v-col>
-                <v-col md="2" v-if="rule_index === rule.paths.length-1">
+                <v-col md="2" v-if="rule_index === 0">
                   <v-btn
                     icon
                     large
@@ -82,7 +82,7 @@
                   </v-btn>
                 </v-col>
               </v-row>
-            <v-col md="2" v-if="index === ingress_rules.length-1">
+            <v-col md="2" v-if="index === 0">
               <v-btn
                 icon
                 large

@@ -21,7 +21,7 @@
             <v-col md="5">
               <v-text-field v-model="label.value" label="Match Label Value" :rules="[rules.required]"/>
             </v-col>
-            <v-col md="2" v-if="index === match_labels.length-1">
+            <v-col md="2" v-if="index === 0">
               <v-btn
                 icon
                 large
@@ -54,7 +54,7 @@
             <v-col md="5">
               <v-text-field v-model="label.value" label="Label Value" :rules="[rules.required]"/>
             </v-col>
-            <v-col md="2" v-if="index === template_labels.length-1">
+            <v-col md="2" v-if="index === 0">
               <v-btn
                 icon
                 large
@@ -83,7 +83,7 @@
             <v-col md="5">
               <v-text-field v-model="container.image" label="Container Image" :rules="[rules.required]"/>
             </v-col>
-            <v-col md="2" v-if="index === template_containers.length-1">
+            <v-col md="2" v-if="index === 0">
               <v-btn
                 icon
                 large

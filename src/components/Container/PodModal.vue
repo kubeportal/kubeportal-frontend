@@ -12,7 +12,7 @@
             <v-col md="5">
               <v-text-field v-model="container.image" label="Container Image" :rules="[rules.required]"/>
             </v-col>
-            <v-col md="2" v-if="index === containers.length-1">
+            <v-col md="2" v-if="index === 0">
               <v-btn
                 icon
                 large

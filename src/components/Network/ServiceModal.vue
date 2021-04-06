@@ -25,7 +25,7 @@
           <v-col md="5">
             <v-text-field v-model="selector.value" label="Selector Value" :rules="[rules.required]"/>
           </v-col>
-          <v-col md="2" v-if="index === selectors.length-1">
+          <v-col md="2" v-if="index === 0">
             <v-btn
               icon
               large
@@ -58,7 +58,7 @@
             label="Protocol"
           ></v-select>
           </v-col>
-          <v-col md="2" v-if="index === ports.length-1">
+          <v-col md="2" v-if="index === 0">
             <v-btn
               icon
               large

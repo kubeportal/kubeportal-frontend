@@ -9,7 +9,7 @@
             <v-col md="10">
               <v-text-field v-model="access_mode.value" label="Access Mode" :rules="[rules.required]"> </v-text-field>
             </v-col>
-            <v-col md="2" v-if="index === access_modes.length-1">
+            <v-col md="2" v-if="index === 0">
               <v-btn
                 icon
                 large
