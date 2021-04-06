@@ -51,6 +51,11 @@ const pods_container = {
             context.commit('push_pod', data)
           })
         })
+      },
+      async create_pod (context, data) {
+        const pods_link = context.getters['get_pods_link']
+        const response = await backend.post(pods_link, data)
+        console.log('CREATE POD RESPONSE', response)
       }
     }
   }

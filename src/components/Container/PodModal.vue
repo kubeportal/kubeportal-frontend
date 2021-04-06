@@ -4,13 +4,13 @@
       <v-card-title> Create Pod </v-card-title>
       <v-card-text>
         <v-form @submit="post_pod">
-          <v-text-field v-model="name" label="Pod Name" required> </v-text-field>
+          <v-text-field v-model="name" label="Pod Name" :rules="[rules.required, rules.pod_name]"> </v-text-field>
           <v-row v-for="(container, index) in containers" :key="index">
             <v-col md="5">
-              <v-text-field v-model="container.name" label="Container Name"/>
+              <v-text-field v-model="container.name" label="Container Name" :rules="[rules.required]"/>
             </v-col>
             <v-col md="5">
-              <v-text-field v-model="container.image" label="Container Image" />
+              <v-text-field v-model="container.image" label="Container Image" :rules="[rules.required]"/>
             </v-col>
             <v-col md="2" v-if="index === containers.length-1">
               <v-btn
@@ -49,24 +49,27 @@
 </template>
 
 <script>
-import * as backend from '@/utils/backend'
 export default {
   name: 'PodModal',
   props: { overlay: Boolean, namespace: String },
   data () {
     return {
       name: '',
-      containers: [{ image:'', name:'' }]
+      containers: [{ image:'', name:'' }],
+      rules: {
+        required: value => !!value || 'Required.',
+        pod_name: value => {
+          const pattern = /[a-z0-9]([-a-z0-9]*[a-z0-9])?/
+          return pattern.test(value) || 'Invalid Pod Name.'
+        }
+      }
     }
   },
   methods: {
     async post_pod (e) {
       e.preventDefault()
-      // let response = await backend.post(`/pods/${this.namespace}/`, {
-      //   name: this.name,
-      //   replicas: this.replicas
-      // })
       console.log('POD MODAL DATA', this.name, this.containers)
+      this.$store.dispatch('pods/create_pod', { name: this.name, containers: this.containers })
       this.emit_event()
     },
     emit_event () {
@@ -79,6 +82,5 @@ export default {
 <style scoped>
 .modal {
   width: 50vw;
-  /* background-color: var(--v-primary) !important; */
 }
 </style>
