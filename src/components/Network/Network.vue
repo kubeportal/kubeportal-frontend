@@ -40,7 +40,6 @@
                   icon
                   @click="service_overlay = true"
                   x-large
-                  disabled
                 >
                   <v-icon>mdi-plus-circle</v-icon>
                 </v-btn>
