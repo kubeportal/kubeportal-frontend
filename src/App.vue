@@ -1,7 +1,7 @@
 <template>
   <v-app >
     <v-main>
-      <v-img class="background" src="./assets/mountain.jpg">
+      <v-img class="background" src="./assets/mountain.jpeg">
         <router-view />
       </v-img>
     </v-main>
@@ -29,10 +29,7 @@ export default {
     color: floralwhite;
   }
   .background {
-    height: auto;
+    height: 100%;
     width: 100vw;
-    position: absolute;
-    top: 0;
-    left: 0;
   }
 </style>
