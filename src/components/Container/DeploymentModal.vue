@@ -103,14 +103,15 @@
               </v-btn>
             </v-col>
           </v-row>
-          <v-row align="center">
-            <v-col>
-              <v-btn color="success" type="submit"> Submit </v-btn>
-            </v-col>
-            <v-col>
+
+          <v-row justify="end">
+            <v-col md="2">
               <v-btn @click="emit_event" color="error" type="button">
                 Cancel
               </v-btn>
+            </v-col>
+            <v-col md="2">
+              <v-btn color="success" type="submit"> Submit </v-btn>
             </v-col>
           </v-row>
         </v-form>
