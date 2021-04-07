@@ -142,7 +142,7 @@ export default {
       e.preventDefault()
       let data = {
         name: this.name,
-        replicas: this.replicas,
+        replicas: parseInt(this.replicas),
         match_labels: this.match_labels,
         pod_template: {
           name: this.template_name,
