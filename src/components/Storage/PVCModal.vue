@@ -1,7 +1,7 @@
 <template>
   <v-overlay :value="overlay">
     <v-card class="modal" light>
-      <v-card-title> Create Pod </v-card-title>
+      <v-card-title> Create PVC </v-card-title>
       <v-card-text>
         <v-form @submit="post_pvc">
           <v-text-field v-model="name" label="PVC Name" :rules="[rules.required]"> </v-text-field>
