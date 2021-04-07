@@ -39,7 +39,7 @@
               icon
               color="red"
               large
-              @click="selector.splice(index, 1)"
+              @click="selectors.splice(index, 1)"
             >
             <v-icon>mdi-delete</v-icon>
             </v-btn>
@@ -118,10 +118,10 @@ export default {
         name: this.name,
         type: this.type,
         selectors: this.selectors,
-        ports: this.ports
+        ports: this.ports.map(port => { return { ...port, port: parseInt(port.port) } })
       }
       console.log('CREATE SERVICE DATA', data)
-      this.$store.dispatch('services/create_service', data)
+      // this.$store.dispatch('services/create_service', data)
     },
     emit_event () {
       this.$emit('close', false)
