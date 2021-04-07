@@ -7,7 +7,12 @@
           <v-text-field v-model="name" label="PVC Name" :rules="[rules.required]"> </v-text-field>
           <v-row v-for="(access_mode, index) in access_modes" :key="'acces_modes'+index">
             <v-col md="10">
-              <v-text-field v-model="access_mode.value" label="Access Mode" :rules="[rules.required]"> </v-text-field>
+              <v-select
+                v-model="access_mode.value"
+                :items="access_modes_items"
+                label="Access Mode"
+                :rules="[rules.required]"
+              ></v-select>
             </v-col>
             <v-col md="2" v-if="index === 0">
               <v-btn
@@ -57,6 +62,7 @@ export default {
     return {
       name: '',
       access_modes: [{ value:'' }],
+      access_modes_items: ['ReadWriteOnce', 'ReadOnlyMany', 'ReadWriteMany'],
       storage_class_name: '',
       size: '',
       rules: {
