@@ -41,10 +41,8 @@
               </v-btn>
             </v-col>
           </v-row>
-          <v-subheader>
-            Pod Template
-          </v-subheader>
-          <v-text-field v-model="template_name" label="Template Pod Name" required> </v-text-field>
+          <v-subheader>Pod Specifications</v-subheader>
+          <v-text-field v-model="template_name" label="Pod Name" required> </v-text-field>
 
           <!-- Label Input -->
           <v-row v-for="(label, index) in template_labels" :key="'label'+index">
