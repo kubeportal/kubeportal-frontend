@@ -1,8 +1,7 @@
 <template>
   <v-app >
     <v-main>
-      <v-img class="background" src="./assets/mountain.jpg"
-             gradient="to bottom left, rgba(18,18,18, .8), rgba(18, 18, 18, .3)">
+      <v-img class="background" src="./assets/mountain.jpg">
         <router-view />
       </v-img>
     </v-main>
@@ -30,8 +29,10 @@ export default {
     color: floralwhite;
   }
   .background {
-    height: 100vh;
-    width: auto;
-    object-fit: cover;
+    height: auto;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 </style>

@@ -15,7 +15,7 @@
         <v-data-table
           :headers="pvc_headers"
           :items="pvcs_data"
-          :items-per-page="15"
+          :items-per-page="10"
           class="elevation-1"
           :search="search_pvc"
         >

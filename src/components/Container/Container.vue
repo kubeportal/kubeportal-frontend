@@ -19,7 +19,7 @@
         <v-data-table
           :headers="pods_headers"
           :items="pods_data"
-          :items-per-page="15"
+          :items-per-page="10"
           class="elevation-1"
           :search="search_pods"
         >
@@ -100,7 +100,7 @@
         <v-data-table
           :headers="deployment_headers"
           :items="deployments_data"
-          :items-per-page="15"
+          :items-per-page="10"
           class="elevation-1"
           :search="search_deployments"
         >
