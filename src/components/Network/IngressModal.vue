@@ -127,7 +127,7 @@ export default {
       name: '',
       tls: true,
       annotations: [{ key: '', value: '' }],
-      ingress_rules: [{ host: '', paths: [{ path: '', service_name:'', service_port: '' }] }],
+      ingress_rules: [{ host: '', paths: [{ path: '', service_name:'', service_port: 0 }] }],
       rules: {
         required: value => !!value || 'Required.'
       }
@@ -140,7 +140,7 @@ export default {
         name: this.name,
         tls: this.tls,
         annotations: this.annotations,
-        rules: this.ingress_rules
+        rules: this.ingress_rules.map(rule => { return { ...rule, paths: rule.paths.map(path => { return { ...path, service_port: parseInt(path.service_port) } }) } })
       }
       console.log('CREATE INGRESS DATA', data)
       this.$store.dispatch('ingresses/create_ingress', data)

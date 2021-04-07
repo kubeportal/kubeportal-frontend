@@ -62,7 +62,7 @@
             <v-btn
               icon
               large
-              @click="ports.push({port:'', protocol:''})"
+              @click="ports.push({port:0, protocol:''})"
             >
             <v-icon>mdi-plus-circle</v-icon>
             </v-btn>
@@ -105,7 +105,7 @@ export default {
       type_items: ['NodePort', 'CluserIP', 'LoadBalancer'],
       selectors: [{ key:'', value: '' }],
       protocol_items: ['TCP', 'UDP', 'SCTP'],
-      ports: [{ port:'', protocol:'' }],
+      ports: [{ port:0, protocol:'' }],
       rules: {
         required: value => !!value || 'Required.'
       }
@@ -121,7 +121,7 @@ export default {
         ports: this.ports.map(port => { return { ...port, port: parseInt(port.port) } })
       }
       console.log('CREATE SERVICE DATA', data)
-      // this.$store.dispatch('services/create_service', data)
+      this.$store.dispatch('services/create_service', data)
     },
     emit_event () {
       this.$emit('close', false)
