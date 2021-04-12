@@ -118,7 +118,7 @@ export default {
       let data = {
         name: this.name,
         type: this.type,
-        selectors: this.selectors,
+        selector: this.selectors,
         ports: this.ports.map(port => { return { ...port, port: parseInt(port.port) } })
       }
       console.log('CREATE SERVICE DATA', data)
