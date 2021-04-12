@@ -22,6 +22,7 @@ const ingresses_container = {
 
     actions: {
       async request_ingresses (context) {
+        context.commit('set_ingresses', [])
         const ingresses_link = context.getters['get_ingresses_link']
         const ingress_links = await backend.get(ingresses_link)
         ingress_links.data['ingress_urls'].forEach(link => {

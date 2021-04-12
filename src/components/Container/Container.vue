@@ -80,6 +80,15 @@
                   <v-icon>mdi-plus-circle</v-icon>
                 </v-btn>
               </v-col>
+              <v-col md="1">
+                <v-btn
+                  icon
+                  @click="refresh_pods"
+                  x-large
+                >
+                  <v-icon>mdi-refresh</v-icon>
+                </v-btn>
+              </v-col>
               <v-col md="10">
                 <v-text-field
                   v-model="search_pods"
@@ -114,6 +123,15 @@
                   x-large
                 >
                   <v-icon>mdi-plus-circle</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col md="1">
+                <v-btn
+                  icon
+                  @click="refresh_deployments"
+                  x-large
+                >
+                  <v-icon>mdi-refresh</v-icon>
                 </v-btn>
               </v-col>
               <v-col md="10">
@@ -198,6 +216,14 @@ export default {
           value: 'replicas'
         }
       ]
+    }
+  },
+  methods: {
+    refresh_pods () {
+      this.$store.dispatch('pods/request_pods')
+    },
+    refresh_deployments () {
+      this.$store.dispatch('deployments/request_deployments')
     }
   },
   mounted () {

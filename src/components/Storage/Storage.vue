@@ -26,6 +26,15 @@
                   <v-icon>mdi-plus-circle</v-icon>
                 </v-btn>
               </v-col>
+              <v-col md="1">
+                <v-btn
+                  icon
+                  @click="refresh_pvc"
+                  x-large
+                >
+                  <v-icon>mdi-refresh</v-icon>
+                </v-btn>
+              </v-col>
               <v-col md="10">
                 <v-text-field
                   v-model="search_pvc"
@@ -85,6 +94,11 @@ export default {
     },
     pvcs_data () {
       return this.$store.getters['pvcs/get_persistentvolumeclaims']
+    }
+  },
+  methods: {
+    refresh_pvc () {
+      this.$store.dispatch('pvcs/request_persistentvolumeclaims')
     }
   },
   mounted () {

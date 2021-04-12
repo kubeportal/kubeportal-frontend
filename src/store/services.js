@@ -20,6 +20,7 @@ const services_container = {
 
     actions: {
       async request_services (context) {
+        context.commit('set_services', [])
         const services_link = context.getters['get_services_link']
         const service_links = await backend.get(services_link)
         service_links.data['service_urls'].forEach(link => {

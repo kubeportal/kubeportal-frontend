@@ -44,6 +44,15 @@
                   <v-icon>mdi-plus-circle</v-icon>
                 </v-btn>
               </v-col>
+              <v-col md="1">
+                <v-btn
+                  icon
+                  @click="refresh_service"
+                  x-large
+                >
+                  <v-icon>mdi-refresh</v-icon>
+                </v-btn>
+              </v-col>
               <v-col md="10">
                 <v-text-field
                   v-model="search_services"
@@ -113,6 +122,15 @@
                   x-large
                 >
                   <v-icon>mdi-plus-circle</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col md="1">
+                <v-btn
+                  icon
+                  @click="refresh_ingress"
+                  x-large
+                >
+                  <v-icon>mdi-refresh</v-icon>
                 </v-btn>
               </v-col>
               <v-col md="10">
@@ -209,6 +227,14 @@ export default {
       ]
     }
   },
+  methods: {
+    refresh_service () {
+      this.$store.dispatch('services/request_services')
+    },
+    refresh_ingress () {
+      this.$store.dispatch('ingresses/request_ingresses')
+    }
+  },
   mounted () {
     if (this.services_data.length === 0) {
       this.$store.dispatch('services/request_services')
@@ -218,9 +244,7 @@ export default {
     } else {
       this.$store.dispatch('ingresses/check_availablity')
     }
-  },
-
-  methods: {}
+  }
 }
 </script>
 

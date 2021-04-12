@@ -21,6 +21,7 @@ const deployments_container = {
 
     actions: {
       async request_deployments (context) {
+        context.commit('set_deployments', [])
         const deployments_link = context.getters['get_deployments_link']
         let deployment_links = await backend.get(deployments_link)
         deployment_links.data['deployment_urls'].forEach(link => {

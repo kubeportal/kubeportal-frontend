@@ -32,6 +32,7 @@ const pods_container = {
 
     actions: {
       async request_pods (context) {
+        context.commit('set_pods', [])
         const pods_link = context.getters['get_pods_link']
         let pod_links = await backend.get(pods_link)
         pod_links.data['pod_urls'].forEach(link => {
