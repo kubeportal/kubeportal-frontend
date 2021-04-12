@@ -36,8 +36,18 @@
           </v-row>
 
           <v-text-field v-model="storage_class_name" label="Storage Class Name" :rules="[rules.required]"> </v-text-field>
-          <v-text-field v-model="size" label="Size" :rules="[rules.required]"> </v-text-field>
-
+          <v-row>
+            <v-col md="10">
+              <v-text-field v-model="size" label="Size" :rules="[rules.required]"> </v-text-field>
+            </v-col>
+            <v-col md="2">
+              <v-select
+                v-model="size_type"
+                :items="size_items"
+                label="Unit"
+              ></v-select>
+            </v-col>
+          </v-row>
           <v-row justify="end">
             <v-col md="2">
               <v-btn @click="emit_event" color="error" type="button">
@@ -65,6 +75,8 @@ export default {
       access_modes_items: ['ReadWriteOnce', 'ReadOnlyMany', 'ReadWriteMany'],
       storage_class_name: '',
       size: '',
+      size_type: 'Gi',
+      size_items: ['Ki', 'Mi', 'Gi'],
       rules: {
         required: value => !!value || 'Required.'
       }
@@ -77,7 +89,7 @@ export default {
         name: this.name,
         access_modes: this.access_modes.map(mode => mode.value),
         storage_class_name: this.storage_class_name,
-        size: this.size
+        size: this.size + this.size_type
       }
       console.log('PVC MODAL DATA', data)
       this.$store.dispatch('pvcs/create_pvc', data)
