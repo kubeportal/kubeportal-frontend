@@ -96,14 +96,19 @@
                 </div>
               </td>
               <td>
+
                 <v-icon
                   x-small
-                  v-if="props.item.status === 200"
-                  style="color: #689f38"
-                  class="icon"
+                  v-if="props.item.status === 'pending'"
                   >mdi-checkbox-blank-circle</v-icon
                 >
-                <v-icon x-small v-else class="icon" style="color: #a10000"
+                <v-icon
+                  x-small
+                  v-else-if="props.item.status === 200"
+                  style="color: #689f38"
+                  >mdi-checkbox-blank-circle</v-icon
+                >
+                <v-icon x-small v-else style="color: #a10000"
                   >mdi-checkbox-blank-circle</v-icon
                 >
               </td>
@@ -249,8 +254,6 @@ export default {
     }
     if (this.ingresses_data.length === 0) {
       this.$store.dispatch('ingresses/request_ingresses')
-    } else {
-      this.$store.dispatch('ingresses/check_availablity')
     }
   }
 }
