@@ -17,7 +17,10 @@ const ingresses_container = {
     mutations: {
       set_ingresses_link (state, ingresses_link) { state.ingresses_link = ingresses_link },
       set_ingresses (state, ingresses) { state.ingresses = ingresses },
-      set_ingress_host_status (state, index, status) { console.log('INDEX', index, status); state.ingresses[index].status = status },
+      set_ingress_host_status (state, data) {
+        state.ingresses[data.index].status = data.status
+        state.ingresses[data.index].time = data.time
+      },
       push_ingress (state, ingress) { state.ingresses.push(ingress) }
     },
 
@@ -54,11 +57,11 @@ const ingresses_container = {
                 return rule.paths.map(path => `${path['path']}`)
               })[0]
               data['status'] = 'pending'
+              data['time'] = 'n/a'
               data['formatted_annotations'] = data['annotations'].join('<br>')
               data['formatted_services'] = data['services'].join('')
               data['formatted_path'] = data['path'].join('')
               data['formatted_host_links'] = data['host_links'].join('<br>')
-              console.log('INGRESS_DATA', data)
               context.commit('push_ingress', data)
               //@TODO: multiple hosts?
               context.dispatch('check_availablity', { host: data['hosts'][0], index })
@@ -68,30 +71,20 @@ const ingresses_container = {
       },
       async check_availablity (context, data) {
         console.log(data)
-        backend.get(data.host).then(response => {
-          console.log(response)
-          let status = response ? 200 : 300
-          context.commit('set_ingress_host_status', data.index, status)
-        })
-        // console.log('host: ' + host)
-        // const XHR = new XMLHttpRequest()
-        // XHR.open('OPTIONS', host)
-        // let loading = () => {
-        //   let status
-        //   if (XHR.status < 300 && XHR.status >= 200) {
-        //     // console.log(XHR.status)
-        //     status = 200
-        //   } else {
-        //     // console.warn(XHR.statusText, XHR.responseText)
-        //     status = XHR.status
-        //   }
-        //   context.commit('set_ingress_host_status', index, status)
-        //   // console.log(ingress['status'])
-        // }
-        // XHR.addEventListener('load', loading)
-        // XHR.send()
-        // context.commit('set_ingresses', [])
-        // context.commit('set_ingresses', modified_ingresses)
+        let status = true
+        let startTime = performance.now()
+        let time
+        fetch(data.host, { mode: 'no-cors' })
+          .then((resp) => {
+            if (!resp.ok || resp.status !== 200) status = false
+            if (resp.type === 'opaque') status = true
+            time = (performance.now() - startTime).toFixed(2)
+            context.commit('set_ingress_host_status', { index: data.index, status, time })
+          }).catch(() => {
+            status = false
+            time = 'n/a'
+            context.commit('set_ingress_host_status', { index: data.index, status, time })
+          })
       },
       async create_ingress (context, data) {
         const ingresses_link = context.getters['get_ingresses_link']
