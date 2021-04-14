@@ -80,7 +80,7 @@ export default {
           value: 'size'
         },
         {
-          text: 'Created at',
+          text: 'Created',
           value: 'creation_timestamp'
         }
       ]

@@ -196,7 +196,7 @@ export default {
           value: 'volume_names'
         },
         {
-          text: 'Created at',
+          text: 'Created',
           value: 'creation_timestamp'
         }
       ],
@@ -208,12 +208,12 @@ export default {
           value: 'name'
         },
         {
-          text: 'Created at',
-          value: 'creation_timestamp'
-        },
-        {
           text: 'Replicas',
           value: 'replicas'
+        },
+        {
+          text: 'Created',
+          value: 'creation_timestamp'
         }
       ]
     }

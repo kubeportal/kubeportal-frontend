@@ -1,4 +1,6 @@
 import * as backend from '@/utils/backend'
+import moment from 'moment'
+
 const services_container = {
   module: {
     namespaced: true,
@@ -26,9 +28,11 @@ const services_container = {
         service_links.data['service_urls'].forEach(link => {
           backend.get(link).then(response => {
             let service = response.data
+            console.log('SERVICE', service)
             let data = {}
             data['name'] = service.name
             data['type'] = service.type
+            data['creation_timestamp'] = moment(service.creation_timestamp).fromNow()
             if(service.selector) {
               data['selector'] = `${service.selector['key']}=${service.selector['value']}`
             }
@@ -36,6 +40,7 @@ const services_container = {
             data['target_ports'] = service.ports.map(port => port['target_port'])
             data['formatted_ports'] = data['ports'].join('<br>')
             data['formatted_target_ports'] = data['target_ports'].join('<br>')
+            console.log('DATA', data)
             context.commit('push_service', data)
           })
         })

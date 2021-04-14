@@ -33,7 +33,7 @@ const ingresses_container = {
               let data = {}
               data['name'] = ingress.name
               data['tls'] = ingress.tls
-              data['creation_timestamp'] = moment(ingress.creation_timestamp).format()
+              data['creation_timestamp'] = moment(ingress.creation_timestamp).fromNow()
               data['annotations'] = ingress.annotations.map(anno => { return `${anno['key']}: ${anno['value']}` })
               data['hosts'] = ingress.rules.map(rule => {
                 return rule.paths.map(path => {

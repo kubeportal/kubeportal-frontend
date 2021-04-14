@@ -30,6 +30,7 @@
               <td>{{ props.item.selector }}</td>
               <td><span v-html="props.item.formatted_ports" /></td>
               <td><span v-html="props.item.formatted_target_ports" /></td>
+              <td>{{ props.item.creation_timestamp }}</td>
             </tr>
           </template>
           <template v-slot:top>
@@ -109,7 +110,7 @@
               <td>{{ props.item.name }}</td>
               <td><span v-html="props.item.formatted_annotations" /></td>
               <td><span v-html="props.item.formatted_services" /></td>
-              <td><span v-html="props.item.creation_timestamp" /></td>
+              <td>{{props.item.creation_timestamp}}</td>
             </tr>
           </template>
           <template v-slot:top>
@@ -158,7 +159,10 @@ export default {
   components: { TopBar, ServiceModal, IngressModal },
   computed: {
     services_data () {
-      return this.$store.getters['services/get_services']
+      let tmp = this.$store.getters['services/get_services']
+
+      console.log('TMP', tmp)
+      return tmp
     },
     ingresses_data () {
       return this.$store.getters['ingresses/get_ingresses']
@@ -195,6 +199,10 @@ export default {
         {
           text: 'Targetports',
           value: 'target_ports'
+        },
+        {
+          text: 'Created',
+          value: 'creation_timestamp'
         }
       ],
       ingresses_headers: [
@@ -221,7 +229,7 @@ export default {
           value: 'formatted_services'
         },
         {
-          text: 'Created at',
+          text: 'Created',
           value: 'creation_timestamp'
         }
       ]

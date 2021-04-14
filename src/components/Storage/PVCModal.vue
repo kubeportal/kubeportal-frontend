@@ -35,7 +35,7 @@
             </v-col>
           </v-row>
 
-          <v-text-field v-model="storage_class_name" label="Storage Class Name" :rules="[rules.required]"> </v-text-field>
+          <v-text-field v-model="storage_class_name" label="Storage Class Name"> </v-text-field>
           <v-row>
             <v-col md="10">
               <v-text-field v-model="size" label="Size" :rules="[rules.required]"> </v-text-field>
@@ -76,7 +76,7 @@ export default {
       storage_class_name: '',
       size: '',
       size_type: 'Gi',
-      size_items: ['Ki', 'Mi', 'Gi'],
+      size_items: ['Ki', 'Mi', 'Gi', 'Ti'],
       rules: {
         required: value => !!value || 'Required.'
       }

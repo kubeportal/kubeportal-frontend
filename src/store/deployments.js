@@ -30,7 +30,7 @@ const deployments_container = {
             let deployment = response.data
             let data = {}
             data['name'] = deployment.name
-            data['creation_timestamp'] = moment(deployment.creation_timestamp).format()
+            data['creation_timestamp'] = moment(deployment.creation_timestamp).fromNow()
             data['replicas'] = deployment.replicas
             context.commit('push_deployment', data)
           })
