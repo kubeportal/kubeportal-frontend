@@ -83,30 +83,42 @@
             <tr>
               <td>
                 <div class="d-inline-flex flex-nowrap">
-                  <v-icon class="mr-2" v-if="props.item.tls"
-                    >mdi-lock-check-outline</v-icon
-                  >
-                  <v-icon small class="mr-2" v-else
-                    >mdi-lock-open-variant-outline</v-icon
-                  >
+                  <v-icon class="mr-2" v-if="props.item.tls">
+                    mdi-lock-check-outline</v-icon>
+                  <v-icon small class="mr-2" v-else>
+                    mdi-lock-open-variant-outline
+                  </v-icon>
                   <span
                     class="host mt-2"
                     v-html="props.item.formatted_host_links"
                   />
                 </div>
               </td>
-              <td>
-                <v-icon
-                  x-small
-                  v-if="props.item.status === 200"
-                  style="color: #689f38"
-                  class="icon"
-                  >mdi-checkbox-blank-circle</v-icon
-                >
-                <v-icon x-small v-else class="icon" style="color: #a10000"
-                  >mdi-checkbox-blank-circle</v-icon
-                >
-              </td>
+              <v-tooltip color="#2e2e2e" nudge-left="10" left>
+                <template v-slot:activator="{ on, attrs }">
+                  <td v-bind="attrs" v-on="on">
+                    <v-icon
+                      x-small
+                      v-if="props.item.status === 'pending'">
+                      mdi-checkbox-blank-circle
+                    </v-icon>
+                    <v-icon
+                      x-small
+                      v-else-if="props.item.status"
+                      style="color: #689f38">
+                      mdi-checkbox-blank-circle
+                    </v-icon>
+                    <v-icon x-small v-else style="color: #a10000">
+                      mdi-checkbox-blank-circle
+                    </v-icon>
+                  </td>
+                </template>
+                <span>
+                  <div class="tooltip">
+                    {{ 'ping finished in: ' + props.item.time +' ms'}}
+                  </div>
+                </span>
+              </v-tooltip>
               <td>{{ props.item.name }}</td>
               <td><span v-html="props.item.formatted_annotations" /></td>
               <td><span v-html="props.item.formatted_services" /></td>
@@ -249,14 +261,28 @@ export default {
     }
     if (this.ingresses_data.length === 0) {
       this.$store.dispatch('ingresses/request_ingresses')
-    } else {
-      this.$store.dispatch('ingresses/check_availablity')
     }
   }
 }
 </script>
 
 <style scoped>
+.v-tooltip__content p {
+  font-size: 1.2rem !important;
+}
+
+.v-tooltip__content .tooltip {
+  margin: 2rem 1rem 2rem 1rem;
+}
+
+.v-tooltip__content h3 {
+  font-size: 1.2rem !important;
+  font-weight: bolder;
+}
+.v-tooltip__content hr {
+  width: 75%;
+  margin: 1rem 0 1rem 0;
+}
 .host {
   font-size: 1rem;
 }

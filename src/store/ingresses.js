@@ -17,6 +17,10 @@ const ingresses_container = {
     mutations: {
       set_ingresses_link (state, ingresses_link) { state.ingresses_link = ingresses_link },
       set_ingresses (state, ingresses) { state.ingresses = ingresses },
+      set_ingress_host_status (state, data) {
+        state.ingresses[data.index].status = data.status
+        state.ingresses[data.index].time = data.time
+      },
       push_ingress (state, ingress) { state.ingresses.push(ingress) }
     },
 
@@ -25,7 +29,7 @@ const ingresses_container = {
         context.commit('set_ingresses', [])
         const ingresses_link = context.getters['get_ingresses_link']
         const ingress_links = await backend.get(ingresses_link)
-        ingress_links.data['ingress_urls'].forEach(link => {
+        ingress_links.data['ingress_urls'].forEach((link, index) => {
           backend.get(link).then(response => {
             let ingress = response.data
             // console.log('INGRESSES', ingress)
@@ -52,43 +56,35 @@ const ingresses_container = {
               data['path'] = ingress.rules.map(rule => {
                 return rule.paths.map(path => `${path['path']}`)
               })[0]
-              data['status'] = []
+              data['status'] = 'pending'
+              data['time'] = 'n/a'
               data['formatted_annotations'] = data['annotations'].join('<br>')
               data['formatted_services'] = data['services'].join('')
               data['formatted_path'] = data['path'].join('')
               data['formatted_host_links'] = data['host_links'].join('<br>')
               context.commit('push_ingress', data)
+              //@TODO: multiple hosts?
+              context.dispatch('check_availablity', { host: data['hosts'][0], index })
             }
           })
         })
-        await context.dispatch('check_availablity')
       },
-      async check_availablity (context) {
-        const ingresses = context.getters['get_ingresses']
-        // console.log('check availability')
-        // console.log(ingresses)
-        let modified_ingresses = ingresses.map(ingress => {
-          // console.log('ingress: ' + ingress)
-          ingress.hosts.map(host => {
-            // console.log('host: ' + host)
-            const XHR = new XMLHttpRequest()
-            XHR.open('OPTIONS', host)
-            let loading = () => {
-              if (XHR.status < 300 && XHR.status >= 200) {
-                // console.log(XHR.status)
-                ingress['status'].push(200)
-              } else {
-                // console.warn(XHR.statusText, XHR.responseText)
-                ingress['status'].push(XHR.status)
-              }
-              // console.log(ingress['status'])
-            }
-            XHR.addEventListener('load', loading)
-            XHR.send()
+      async check_availablity (context, data) {
+        console.log(data)
+        let status = true
+        let startTime = performance.now()
+        let time
+        fetch(data.host, { mode: 'no-cors' })
+          .then((resp) => {
+            if (!resp.ok || resp.status !== 200) status = false
+            if (resp.type === 'opaque') status = true
+            time = (performance.now() - startTime).toFixed(2)
+            context.commit('set_ingress_host_status', { index: data.index, status, time })
+          }).catch(() => {
+            status = false
+            time = 'n/a'
+            context.commit('set_ingress_host_status', { index: data.index, status, time })
           })
-        })
-        context.commit('set_ingresses', [])
-        context.commit('set_ingresses', modified_ingresses)
       },
       async create_ingress (context, data) {
         const ingresses_link = context.getters['get_ingresses_link']
