@@ -62,6 +62,7 @@ const users_container = {
           context.commit('set_access_token_refresh_url', response.data['access_token_refresh_url'])
           store.commit('news/set_news_url', response.data['news_url'])
           store.commit('infos/set_infos_url', response.data['infos_url'])
+          store.commit('pvcs/set_storageclasses_url', response.data['storageclasses_url'])
           const user_details = await backend.get(response.data['user_url'])
           context.commit('set_user', user_details.data)
           context.dispatch('request_namespaces')

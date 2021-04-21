@@ -2,7 +2,7 @@ import axios from 'axios'
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
 import store from '../store/store.js'
 let base_url = process.env['VUE_APP_BASE_URL']
-const API_VERSION = 'v2.1.0'
+const API_VERSION = 'v2.3.0'
 
 let config = {
   withCredentials: true,

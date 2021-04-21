@@ -94,7 +94,7 @@ export default {
     },
     pvcs_data () {
       return this.$store.getters['pvcs/get_persistentvolumeclaims']
-    }
+    },
   },
   methods: {
     refresh_pvc () {

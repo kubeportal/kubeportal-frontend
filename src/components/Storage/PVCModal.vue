@@ -35,7 +35,11 @@
             </v-col>
           </v-row>
 
-          <v-text-field v-model="storage_class_name" label="Storage Class Name"> </v-text-field>
+          <v-select
+            v-model="storage_class_name"
+            :items="storageclasses"
+            label="Storage Class name"
+          ></v-select>
           <v-row>
             <v-col md="10">
               <v-text-field v-model="size" label="Size" :rules="[rules.required]"> </v-text-field>
@@ -82,6 +86,11 @@ export default {
       }
     }
   },
+  computed: {
+    storageclasses () {
+      return this.$store.getters['pvcs/get_storageclasses']
+    }
+  },
   methods: {
     async post_pvc (e) {
       e.preventDefault()
@@ -97,6 +106,11 @@ export default {
     },
     emit_event () {
       this.$emit('close', false)
+    }
+  },
+  mounted () {
+    if (this.storageclasses.length === 0) {
+      this.$store.dispatch('pvcs/request_storageclasses')
     }
   }
 }
