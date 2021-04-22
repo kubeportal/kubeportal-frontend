@@ -15,7 +15,7 @@ const users_container = {
         webapp_ids: [],
       },
       current_namespace: '',
-      serviceaccounts: [],
+      current_service_account: '',
       webapps: [],
       groups: [],
       approval_url: '',
@@ -27,7 +27,7 @@ const users_container = {
       get_access_token (state) { return state.access_token },
       get_refresh_token (state) { return state.refresh_token },
       get_access_token_refresh_url (state) { return state.access_token_refresh_url },
-      get_serviceaccounts (state) { return state.serviceaccounts },
+      get_current_service_account (state) { return state.current_service_account },
       get_url (state) { return state.url },
       get_user (state) { return state.user },
       get_current_namespace (state) { return state.current_namespace },
@@ -45,7 +45,7 @@ const users_container = {
       set_url (state, url) { state.url = url },
       set_user (state, user) { state.user = user },
       set_current_namespace (state, namespace) { state.current_namespace = namespace },
-      push_serviceaccount (state, serviceaccount) { state.serviceaccounts.push(serviceaccount) },
+      set_current_service_account (state, serviceaccount) { state.current_service_account = serviceaccount },
       push_webapp (state, webapp) { state.webapps.push(webapp) },
       push_group (state, group) { state.groups.push(group) },
       set_webapps (state, webapps) { state.webapps = webapps },
@@ -83,16 +83,17 @@ const users_container = {
       },
       async request_webapps (context) {
         const current_user = context.getters['get_user']
+        const current_namespace = context.getters['get_current_namespace']
+        const current_service_account = context.getters['get_current_service_account']
         for (const webapp_url of current_user['webapp_urls']) {
           const response = await backend.get(webapp_url)
           let res_data = response.data
           if (res_data.link_url.includes('{{namespace}}')) {
-            res_data.link_url = res_data.link_url.replace('{{namespace}}', current_user['namespace_names'][0])
+            res_data.link_url = res_data.link_url.replace('{{namespace}}', current_namespace)
           }
-          // @TODO: Service accounts are currently urls
-          // if (res_data.link_url.includes('{{serviceaccount}}')) {
-          //   res_data.link_url = res_data.link_url.replace('{{serviceaccount}}', current_user['get_namespace'])
-          // }
+          if (res_data.link_url.includes('{{serviceaccount}}')) {
+            res_data.link_url = res_data.link_url.replace('{{serviceaccount}}', current_service_account)
+          }
           context.commit('push_webapp', response.data)
         }
       },
@@ -108,8 +109,9 @@ const users_container = {
         if (current_user['state'] === 'ACCESS_APPROVED') {
           const serviceaccount_response = await backend.get(current_user['serviceaccount_urls'][0])
           console.log('SERVICE ACCOUNT', serviceaccount_response.data)
-          context.commit('push_serviceaccount', serviceaccount_response.data)
+          context.commit('set_current_service_account', serviceaccount_response.data)
           backend.get(serviceaccount_response.data['namespace']).then(response => {
+            context.commit('set_current_namespace', response.data['name'])
             store.commit('pods/set_pods_link', response.data['pods_url'])
             store.commit('deployments/set_deployments_link', response.data['deployments_url'])
             store.commit('services/set_services_link', response.data['services_url'])
