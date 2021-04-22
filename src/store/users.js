@@ -11,7 +11,7 @@ const users_container = {
       access_token_refresh_url: '',
       url: '',
       user: {
-        webapp_ids: [],
+        webapp_ids: []
       },
       current_namespace: '',
       current_service_account: '',
