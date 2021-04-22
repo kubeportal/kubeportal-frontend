@@ -91,7 +91,7 @@ const users_container = {
             res_data.link_url = res_data.link_url.replace('{{namespace}}', current_namespace)
           }
           if (res_data.link_url.includes('{{serviceaccount}}')) {
-            res_data.link_url = res_data.link_url.replace('{{serviceaccount}}', current_service_account)
+            res_data.link_url = res_data.link_url.replace('{{serviceaccount}}', current_service_account['name'])
           }
           context.commit('push_webapp', response.data)
         }
