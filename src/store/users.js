@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import * as backend from '@/utils/backend'
 import store from './store.js'
 
