@@ -77,7 +77,7 @@ export default {
       name: '',
       access_modes: [{ value:'' }],
       access_modes_items: ['ReadWriteOnce', 'ReadOnlyMany', 'ReadWriteMany'],
-      storage_class_name: '',
+      storage_class_name: '(default)',
       size: '',
       size_type: 'Gi',
       size_items: ['Ki', 'Mi', 'Gi', 'Ti'],
@@ -97,7 +97,7 @@ export default {
       let data = {
         name: this.name,
         access_modes: this.access_modes.map(mode => mode.value),
-        storage_class_name: this.storage_class_name,
+        storage_class_name: this.storage_class_name === '(default)' ? '' : this.storage_class_name,
         size: this.size + this.size_type
       }
       console.log('PVC MODAL DATA', data)
