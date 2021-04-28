@@ -32,7 +32,6 @@ const ingresses_container = {
         ingress_links.data['ingress_urls'].forEach((link, index) => {
           backend.get(link).then(response => {
             let ingress = response.data
-            // console.log('INGRESSES', ingress)
             if (ingress) {
               let data = {}
               data['name'] = ingress.name
@@ -70,7 +69,6 @@ const ingresses_container = {
         })
       },
       async check_availablity (context, data) {
-        console.log(data)
         let status = true
         let startTime = performance.now()
         let time

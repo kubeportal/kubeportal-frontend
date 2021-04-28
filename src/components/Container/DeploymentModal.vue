@@ -150,7 +150,6 @@ export default {
         }
       }
 
-      console.log('DEPLOYMENT CREATE DATA', data)
       this.$store.dispatch('deployments/create_deployment', data)
       this.emit_event()
     },

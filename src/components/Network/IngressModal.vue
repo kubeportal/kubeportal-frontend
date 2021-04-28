@@ -143,7 +143,6 @@ export default {
         annotations: this.annotations,
         rules: this.ingress_rules.map(rule => { return { ...rule, paths: rule.paths.map(path => { return { ...path, service_port: parseInt(path.service_port) } }) } })
       }
-      console.log('CREATE INGRESS DATA', data)
       this.$store.dispatch('ingresses/create_ingress', data)
     },
     emit_event () {

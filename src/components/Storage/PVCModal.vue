@@ -100,7 +100,6 @@ export default {
         storage_class_name: this.storage_class_name === '(default)' ? '' : this.storage_class_name,
         size: this.size + this.size_type
       }
-      console.log('PVC MODAL DATA', data)
       this.$store.dispatch('pvcs/create_pvc', data)
       this.emit_event()
     },

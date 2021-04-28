@@ -28,7 +28,6 @@ const services_container = {
         service_links.data['service_urls'].forEach(link => {
           backend.get(link).then(response => {
             let service = response.data
-            console.log('SERVICE', service)
             let data = {}
             data['name'] = service.name
             data['type'] = service.type
@@ -40,7 +39,6 @@ const services_container = {
             data['target_ports'] = service.ports.map(port => port['target_port'])
             data['formatted_ports'] = data['ports'].join('<br>')
             data['formatted_target_ports'] = data['target_ports'].join('<br>')
-            console.log('DATA', data)
             context.commit('push_service', data)
           })
         })

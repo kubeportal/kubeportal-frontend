@@ -107,7 +107,6 @@ const users_container = {
         const current_user = context.getters['get_user']
         if (current_user['state'] === 'ACCESS_APPROVED') {
           const serviceaccount_response = await backend.get(current_user['serviceaccount_urls'][0])
-          console.log('SERVICE ACCOUNT', serviceaccount_response.data)
           context.commit('set_current_service_account', serviceaccount_response.data)
           backend.get(serviceaccount_response.data['namespace']).then(response => {
             context.commit('set_current_namespace', response.data['name'])

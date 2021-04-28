@@ -73,7 +73,6 @@ export default {
         name: this.name,
         containers: this.containers
       }
-      console.log('POD MODAL DATA', data)
       this.$store.dispatch('pods/create_pod', data)
       this.emit_event()
     },

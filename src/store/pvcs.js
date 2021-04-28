@@ -51,7 +51,6 @@ const persistentvolumeclaims_container = {
       async request_storageclasses (context) {
         const storageclasses_url = context.getters['get_storageclasses_url']
         backend.get(storageclasses_url).then(response => {
-          console.log('STORAGECLASSES RESP', response.data)
           let storageclass_names = ['(default)', ...response.data['classes']]
           context.commit('set_storageclasses', storageclass_names)
         })

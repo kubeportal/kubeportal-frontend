@@ -171,10 +171,7 @@ export default {
   components: { TopBar, ServiceModal, IngressModal },
   computed: {
     services_data () {
-      let tmp = this.$store.getters['services/get_services']
-
-      console.log('TMP', tmp)
-      return tmp
+      return this.$store.getters['services/get_services']
     },
     ingresses_data () {
       return this.$store.getters['ingresses/get_ingresses']
