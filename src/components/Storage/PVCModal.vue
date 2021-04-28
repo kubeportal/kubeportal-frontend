@@ -35,7 +35,11 @@
             </v-col>
           </v-row>
 
-          <v-text-field v-model="storage_class_name" label="Storage Class Name"> </v-text-field>
+          <v-select
+            v-model="storage_class_name"
+            :items="storageclasses"
+            label="Storage Class name"
+          ></v-select>
           <v-row>
             <v-col md="10">
               <v-text-field v-model="size" label="Size" :rules="[rules.required]"> </v-text-field>
@@ -73,7 +77,7 @@ export default {
       name: '',
       access_modes: [{ value:'' }],
       access_modes_items: ['ReadWriteOnce', 'ReadOnlyMany', 'ReadWriteMany'],
-      storage_class_name: '',
+      storage_class_name: '(default)',
       size: '',
       size_type: 'Gi',
       size_items: ['Ki', 'Mi', 'Gi', 'Ti'],
@@ -82,13 +86,18 @@ export default {
       }
     }
   },
+  computed: {
+    storageclasses () {
+      return this.$store.getters['pvcs/get_storageclasses']
+    }
+  },
   methods: {
     async post_pvc (e) {
       e.preventDefault()
       let data = {
         name: this.name,
         access_modes: this.access_modes.map(mode => mode.value),
-        storage_class_name: this.storage_class_name,
+        storage_class_name: this.storage_class_name === '(default)' ? '' : this.storage_class_name,
         size: this.size + this.size_type
       }
       console.log('PVC MODAL DATA', data)
@@ -97,6 +106,11 @@ export default {
     },
     emit_event () {
       this.$emit('close', false)
+    }
+  },
+  mounted () {
+    if (this.storageclasses.length === 0) {
+      this.$store.dispatch('pvcs/request_storageclasses')
     }
   }
 }

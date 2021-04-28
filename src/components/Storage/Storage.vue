@@ -88,9 +88,7 @@ export default {
   },
   computed: {
     namespace () {
-      return this.$store.getters['users/get_user']['namespace_names'].join(
-        ', '
-      )
+      return this.$store.getters['users/get_current_namespace']
     },
     pvcs_data () {
       return this.$store.getters['pvcs/get_persistentvolumeclaims']

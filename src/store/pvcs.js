@@ -5,18 +5,24 @@ const persistentvolumeclaims_container = {
     namespaced: true,
     state: {
       pvc_link: '',
-      persistentvolumeclaims: []
+      persistentvolumeclaims: [],
+      storageclasses_url: '',
+      storageclasses: []
     },
 
     getters: {
       get_pvc_link (state) { return state.pvc_link },
-      get_persistentvolumeclaims (state) { return state.persistentvolumeclaims }
+      get_persistentvolumeclaims (state) { return state.persistentvolumeclaims },
+      get_storageclasses_url (state) { return state.storageclasses_url },
+      get_storageclasses (state) { return state.storageclasses }
     },
 
     mutations: {
       set_pvc_link (state, pvc_link) { state.pvc_link = pvc_link },
       set_persistentvolumeclaims (state, persistentvolumeclaims) { state.persistentvolumeclaims = persistentvolumeclaims },
-      push_persistentvolumeclaim (state, persistentvolumeclaim) { state.persistentvolumeclaims.push(persistentvolumeclaim) }
+      push_persistentvolumeclaim (state, persistentvolumeclaim) { state.persistentvolumeclaims.push(persistentvolumeclaim) },
+      set_storageclasses_url (state, url) { state.storageclasses_url = url },
+      set_storageclasses (state, storageclasses) { state.storageclasses = storageclasses }
     },
 
     actions: {
@@ -41,6 +47,14 @@ const persistentvolumeclaims_container = {
         const pvc_link = context.getters['get_pvc_link']
         const response = await backend.post(pvc_link, data)
         console.log('CREATE PVC RESPONSE', response)
+      },
+      async request_storageclasses (context) {
+        const storageclasses_url = context.getters['get_storageclasses_url']
+        backend.get(storageclasses_url).then(response => {
+          console.log('STORAGECLASSES RESP', response.data)
+          let storageclass_names = ['(default)', ...response.data['classes']]
+          context.commit('set_storageclasses', storageclass_names)
+        })
       }
     }
   }

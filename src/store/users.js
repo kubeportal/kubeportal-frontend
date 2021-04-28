@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import * as backend from '@/utils/backend'
 import store from './store.js'
 
@@ -14,6 +13,8 @@ const users_container = {
       user: {
         webapp_ids: []
       },
+      current_namespace: '',
+      current_service_account: '',
       webapps: [],
       groups: [],
       approval_url: '',
@@ -25,8 +26,10 @@ const users_container = {
       get_access_token (state) { return state.access_token },
       get_refresh_token (state) { return state.refresh_token },
       get_access_token_refresh_url (state) { return state.access_token_refresh_url },
+      get_current_service_account (state) { return state.current_service_account },
       get_url (state) { return state.url },
       get_user (state) { return state.user },
+      get_current_namespace (state) { return state.current_namespace },
       get_webapps (state) { return state.webapps },
       get_groups (state) { return state.groups },
       get_approval_url (state) { return state.approval_url },
@@ -40,6 +43,8 @@ const users_container = {
       set_access_token_refresh_url (state, url) { state.access_token_refresh_url = url },
       set_url (state, url) { state.url = url },
       set_user (state, user) { state.user = user },
+      set_current_namespace (state, namespace) { state.current_namespace = namespace },
+      set_current_service_account (state, serviceaccount) { state.current_service_account = serviceaccount },
       push_webapp (state, webapp) { state.webapps.push(webapp) },
       push_group (state, group) { state.groups.push(group) },
       set_webapps (state, webapps) { state.webapps = webapps },
@@ -62,9 +67,10 @@ const users_container = {
           context.commit('set_access_token_refresh_url', response.data['access_token_refresh_url'])
           store.commit('news/set_news_url', response.data['news_url'])
           store.commit('infos/set_infos_url', response.data['infos_url'])
+          store.commit('pvcs/set_storageclasses_url', response.data['storageclasses_url'])
           const user_details = await backend.get(response.data['user_url'])
           context.commit('set_user', user_details.data)
-          context.dispatch('request_namespaces')
+          context.dispatch('request_serviceaccounts')
         }
         return response
       },
@@ -76,16 +82,17 @@ const users_container = {
       },
       async request_webapps (context) {
         const current_user = context.getters['get_user']
+        const current_namespace = context.getters['get_current_namespace']
+        const current_service_account = context.getters['get_current_service_account']
         for (const webapp_url of current_user['webapp_urls']) {
           const response = await backend.get(webapp_url)
           let res_data = response.data
           if (res_data.link_url.includes('{{namespace}}')) {
-            res_data.link_url = res_data.link_url.replace('{{namespace}}', current_user['namespace_names'][0])
+            res_data.link_url = res_data.link_url.replace('{{namespace}}', current_namespace)
           }
-          // @TODO: Service accounts are currently urls
-          // if (res_data.link_url.includes('{{serviceaccount}}')) {
-          //   res_data.link_url = res_data.link_url.replace('{{serviceaccount}}', current_user['get_namespace'])
-          // }
+          if (res_data.link_url.includes('{{serviceaccount}}')) {
+            res_data.link_url = res_data.link_url.replace('{{serviceaccount}}', current_service_account['name'])
+          }
           context.commit('push_webapp', response.data)
         }
       },
@@ -96,15 +103,20 @@ const users_container = {
           context.commit('push_group', response.data)
         }
       },
-      async request_namespaces (context) {
+      async request_serviceaccounts (context) {
         const current_user = context.getters['get_user']
         if (current_user['state'] === 'ACCESS_APPROVED') {
-          const response = await backend.get(current_user['namespace_urls'][0])
-          store.commit('pods/set_pods_link', response.data['pods_url'])
-          store.commit('deployments/set_deployments_link', response.data['deployments_url'])
-          store.commit('services/set_services_link', response.data['services_url'])
-          store.commit('ingresses/set_ingresses_link', response.data['ingresses_url'])
-          store.commit('pvcs/set_pvc_link', response.data['persistentvolumeclaims_url'])
+          const serviceaccount_response = await backend.get(current_user['serviceaccount_urls'][0])
+          console.log('SERVICE ACCOUNT', serviceaccount_response.data)
+          context.commit('set_current_service_account', serviceaccount_response.data)
+          backend.get(serviceaccount_response.data['namespace']).then(response => {
+            context.commit('set_current_namespace', response.data['name'])
+            store.commit('pods/set_pods_link', response.data['pods_url'])
+            store.commit('deployments/set_deployments_link', response.data['deployments_url'])
+            store.commit('services/set_services_link', response.data['services_url'])
+            store.commit('ingresses/set_ingresses_link', response.data['ingresses_url'])
+            store.commit('pvcs/set_pvc_link', response.data['persistentvolumeclaims_url'])
+          })
         }
       },
       async update_user (context, payload) {

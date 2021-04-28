@@ -159,9 +159,7 @@ export default {
   components: { TopBar, DeploymentModal, PodModal },
   computed: {
     namespace () {
-      return this.$store.getters['users/get_user']['namespace_names'].join(
-        ', '
-      )
+      return this.$store.getters['users/get_current_namespace']
     },
     pods_data () {
       return this.$store.getters['pods/get_pods']

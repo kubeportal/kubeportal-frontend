@@ -41,8 +41,8 @@
             dense
             solo
             v-model="selected_namespace"
-            :items="current_user['namespace_names']"
-            :label="current_user['namespace_names'].join(', ')"
+            :items="[current_namespace]"
+            :label="[current_namespace].join(', ')"
             multiple
           ></v-select>
         </v-col>
@@ -73,6 +73,7 @@ export default {
   },
   computed: {
     current_user () { return this.$store.getters['users/get_user'] },
+    current_namespace () { return this.$store.getters['users/get_current_namespace'] },
     user_groups () { return this.$store.getters['users/get_groups'] }
   },
   methods: {
