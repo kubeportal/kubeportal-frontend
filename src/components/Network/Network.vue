@@ -19,7 +19,7 @@
         <v-data-table
           :headers="services_headers"
           :items="services_data"
-          :items-per-page="15"
+          :items-per-page="10"
           class="elevation-1"
           :search="search_services"
         >
@@ -30,6 +30,7 @@
               <td>{{ props.item.selector }}</td>
               <td><span v-html="props.item.formatted_ports" /></td>
               <td><span v-html="props.item.formatted_target_ports" /></td>
+              <td>{{ props.item.creation_timestamp }}</td>
             </tr>
           </template>
           <template v-slot:top>
@@ -40,9 +41,17 @@
                   icon
                   @click="service_overlay = true"
                   x-large
-                  disabled
                 >
                   <v-icon>mdi-plus-circle</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col md="1">
+                <v-btn
+                  icon
+                  @click="refresh_service"
+                  x-large
+                >
+                  <v-icon>mdi-refresh</v-icon>
                 </v-btn>
               </v-col>
               <v-col md="10">
@@ -57,11 +66,16 @@
         </v-data-table>
       </v-tab-item>
       <v-tab-item>
-        <div></div>
+
+        <IngressModal
+          @close="ingress_overlay = false"
+          :overlay="ingress_overlay"
+          :namespace="namespace"
+        />
         <v-data-table
           :headers="ingresses_headers"
           :items="ingresses_data"
-          :items-per-page="15"
+          :items-per-page="10"
           class="elevation-1"
           :search="search_ingresses"
         >
@@ -69,34 +83,46 @@
             <tr>
               <td>
                 <div class="d-inline-flex flex-nowrap">
-                  <v-icon class="mr-2" v-if="props.item.tls"
-                    >mdi-lock-check-outline</v-icon
-                  >
-                  <v-icon small class="mr-2" v-else
-                    >mdi-lock-open-variant-outline</v-icon
-                  >
+                  <v-icon class="mr-2" v-if="props.item.tls">
+                    mdi-lock-check-outline</v-icon>
+                  <v-icon small class="mr-2" v-else>
+                    mdi-lock-open-variant-outline
+                  </v-icon>
                   <span
                     class="host mt-2"
                     v-html="props.item.formatted_host_links"
                   />
                 </div>
               </td>
-              <td>
-                <v-icon
-                  x-small
-                  v-if="props.item.status === 200"
-                  style="color: #689f38"
-                  class="icon"
-                  >mdi-checkbox-blank-circle</v-icon
-                >
-                <v-icon x-small v-else class="icon" style="color: #a10000"
-                  >mdi-checkbox-blank-circle</v-icon
-                >
-              </td>
+              <v-tooltip color="#2e2e2e" nudge-left="10" left>
+                <template v-slot:activator="{ on, attrs }">
+                  <td v-bind="attrs" v-on="on">
+                    <v-icon
+                      x-small
+                      v-if="props.item.status === 'pending'">
+                      mdi-checkbox-blank-circle
+                    </v-icon>
+                    <v-icon
+                      x-small
+                      v-else-if="props.item.status"
+                      style="color: #689f38">
+                      mdi-checkbox-blank-circle
+                    </v-icon>
+                    <v-icon x-small v-else style="color: #a10000">
+                      mdi-checkbox-blank-circle
+                    </v-icon>
+                  </td>
+                </template>
+                <span>
+                  <div class="tooltip">
+                    {{ 'ping finished in: ' + props.item.time +' ms'}}
+                  </div>
+                </span>
+              </v-tooltip>
               <td>{{ props.item.name }}</td>
               <td><span v-html="props.item.formatted_annotations" /></td>
               <td><span v-html="props.item.formatted_services" /></td>
-              <td><span v-html="props.item.creation_timestamp" /></td>
+              <td>{{props.item.creation_timestamp}}</td>
             </tr>
           </template>
           <template v-slot:top>
@@ -107,9 +133,17 @@
                   icon
                   @click="ingress_overlay = true"
                   x-large
-                  disabled
                 >
                   <v-icon>mdi-plus-circle</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col md="1">
+                <v-btn
+                  icon
+                  @click="refresh_ingress"
+                  x-large
+                >
+                  <v-icon>mdi-refresh</v-icon>
                 </v-btn>
               </v-col>
               <v-col md="10">
@@ -174,6 +208,10 @@ export default {
         {
           text: 'Targetports',
           value: 'target_ports'
+        },
+        {
+          text: 'Created',
+          value: 'creation_timestamp'
         }
       ],
       ingresses_headers: [
@@ -200,10 +238,18 @@ export default {
           value: 'formatted_services'
         },
         {
-          text: 'Created at',
+          text: 'Created',
           value: 'creation_timestamp'
         }
       ]
+    }
+  },
+  methods: {
+    refresh_service () {
+      this.$store.dispatch('services/request_services')
+    },
+    refresh_ingress () {
+      this.$store.dispatch('ingresses/request_ingresses')
     }
   },
   mounted () {
@@ -212,16 +258,28 @@ export default {
     }
     if (this.ingresses_data.length === 0) {
       this.$store.dispatch('ingresses/request_ingresses')
-    } else {
-      this.$store.dispatch('ingresses/check_availablity')
     }
-  },
-
-  methods: {}
+  }
 }
 </script>
 
 <style scoped>
+.v-tooltip__content p {
+  font-size: 1.2rem !important;
+}
+
+.v-tooltip__content .tooltip {
+  margin: 2rem 1rem 2rem 1rem;
+}
+
+.v-tooltip__content h3 {
+  font-size: 1.2rem !important;
+  font-weight: bolder;
+}
+.v-tooltip__content hr {
+  width: 75%;
+  margin: 1rem 0 1rem 0;
+}
 .host {
   font-size: 1rem;
 }

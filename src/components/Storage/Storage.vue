@@ -6,18 +6,33 @@
         PVC
       </v-tab>
       <v-tab-item>
+
+        <PVCModal
+          @close="overlay = false"
+          :overlay="overlay"
+          :namespace="namespace"
+        />
         <v-data-table
           :headers="pvc_headers"
           :items="pvcs_data"
-          :items-per-page="15"
+          :items-per-page="10"
           class="elevation-1"
           :search="search_pvc"
         >
           <template v-slot:top>
             <v-row>
               <v-col md="1">
-                <v-btn color="green" icon x-large disabled>
+                <v-btn color="green" icon x-large @click="overlay = true">
                   <v-icon>mdi-plus-circle</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col md="1">
+                <v-btn
+                  icon
+                  @click="refresh_pvc"
+                  x-large
+                >
+                  <v-icon>mdi-refresh</v-icon>
                 </v-btn>
               </v-col>
               <v-col md="10">
@@ -36,11 +51,11 @@
 </template>
 
 <script>
-import TopBar from '@/components/TopBar'
+import PVCModal from './PVCModal'
 
 export default {
   name: 'Storage',
-  components: { TopBar },
+  components: { PVCModal },
   data () {
     return {
       overlay: false,
@@ -65,7 +80,7 @@ export default {
           value: 'size'
         },
         {
-          text: 'Created at',
+          text: 'Created',
           value: 'creation_timestamp'
         }
       ]
@@ -73,12 +88,15 @@ export default {
   },
   computed: {
     namespace () {
-      return this.$store.getters['users/get_user']['namespace_names'].join(
-        ', '
-      )
+      return this.$store.getters['users/get_current_namespace']
     },
     pvcs_data () {
       return this.$store.getters['pvcs/get_persistentvolumeclaims']
+    }
+  },
+  methods: {
+    refresh_pvc () {
+      this.$store.dispatch('pvcs/request_persistentvolumeclaims')
     }
   },
   mounted () {

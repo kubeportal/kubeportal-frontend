@@ -11,10 +11,15 @@
       </v-tab>
 
       <v-tab-item>
+        <PodModal
+          @close="pod_overlay = false"
+          :overlay="pod_overlay"
+          :namespace="namespace"
+        />
         <v-data-table
           :headers="pods_headers"
           :items="pods_data"
-          :items-per-page="15"
+          :items-per-page="10"
           class="elevation-1"
           :search="search_pods"
         >
@@ -71,9 +76,17 @@
                   icon
                   @click="pod_overlay = true"
                   x-large
-                  disabled
                 >
                   <v-icon>mdi-plus-circle</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col md="1">
+                <v-btn
+                  icon
+                  @click="refresh_pods"
+                  x-large
+                >
+                  <v-icon>mdi-refresh</v-icon>
                 </v-btn>
               </v-col>
               <v-col md="10">
@@ -96,7 +109,7 @@
         <v-data-table
           :headers="deployment_headers"
           :items="deployments_data"
-          :items-per-page="15"
+          :items-per-page="10"
           class="elevation-1"
           :search="search_deployments"
         >
@@ -108,9 +121,17 @@
                   icon
                   @click="deployment_overlay = true"
                   x-large
-                  disabled
                 >
                   <v-icon>mdi-plus-circle</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col md="1">
+                <v-btn
+                  icon
+                  @click="refresh_deployments"
+                  x-large
+                >
+                  <v-icon>mdi-refresh</v-icon>
                 </v-btn>
               </v-col>
               <v-col md="10">
@@ -131,15 +152,14 @@
 <script>
 import TopBar from '@/components/TopBar'
 import DeploymentModal from './DeploymentModal'
+import PodModal from './PodModal'
 
 export default {
   name: 'Container',
-  components: { TopBar, DeploymentModal },
+  components: { TopBar, DeploymentModal, PodModal },
   computed: {
     namespace () {
-      return this.$store.getters['users/get_user']['namespace_names'].join(
-        ', '
-      )
+      return this.$store.getters['users/get_current_namespace']
     },
     pods_data () {
       return this.$store.getters['pods/get_pods']
@@ -174,7 +194,7 @@ export default {
           value: 'volume_names'
         },
         {
-          text: 'Created at',
+          text: 'Created',
           value: 'creation_timestamp'
         }
       ],
@@ -186,14 +206,22 @@ export default {
           value: 'name'
         },
         {
-          text: 'Created at',
-          value: 'creation_timestamp'
-        },
-        {
           text: 'Replicas',
           value: 'replicas'
+        },
+        {
+          text: 'Created',
+          value: 'creation_timestamp'
         }
       ]
+    }
+  },
+  methods: {
+    refresh_pods () {
+      this.$store.dispatch('pods/request_pods')
+    },
+    refresh_deployments () {
+      this.$store.dispatch('deployments/request_deployments')
     }
   },
   mounted () {

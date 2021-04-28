@@ -1,50 +1,116 @@
 <template>
   <v-overlay :value="overlay">
     <v-card class="modal" light>
-      <v-card-title> Create Service </v-card-title>
+      <v-card-title> Create Ingress </v-card-title>
       <v-card-text>
-        <v-form @submit="post_service">
+        <v-form @submit="post_ingress">
           <v-text-field
           v-model="name"
-          :rules="name_rules"
+          :rules="[rules.required]"
           label="Name"
-          required
         ></v-text-field>
 
-        <v-select
-          v-model="type"
-          :items="type_items"
-          label="Type"
-          required
-        ></v-select>
+        <v-switch
+          v-model="tls"
+          :label="`Https: ${tls ? 'on' : 'off'}`"
+        ></v-switch>
 
-        <v-text-field
-          v-model="app"
-          label="App"
-          required
-        ></v-text-field>
-
-        <v-text-field
-          v-model="port"
-          type="number"
-          required
-          label="Port"
-        ></v-text-field>
-        <v-select
-
-          v-model="protocol"
-          :items="protocol_items"
-          label="Protocol"
-          required
-        ></v-select>
-          <v-row align="center">
-            <v-col>
-              <v-btn color="success" type="submit"> Submit </v-btn>
+          <!-- Annotations Input -->
+          <v-row v-for="(annotation, index) in annotations" :key="'annotations'+index">
+            <v-col md="5">
+              <v-text-field v-model="annotation.key" label="Annotation Key" :rules="[rules.required]"/>
             </v-col>
-            <v-col>
+            <v-col md="5">
+              <v-text-field v-model="annotation.value" label="Annotation Value" :rules="[rules.required]"/>
+            </v-col>
+            <v-col md="2" v-if="index === 0">
+              <v-btn
+                icon
+                large
+                @click="annotations.push({key:'', value:''})"
+              >
+              <v-icon>mdi-plus-circle</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col md="2" v-else>
+              <v-btn
+                icon
+                color="red"
+                large
+                @click="annotations.splice(index, 1)"
+              >
+              <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+
+          <!-- Ingress Rules Input -->
+          <v-row v-for="(rule, index) in ingress_rules" :key="'ingress_rules'+index">
+              <v-col md="12">
+
+                <v-text-field v-model="rule.host" label="Host" :rules="[rules.required]"/>
+              </v-col>
+
+              <v-row v-for="(path, rule_index) in rule.paths" :key="index+'path'+rule_index">
+                <v-col md="12">
+
+                <v-text-field v-model="path.path" label="Path" :rules="[rules.required]"/>
+                </v-col>
+                <v-col md="5">
+                  <v-text-field v-model="path.service_name" label="Service Name" :rules="[rules.required]"/>
+              </v-col>
+                <v-col md="5">
+                  <v-text-field v-model="path.service_port" label="Service Port" type="number" :rules="[rules.required]"/>
+                </v-col>
+                <v-col md="2" v-if="rule_index === 0">
+                  <v-btn
+                    icon
+                    large
+                    @click="rule.paths.push({path:'', service_name:'', service_port: 0})"
+                  >
+                  <v-icon>mdi-plus-circle</v-icon>
+                  </v-btn>
+                </v-col>
+                <v-col md="2" v-else>
+                  <v-btn
+                    icon
+                    color="red"
+                    large
+                    @click="rule.paths.splice(index, 1)"
+                  >
+                  <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            <v-col md="2" v-if="index === 0">
+              <v-btn
+                icon
+                large
+                @click="ingress_rules.push({ host: '', paths: [{ path: '', service_name:'', service_port: 0 }] })"
+              >
+              <v-icon>mdi-plus-circle</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col md="2" v-else>
+              <v-btn
+                icon
+                color="red"
+                large
+                @click="ingress_rules.splice(index, 1)"
+              >
+              <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+
+          <v-row justify="end">
+            <v-col md="2">
               <v-btn @click="emit_event" color="error" type="button">
                 Cancel
               </v-btn>
+            </v-col>
+            <v-col md="2">
+              <v-btn color="success" type="submit"> Submit </v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -54,31 +120,30 @@
 </template>
 
 <script>
-import * as backend from '@/utils/backend'
 export default {
-  name: 'IngressModak',
+  name: 'IngressModal',
   props: { overlay: Boolean, namespace: String },
   data () {
     return {
-      name: ''
+      name: '',
+      tls: true,
+      annotations: [{ key: '', value: '' }],
+      ingress_rules: [{ host: '', paths: [{ path: '', service_name:'', service_port: 0 }] }],
+      rules: {
+        required: value => !!value || 'Required.'
+      }
     }
   },
   methods: {
-    async post_service (e) {
+    async post_ingress (e) {
       e.preventDefault()
-      let response = await backend.post(`/services/${this.namespace}/`, {
+      let data = {
         name: this.name,
-        type: this.type,
-        selector: {
-          app: this.app
-        },
-        ports: [
-          {
-            port: this.port,
-            protocol: this.protocol
-          }
-        ]
-      })
+        tls: this.tls,
+        annotations: this.annotations,
+        rules: this.ingress_rules.map(rule => { return { ...rule, paths: rule.paths.map(path => { return { ...path, service_port: parseInt(path.service_port) } }) } })
+      }
+      this.$store.dispatch('ingresses/create_ingress', data)
     },
     emit_event () {
       this.$emit('close', false)
@@ -90,6 +155,6 @@ export default {
 
 <style scoped>
 .modal {
-  width: 20vw;
+  width: 50vw;
 }
 </style>

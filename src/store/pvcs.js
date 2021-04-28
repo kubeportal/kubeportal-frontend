@@ -5,22 +5,29 @@ const persistentvolumeclaims_container = {
     namespaced: true,
     state: {
       pvc_link: '',
-      persistentvolumeclaims: []
+      persistentvolumeclaims: [],
+      storageclasses_url: '',
+      storageclasses: []
     },
 
     getters: {
       get_pvc_link (state) { return state.pvc_link },
-      get_persistentvolumeclaims (state) { return state.persistentvolumeclaims }
+      get_persistentvolumeclaims (state) { return state.persistentvolumeclaims },
+      get_storageclasses_url (state) { return state.storageclasses_url },
+      get_storageclasses (state) { return state.storageclasses }
     },
 
     mutations: {
       set_pvc_link (state, pvc_link) { state.pvc_link = pvc_link },
       set_persistentvolumeclaims (state, persistentvolumeclaims) { state.persistentvolumeclaims = persistentvolumeclaims },
-      push_persistentvolumeclaim (state, persistentvolumeclaim) { state.persistentvolumeclaims.push(persistentvolumeclaim) }
+      push_persistentvolumeclaim (state, persistentvolumeclaim) { state.persistentvolumeclaims.push(persistentvolumeclaim) },
+      set_storageclasses_url (state, url) { state.storageclasses_url = url },
+      set_storageclasses (state, storageclasses) { state.storageclasses = storageclasses }
     },
 
     actions: {
       async request_persistentvolumeclaims (context) {
+        context.commit('set_persistentvolumeclaims', [])
         const pvc_link = context.getters['get_pvc_link']
         const persistentvolumeclaim_links = await backend.get(pvc_link)
         persistentvolumeclaim_links.data['persistentvolumeclaim_urls'].forEach(link => {
@@ -28,12 +35,24 @@ const persistentvolumeclaims_container = {
             let persistentvolumeclaim = response.data
             let data = {}
             data['name'] = persistentvolumeclaim.name
-            data['creation_timestamp'] = moment(persistentvolumeclaim.creation_timestamp).format()
+            data['creation_timestamp'] = moment(persistentvolumeclaim.creation_timestamp).fromNow()
             data['size'] = persistentvolumeclaim.size
             data['access_mode'] = persistentvolumeclaim.access_modes
             data['phase'] = persistentvolumeclaim.phase
             context.commit('push_persistentvolumeclaim', data)
           })
+        })
+      },
+      async create_pvc (context, data) {
+        const pvc_link = context.getters['get_pvc_link']
+        const response = await backend.post(pvc_link, data)
+        console.log('CREATE PVC RESPONSE', response)
+      },
+      async request_storageclasses (context) {
+        const storageclasses_url = context.getters['get_storageclasses_url']
+        backend.get(storageclasses_url).then(response => {
+          let storageclass_names = ['(default)', ...response.data['classes']]
+          context.commit('set_storageclasses', storageclass_names)
         })
       }
     }

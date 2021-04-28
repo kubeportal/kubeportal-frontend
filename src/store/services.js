@@ -1,4 +1,6 @@
 import * as backend from '@/utils/backend'
+import moment from 'moment'
+
 const services_container = {
   module: {
     namespaced: true,
@@ -20,6 +22,7 @@ const services_container = {
 
     actions: {
       async request_services (context) {
+        context.commit('set_services', [])
         const services_link = context.getters['get_services_link']
         const service_links = await backend.get(services_link)
         service_links.data['service_urls'].forEach(link => {
@@ -28,6 +31,7 @@ const services_container = {
             let data = {}
             data['name'] = service.name
             data['type'] = service.type
+            data['creation_timestamp'] = moment(service.creation_timestamp).fromNow()
             if(service.selector) {
               data['selector'] = `${service.selector['key']}=${service.selector['value']}`
             }
@@ -38,6 +42,11 @@ const services_container = {
             context.commit('push_service', data)
           })
         })
+      },
+      async create_service (context, data) {
+        const services_link = context.getters['get_services_link']
+        const response = await backend.post(services_link, data)
+        console.log('CREATE SERVICE RESPONSE', response)
       }
     }
   }

@@ -32,6 +32,7 @@ const pods_container = {
 
     actions: {
       async request_pods (context) {
+        context.commit('set_pods', [])
         const pods_link = context.getters['get_pods_link']
         let pod_links = await backend.get(pods_link)
         pod_links.data['pod_urls'].forEach(link => {
@@ -39,7 +40,7 @@ const pods_container = {
             let pod = response.data
             let data = {}
             data['name'] = pod.name
-            data['creation_timestamp'] = moment(pod.creation_timestamp).format()
+            data['creation_timestamp'] = moment(pod.creation_timestamp).fromNow()
             data['containers'] = pod.containers.map(container => container.name)
             data['images'] = pod.containers.map(container => container.image)
             data['volume_names'] = pod.containers.map(container =>
@@ -51,6 +52,11 @@ const pods_container = {
             context.commit('push_pod', data)
           })
         })
+      },
+      async create_pod (context, data) {
+        const pods_link = context.getters['get_pods_link']
+        const response = await backend.post(pods_link, data)
+        console.log('CREATE POD RESPONSE', response)
       }
     }
   }
