@@ -66,6 +66,49 @@
                 </span>
               </v-tooltip>
               <td>{{ props.item.creation_timestamp }}</td>
+              <td>
+                <v-menu offset-y left>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      color="primary"
+                      dark
+                      v-bind="attrs"
+                      v-on="on"
+                      icon
+                    >
+                      <v-icon>mdi-cog</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-list flat>
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon>mdi-transit-connection</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-content>
+                        <v-list-item-title>Create Service</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon>mdi-desktop-classic</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-content>
+                        <v-list-item-title>Create PVC</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon>mdi-delete</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-content>
+                        <v-list-item-title>Delete</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </td>
             </tr>
           </template>
           <template v-slot:top>
