@@ -32,7 +32,7 @@
         class="items"
       >
         <TopBar :title="tab.name"/>
-        <div class="m-8">
+        <div class="p-1">
           <v-card-text> current namespace: {{ namespace }}</v-card-text>
           <component :is="tab.component"/>
         </div>
@@ -87,6 +87,10 @@ export default {
 </script>
 
 <style lang="scss">
+.p-1 {
+  padding: 1em;
+}
+
 .vertical-icon {
   color: floralwhite;
 }
