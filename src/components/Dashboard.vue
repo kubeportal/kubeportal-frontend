@@ -31,18 +31,21 @@
         :key="tab.name + index"
         class="items"
       >
-        <Node :tab="tab" />
+        <TopBar :title="tab.name"/>
+        <div class="m-8">
+          <v-card-text> current namespace: {{ namespace }}</v-card-text>
+          <component :is="tab.component"/>
+        </div>
       </v-tab-item>
     </v-tabs>
   </v-img>
 </template>
 
 <script>
-import Node from './Node'
-
+import TopBar from './TopBar'
 export default {
   name: 'Dashboard',
-  components: { Node },
+  components: { TopBar },
   data () {
     return {
       width: window.outerWidth
@@ -68,6 +71,9 @@ export default {
     },
     desktop () {
       return this.width > 900
+    },
+    namespace () {
+      return this.$store.getters['users/get_current_namespace']
     }
   },
   created () {
