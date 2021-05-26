@@ -126,4 +126,20 @@ hr {
   background-color: rgba(0, 0, 0, 0);
 }
 
+.v-tooltip__content p {
+  font-size: 1.2rem !important;
+}
+
+.v-tooltip__content .tooltip {
+  margin: 2rem 1rem 2rem 1rem;
+}
+
+.v-tooltip__content h3 {
+  font-size: 1.2rem !important;
+  font-weight: bolder;
+}
+.v-tooltip__content hr {
+  width: 75%;
+  margin: 1rem 0 1rem 0;
+}
 </style>
