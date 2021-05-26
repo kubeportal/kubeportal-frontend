@@ -14,49 +14,7 @@
         <PodTable :pods_data="pods_data" :namespace="namespace"/>
       </v-tab-item>
       <v-tab-item>
-        <DeploymentModal
-          @close="deployment_overlay = false"
-          :overlay="deployment_overlay"
-          :namespace="namespace"
-        />
-        <v-data-table
-          :headers="deployment_headers"
-          :items="deployments_data"
-          :items-per-page="10"
-          class="elevation-1"
-          :search="search_deployments"
-        >
-          <template v-slot:top>
-            <v-row>
-              <v-col md="1">
-                <v-btn
-                  color="green"
-                  icon
-                  @click="deployment_overlay = true"
-                  x-large
-                >
-                  <v-icon>mdi-plus-circle</v-icon>
-                </v-btn>
-              </v-col>
-              <v-col md="1">
-                <v-btn
-                  icon
-                  @click="refresh_deployments"
-                  x-large
-                >
-                  <v-icon>mdi-refresh</v-icon>
-                </v-btn>
-              </v-col>
-              <v-col md="10">
-                <v-text-field
-                  v-model="search_deployments"
-                  label="Search"
-                  class="mx-4"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </template>
-        </v-data-table>
+        <DeploymentTable :deployments_data="deployments_data" :namespace="namespace" />
       </v-tab-item>
     </v-tabs>
   </div>
@@ -65,12 +23,13 @@
 <script>
 import TopBar from '@/components/TopBar'
 import DeploymentModal from './DeploymentModal'
+import DeploymentTable from './DeploymentTable'
 import PodModal from './PodModal'
 import PodTable from './PodTable'
 
 export default {
   name: 'Container',
-  components: { TopBar, DeploymentModal, PodModal, PodTable },
+  components: { TopBar, DeploymentModal, DeploymentTable, PodModal, PodTable },
   computed: {
     namespace () {
       return this.$store.getters['users/get_current_namespace']
@@ -80,62 +39,6 @@ export default {
     },
     deployments_data () {
       return this.$store.getters['deployments/get_deployments']
-    }
-  },
-  data () {
-    return {
-      deployment_overlay: false,
-      pod_overlay: false,
-      search_pods: '',
-      search_deployments: '',
-      pods_headers: [
-        {
-          text: 'Name',
-          algin: 'start',
-          sortable: false,
-          value: 'name'
-        },
-        {
-          text: 'Image',
-          value: 'images'
-        },
-        {
-          text: 'Container',
-          value: 'containers'
-        },
-        {
-          text: 'Volumes',
-          value: 'volume_names'
-        },
-        {
-          text: 'Created',
-          value: 'creation_timestamp'
-        }
-      ],
-      deployment_headers: [
-        {
-          text: 'Name',
-          algin: 'start',
-          sortable: false,
-          value: 'name'
-        },
-        {
-          text: 'Replicas',
-          value: 'replicas'
-        },
-        {
-          text: 'Created',
-          value: 'creation_timestamp'
-        }
-      ]
-    }
-  },
-  methods: {
-    refresh_pods () {
-      this.$store.dispatch('pods/request_pods')
-    },
-    refresh_deployments () {
-      this.$store.dispatch('deployments/request_deployments')
     }
   },
   mounted () {
