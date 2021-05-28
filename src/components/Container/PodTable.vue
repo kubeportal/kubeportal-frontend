@@ -152,7 +152,6 @@ export default {
     return {
       pod_overlay: false,
       service_overlay: false,
-      service_selector: {},
       search_pods: '',
       pods_headers: [
         {

@@ -98,7 +98,7 @@
 <script>
 export default {
   name: 'ServiceModal',
-  props: { overlay: Boolean, namespace: String },
+  props: { overlay: Boolean, namespace: String, service_selectors: Array },
   data () {
     return {
       name: '',
@@ -127,6 +127,13 @@ export default {
       this.$emit('close', false)
     }
 
+  },
+  watch: {
+    'service_selectors': function (newVal, oldVal) {
+      if (newVal && newVal.length > 0) {
+        this.selectors = newVal
+      }
+    }
   }
 }
 </script>

@@ -31,6 +31,8 @@ const deployments_container = {
             data['name'] = deployment.name
             data['creation_timestamp'] = moment(deployment.creation_timestamp).fromNow()
             data['replicas'] = deployment.replicas
+            data['match_labels'] = deployment.match_labels
+            console.log(deployment)
             context.commit('push_deployment', data)
           })
         })
