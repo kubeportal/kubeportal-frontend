@@ -7,7 +7,6 @@ import vuetify from './utils/vuetify'
 import router from './utils/router'
 import GAuth from 'vue-google-oauth2'
 import VueClipboard from 'vue-clipboard2'
-import '@/assets/css/tailwind.css'
 import moment from 'moment'
 
 moment.defaultFormat = 'MMM DD hh:mm:ss'

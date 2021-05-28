@@ -6,9 +6,9 @@
 
 <script>
 import Dashboard from '@/components/Dashboard'
-import Info from '@/components/Settings/Info/Info'
-import KubernetesSettings from '@/components/Settings/KubernetesSettings/KubernetesSettings'
-import Profile from '@/components/Settings/Profile/Profile'
+import Info from '@/components/Info/Info'
+import KubernetesSettings from '@/components/KubernetesSettings/KubernetesSettings'
+import Profile from '@/components/Profile/Profile'
 
 export default {
   name: 'Settings',

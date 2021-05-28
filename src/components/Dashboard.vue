@@ -31,18 +31,21 @@
         :key="tab.name + index"
         class="items"
       >
-        <Node :tab="tab" />
+        <TopBar :title="tab.name"/>
+        <div class="p-1">
+          <v-card-text> current namespace: {{ namespace }}</v-card-text>
+          <component :is="tab.component"/>
+        </div>
       </v-tab-item>
     </v-tabs>
   </v-img>
 </template>
 
 <script>
-import Node from './Node'
-
+import TopBar from './TopBar'
 export default {
   name: 'Dashboard',
-  components: { Node },
+  components: { TopBar },
   data () {
     return {
       width: window.outerWidth
@@ -68,6 +71,9 @@ export default {
     },
     desktop () {
       return this.width > 900
+    },
+    namespace () {
+      return this.$store.getters['users/get_current_namespace']
     }
   },
   created () {
@@ -81,6 +87,10 @@ export default {
 </script>
 
 <style lang="scss">
+.p-1 {
+  padding: 1em;
+}
+
 .vertical-icon {
   color: floralwhite;
 }
@@ -126,4 +136,20 @@ hr {
   background-color: rgba(0, 0, 0, 0);
 }
 
+.v-tooltip__content p {
+  font-size: 1.2rem !important;
+}
+
+.v-tooltip__content .tooltip {
+  margin: 2rem 1rem 2rem 1rem;
+}
+
+.v-tooltip__content h3 {
+  font-size: 1.2rem !important;
+  font-weight: bolder;
+}
+.v-tooltip__content hr {
+  width: 75%;
+  margin: 1rem 0 1rem 0;
+}
 </style>
