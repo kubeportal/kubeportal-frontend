@@ -40,6 +40,7 @@ const pods_container = {
             let pod = response.data
             let data = {}
             data['name'] = pod.name
+            data['phase'] = pod.phase
             data['creation_timestamp'] = moment(pod.creation_timestamp).fromNow()
             data['containers'] = pod.containers.map(container => container.name)
             data['images'] = pod.containers.map(container => container.image)

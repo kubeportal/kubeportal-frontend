@@ -5,6 +5,11 @@
       :overlay="pod_overlay"
       :namespace="namespace"
     />
+    <ServiceModal
+      @close="service_overlay = false"
+      :overlay="service_overlay"
+      :namespace="namespace"
+    />
     <v-data-table
       :headers="pods_headers"
       :items="pods_data"
@@ -27,6 +32,9 @@
             >
               {{ container }}
             </div>
+          </td>
+          <td>
+            {{props.item.phase}}
           </td>
           <v-tooltip color="#2e2e2e" nudge-left="10" left>
             <template v-slot:activator="{ on, attrs }">
@@ -69,7 +77,7 @@
                 </v-btn>
               </template>
               <v-list flat>
-                <v-list-item>
+                <v-list-item @click="service_overlay = true">
                   <v-list-item-icon>
                     <v-icon>mdi-transit-connection</v-icon>
                   </v-list-item-icon>
@@ -134,13 +142,17 @@
 
 <script>
 import PodModal from './PodModal'
+import ServiceModal from '../Network/ServiceModal'
+
 export default {
   name: 'PodTable',
   props: ['pods_data', 'namespace'],
-  components: { PodModal },
+  components: { PodModal, ServiceModal },
   data () {
     return {
       pod_overlay: false,
+      service_overlay: false,
+      service_selector: {},
       search_pods: '',
       pods_headers: [
         {
@@ -156,6 +168,10 @@ export default {
         {
           text: 'Container',
           value: 'containers'
+        },
+        {
+          text: 'Phase',
+          value: 'phase'
         },
         {
           text: 'Volumes',
