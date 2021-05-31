@@ -11,6 +11,7 @@
       :items-per-page="10"
       class="elevation-1"
       :search="search_deployments"
+      :sort-by.sync="sortBy"
     >
       <template v-slot:top>
         <v-row>
@@ -54,13 +55,13 @@ export default {
   props: ['deployments_data', 'namespace'],
   data () {
     return {
+      sortBy: 'name',
       deployment_overlay: false,
       search_deployments: '',
       deployment_headers: [
         {
           text: 'Name',
           algin: 'start',
-          sortable: false,
           value: 'name'
         },
         {
