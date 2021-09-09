@@ -18,6 +18,7 @@
           :items-per-page="10"
           class="elevation-1"
           :search="search_pvc"
+          :sort-by.sync="sortBy"
         >
           <template v-slot:top>
             <v-row>
@@ -58,13 +59,13 @@ export default {
   components: { PVCModal },
   data () {
     return {
+      sortBy: 'name',
       overlay: false,
       search_pvc: '',
       pvc_headers: [
         {
           text: 'Name',
           algin: 'start',
-          sortable: false,
           value: 'name'
         },
         {

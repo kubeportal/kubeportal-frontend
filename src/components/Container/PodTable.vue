@@ -11,6 +11,7 @@
       :items-per-page="10"
       class="elevation-1"
       :search="search_pods"
+      :sort-by.sync="sortBy"
     >
       <template v-slot:item="props">
         <tr>
@@ -140,13 +141,13 @@ export default {
   components: { PodModal },
   data () {
     return {
+      sortBy: 'name',
       pod_overlay: false,
       search_pods: '',
       pods_headers: [
         {
           text: 'Name',
           algin: 'start',
-          sortable: false,
           value: 'name'
         },
         {

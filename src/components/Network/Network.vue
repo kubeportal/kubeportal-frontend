@@ -22,6 +22,7 @@
           :items-per-page="10"
           class="elevation-1"
           :search="search_services"
+          :sort-by.sync="sortBy"
         >
           <template v-slot:item="props">
             <tr>
@@ -78,6 +79,7 @@
           :items-per-page="10"
           class="elevation-1"
           :search="search_ingresses"
+          :sort-by.sync="sortBy"
         >
           <template v-slot:item="props">
             <tr>
@@ -182,6 +184,7 @@ export default {
   },
   data () {
     return {
+      sortBy: 'name',
       service_overlay: false,
       ingress_overlay: false,
       search_services: '',
@@ -190,7 +193,6 @@ export default {
         {
           text: 'Name',
           algin: 'start',
-          sortable: true,
           value: 'name'
         },
         {
@@ -218,8 +220,7 @@ export default {
         {
           text: 'Hosts',
           value: 'formatted_host_links',
-          algin: 'start',
-          sortable: true
+          algin: 'start'
         },
         {
           text: 'Status',
