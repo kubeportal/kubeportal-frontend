@@ -64,11 +64,11 @@ const users_container = {
       },
       async authorize_google_user (context, auth_response) {
         let login_url = store.getters['api/get_login_google_url']
-        const response = await backend.post(login_url, {'access_token': auth_response['access_token']})
+        const response = await backend.post(login_url, { 'access_token': auth_response['access_token'] })
         context.dispatch('post_login_data', response)
         return response
       },
-      async post_login_data(context, response) {
+      async post_login_data (context, response) {
         if (response) {
           context.commit('set_access_token', response.data['access_token'])
           context.commit('set_refresh_token', response.data['refresh_token'])
