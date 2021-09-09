@@ -56,9 +56,19 @@ const users_container = {
     },
 
     actions: {
-      async post_login_data (context, request_body) {
+      async authorize_user (context, request_body) {
         let login_url = store.getters['api/get_login_url']
-        const response = await backend.post(store.getters['api/get_login_url'], request_body)
+        const response = await backend.post(login_url, request_body)
+        context.dispatch('post_login_data', response)
+        return response
+      },
+      async authorize_google_user (context, auth_response) {
+        let login_url = store.getters['api/get_login_google_url']
+        const response = await backend.post(login_url, {'access_token': auth_response['access_token']})
+        context.dispatch('post_login_data', response)
+        return response
+      },
+      async post_login_data(context, response) {
         if (response) {
           context.commit('set_access_token', response.data['access_token'])
           context.commit('set_refresh_token', response.data['refresh_token'])
@@ -72,13 +82,6 @@ const users_container = {
           context.commit('set_user', user_details.data)
           context.dispatch('request_serviceaccounts')
         }
-        return response
-      },
-
-      async authorize_google_user (context, auth_response) {
-        const response = await backend.post(store.getters['api/get_login_google_url'], auth_response)
-        // @ TODO
-        return response
       },
       async request_webapps (context) {
         const current_user = context.getters['get_user']
