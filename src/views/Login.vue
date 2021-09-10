@@ -21,7 +21,7 @@
             <p class="my-4 text">or</p>
           </v-row>
           <v-row>
-            <v-btn class="signin" color="#689F38" @click="signInWithGoogle" disabled>
+            <v-btn class="signin" color="#689F38" @click="signInWithGoogle" >
               <v-icon  white small left>mdi-google</v-icon>
               Continue with Google
             </v-btn>
@@ -41,7 +41,6 @@ export default {
       is_authenticated: '',
       username: '',
       password: '',
-      isSignedIn: '',
       loading: false
     }
   },
@@ -54,7 +53,7 @@ export default {
     async login () {
       this.loading = true
       const request_body = { username: this.username, password: this.password }
-      const response = await this.$store.dispatch('users/post_login_data', request_body)
+      const response = await this.$store.dispatch('users/authorize_user', request_body)
       // console.log('LOGIN', response)
       this.handle_login_response(response)
     },
@@ -66,7 +65,6 @@ export default {
       }
       const auth_response = googleUser.getAuthResponse()
       // console.log('getAuthResponse', this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse())
-      this.isSignedIn = this.$gAuth.isAuthorized
       const response = await this.$store.dispatch('users/authorize_google_user', auth_response)
       this.handle_login_response(response)
     },
