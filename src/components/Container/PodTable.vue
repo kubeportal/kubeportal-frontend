@@ -69,28 +69,12 @@
                 </v-btn>
               </template>
               <v-list flat>
-                <v-list-item>
+                <v-list-item @click="show_details(props.item.name)">
                   <v-list-item-icon>
-                    <v-icon>mdi-transit-connection</v-icon>
+                    <v-icon>mdi-file-document-outline</v-icon>
                   </v-list-item-icon>
                   <v-list-item-content>
-                    <v-list-item-title>Create Service</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon>mdi-desktop-classic</v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-title>Create PVC</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon>mdi-delete</v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-title>Delete</v-list-item-title>
+                    <v-list-item-title>Logs</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
@@ -171,6 +155,9 @@ export default {
   methods: {
     refresh_pods () {
       this.$store.dispatch('pods/request_pods')
+    },
+    show_details (name) {
+      this.$emit('show_details', name)
     }
   }
 }

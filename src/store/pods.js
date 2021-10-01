@@ -39,7 +39,9 @@ const pods_container = {
           backend.get(link).then(response => {
             let pod = response.data
             let data = {}
+            console.log('POD ', pod)
             data['name'] = pod.name
+            data['puid'] = pod.puid
             data['creation_timestamp'] = moment(pod.creation_timestamp).fromNow()
             data['containers'] = pod.containers.map(container => container.name)
             data['images'] = pod.containers.map(container => container.image)
