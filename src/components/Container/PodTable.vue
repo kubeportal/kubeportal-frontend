@@ -54,6 +54,7 @@
               </div>
             </span>
           </v-tooltip>
+          <td>{{ props.item.phase }}</td>
           <td>{{ props.item.creation_timestamp }}</td>
           <td>
             <v-menu offset-y left>
@@ -69,7 +70,7 @@
                 </v-btn>
               </template>
               <v-list flat>
-                <v-list-item @click="show_details(props.item.name)">
+                <v-list-item @click="show_details(props.item)">
                   <v-list-item-icon>
                     <v-icon>mdi-file-document-outline</v-icon>
                   </v-list-item-icon>
@@ -146,6 +147,10 @@ export default {
           value: 'volume_names'
         },
         {
+          text: 'Phase',
+          value: 'phase'
+        },
+        {
           text: 'Created',
           value: 'creation_timestamp'
         }
@@ -156,8 +161,8 @@ export default {
     refresh_pods () {
       this.$store.dispatch('pods/request_pods')
     },
-    show_details (name) {
-      this.$emit('show_details', name)
+    show_details (pod) {
+      this.$emit('show_details', pod)
     }
   }
 }

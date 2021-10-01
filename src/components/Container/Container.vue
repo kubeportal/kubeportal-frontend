@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PodDetails @close_details="close_details" v-if="is_show_details" :pod_name="pod_name"/>
+    <PodDetails @close_details="close_details" v-if="is_show_details" :pod="pod"/>
     <v-tabs fixed-tabs v-if="!is_show_details">
       <v-tab>
         <v-icon class="mr-2">mdi-desktop-classic</v-icon>
@@ -35,7 +35,7 @@ export default {
   data () {
     return {
       is_show_details: false,
-      pod_name: ''
+      pod: {}
     }
   },
   computed: {
@@ -50,9 +50,9 @@ export default {
     }
   },
   methods: {
-    show_details (name) {
+    show_details (pod) {
       this.is_show_details = true
-      this.pod_name = name
+      this.pod = pod
     },
     close_details () {
       this.is_show_details = false

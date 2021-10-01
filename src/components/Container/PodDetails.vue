@@ -4,6 +4,9 @@
       <v-icon class="mr-2">mdi-arrow-left</v-icon>
       Back
     </v-btn>
+    <v-subheader>
+      Detail View {{ pod.name}}
+    </v-subheader>
     <v-tabs fixed-tabs >
       <v-tab>
         <v-icon class="mr-2">mdi-desktop-classic</v-icon>
@@ -15,7 +18,69 @@
       </v-tab>
 
       <v-tab-item>
-        Detail View {{ pod_name }}
+        <div>
+          <v-card class="details">
+
+            <v-row>
+              <v-col>
+                <v-card-title>
+                  Name
+                </v-card-title>
+                <v-card-text>
+                  {{ pod.name }}
+                </v-card-text>
+              </v-col>
+
+              <v-col>
+                <v-card-title>
+                  puid
+                </v-card-title>
+                  {{ pod.puid }}
+               </v-col>
+            </v-row>
+
+             <v-card-title>
+              created at
+             </v-card-title>
+             <v-card-text>
+              {{ pod.creation_timestamp }}
+             </v-card-text>
+
+             <v-card-title>
+              started at
+             </v-card-title>
+             <v-card-text>
+              {{ pod.start_timestamp }}
+             </v-card-text>
+
+             <v-card-title>
+              container
+             </v-card-title>
+             <v-card-text>
+              <div
+                v-for="container in pod.containers"
+                :key="container"
+              >
+                {{ container }}
+              </div>
+             </v-card-text>
+
+             <v-card-title>
+              phase
+             </v-card-title>
+             <v-card-text>
+              {{ pod.phase }}
+             </v-card-text>
+
+             <v-card-title>
+              host ip
+             </v-card-title>
+             <v-card-text>
+              {{ pod.host_ip }}
+             </v-card-text>
+
+          </v-card>
+        </div>
       </v-tab-item>
       <v-tab-item>
         <Logs :logs="logs" />
@@ -30,7 +95,7 @@ import Logs from '@/components/Logs'
 export default {
   name: 'PodDetails',
   components: { Logs },
-  props: ['pod_name'],
+  props: ['pod'],
   data () {
     return {
       logs: ['log1', 'log2']
@@ -45,4 +110,9 @@ export default {
 </script>
 
 <style scoped>
+.details {
+  width: 100%;
+  height: 80vh;
+  overflow-y: scroll;
+}
 </style>

@@ -39,10 +39,9 @@ const pods_container = {
           backend.get(link).then(response => {
             let pod = response.data
             let data = {}
-            console.log('POD ', pod)
-            data['name'] = pod.name
-            data['puid'] = pod.puid
+            data = {...pod}
             data['creation_timestamp'] = moment(pod.creation_timestamp).fromNow()
+            data['start_timestamp'] = moment(pod.start_timestamp).fromNow()
             data['containers'] = pod.containers.map(container => container.name)
             data['images'] = pod.containers.map(container => container.image)
             data['volume_names'] = pod.containers.map(container =>
@@ -51,6 +50,7 @@ const pods_container = {
               container.volume_mounts.map(volume => volume.volume.type)[0])
             data['mountpath'] = pod.containers.map(container => container.volume_mounts.map(volume => volume.mount_path))[0]
             data['volumes'] = pod.containers.map(container => container.volume_mounts)[0]
+            console.log('POD ', data)
             context.commit('push_pod', data)
           })
         })
