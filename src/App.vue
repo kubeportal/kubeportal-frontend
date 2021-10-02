@@ -2,7 +2,7 @@
   <v-app >
     <v-main>
       <v-img max-height="100vh" class="background" src="./assets/mountain.jpeg">
-        <router-view class="test"/>
+        <router-view/>
       </v-img>
     </v-main>
   </v-app>
