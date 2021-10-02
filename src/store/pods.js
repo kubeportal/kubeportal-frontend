@@ -39,7 +39,7 @@ const pods_container = {
           backend.get(link).then(response => {
             let pod = response.data
             let data = {}
-            data = {...pod}
+            data = { ...pod }
             data['creation_timestamp'] = moment(pod.creation_timestamp).fromNow()
             data['start_timestamp'] = moment(pod.start_timestamp).fromNow()
             data['containers'] = pod.containers.map(container => container.name)
