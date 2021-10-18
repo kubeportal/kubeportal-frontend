@@ -23,6 +23,27 @@
 
             <v-row>
               <v-col>
+               <v-card-title>
+
+                created at
+               </v-card-title>
+               <v-card-text>
+                {{ pod.creation_timestamp }}
+               </v-card-text>
+              </v-col>
+
+              <v-col>
+               <v-card-title>
+                started at
+               </v-card-title>
+               <v-card-text>
+                {{ pod.start_timestamp }}
+               </v-card-text>
+             </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col>
                 <v-card-title>
                   Name
                 </v-card-title>
@@ -38,20 +59,6 @@
                   {{ pod.puid }}
                </v-col>
             </v-row>
-
-             <v-card-title>
-              created at
-             </v-card-title>
-             <v-card-text>
-              {{ pod.creation_timestamp }}
-             </v-card-text>
-
-             <v-card-title>
-              started at
-             </v-card-title>
-             <v-card-text>
-              {{ pod.start_timestamp }}
-             </v-card-text>
 
              <v-card-title>
               container
@@ -95,16 +102,24 @@ import Logs from '@/components/Logs'
 export default {
   name: 'PodDetails',
   components: { Logs },
-  props: ['pod'],
-  data () {
-    return {
-      logs: ['log1', 'log2']
-    }
-  },
+  props: ['pod', 'namespace'],
   methods: {
     close_details () {
       this.$emit('close_details')
     }
+  },
+  computed: {
+    logs () {
+      let tmo = this.$store.getters['pods/get_pod_logs'][this.pod.name]
+      console.log(tmo)
+      return tmo
+    }
+  },
+  async mounted () {
+    this.$store.dispatch('pods/request_logs', {
+      namespace: this.namespace,
+      pod_name: this.pod.name
+    })
   }
 }
 </script>

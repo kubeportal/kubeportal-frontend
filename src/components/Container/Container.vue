@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PodDetails @close_details="close_details" v-if="is_show_details" :pod="pod"/>
+    <PodDetails @close_details="close_details" v-if="is_show_details" :pod="pod" :namespace="namespace"/>
     <v-tabs fixed-tabs v-if="!is_show_details">
       <v-tab>
         <v-icon class="mr-2">mdi-desktop-classic</v-icon>

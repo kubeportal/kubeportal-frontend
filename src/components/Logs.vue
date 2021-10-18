@@ -4,7 +4,7 @@
       v-for="(log, index) in logs"
       :key="index"
     >
-      {{ log }}
+      {{ log.log }}
     </div>
   </div>
 </template>
@@ -18,6 +18,9 @@ export default {
     }
   },
   methods: {
+  },
+  mounted () {
+    console.log('logs', this.logs)
   }
 }
 </script>

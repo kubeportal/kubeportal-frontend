@@ -6,7 +6,8 @@ const pods_container = {
     namespaced: true,
     state: {
       pods_link: '',
-      pods: []
+      pods: [],
+      pod_logs: {}
     },
 
     getters: {
@@ -15,6 +16,9 @@ const pods_container = {
       },
       get_pods (state) {
         return state.pods
+      },
+      get_pod_logs (state) {
+        return state.pod_logs
       }
     },
 
@@ -27,6 +31,9 @@ const pods_container = {
       },
       push_pod (state, pod) {
         state.pods.push(pod)
+      },
+      set_pod_logs (state, data) {
+        state.pod_logs[data.pod_name] = data.logs
       }
     },
 
@@ -59,6 +66,19 @@ const pods_container = {
         const pods_link = context.getters['get_pods_link']
         const response = await backend.post(pods_link, data)
         console.log('CREATE POD RESPONSE', response)
+      },
+      async request_logs (context, data) {
+        let link = 'http://localhost:5000/getpodlogs/'
+        const response = await backend.post(link, { ns_name: data.namespace, pod_name: data.pod_name })
+        console.log('request logs', response)
+        let result = response.data.hits.hits.map(hit => {
+          let log = {}
+          log['log'] = hit._source.log
+          log['stream'] = hit._source.stream
+          log['timestamp'] = moment(hit._source['@timestamp']).format('MMMM Do YYYY, h:mm:ss a')
+          return log
+        })
+        context.commit('set_pod_logs', { pod_name: data.pod_name, logs: result })
       }
     }
   }
