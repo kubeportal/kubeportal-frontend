@@ -1,5 +1,5 @@
 <template>
-  <div class="logs">
+  <div class="logs" ref="logs">
     <div
       v-for="(log, index) in logs"
       :key="index"
@@ -17,7 +17,10 @@ export default {
     return {
     }
   },
-  methods: {
+  watch: {
+    logs: function () {
+      this.$refs.logs.scrollTop = this.$refs.logs.scrollHeight
+    }
   },
   mounted () {
     console.log('logs', this.logs)
@@ -28,7 +31,7 @@ export default {
 <style scoped>
 .logs {
   width: 100%;
-  height: 80vh;
+  height: 60vh;
   overflow-y: scroll;
   background-color: black;
   color: white;

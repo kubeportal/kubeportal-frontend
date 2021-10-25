@@ -1,12 +1,9 @@
 <template>
   <div>
-    <v-btn @click="$emit('close_details')">
-      <v-icon class="mr-2">mdi-arrow-left</v-icon>
+    <v-btn class="backBtn" @click="$emit('close_details')">
+      <v-icon >mdi-arrow-left</v-icon>
       Back
     </v-btn>
-    <v-subheader>
-      Detail View {{ pod.name}}
-    </v-subheader>
     <v-tabs fixed-tabs >
       <v-tab>
         <v-icon class="mr-2">mdi-desktop-classic</v-icon>
@@ -21,71 +18,72 @@
         <div>
           <v-card class="details">
 
-            <v-row>
+            <v-card-title>Timestamps</v-card-title>
+            <v-row class="detailRow">
               <v-col>
-               <v-card-title>
-
-                created at
-               </v-card-title>
-               <v-card-text>
+                created
                 {{ pod.creation_timestamp }}
-               </v-card-text>
               </v-col>
 
               <v-col>
-               <v-card-title>
-                started at
-               </v-card-title>
-               <v-card-text>
+                started
                 {{ pod.start_timestamp }}
-               </v-card-text>
              </v-col>
             </v-row>
 
-            <v-row>
+            <v-card-title>phase</v-card-title>
+            <v-row class="detailRow">
+              <v-col>{{ pod.phase }}</v-col>
+            </v-row>
+
+            <v-card-title>Meta</v-card-title>
+            <v-row class="detailRow">
               <v-col>
-                <v-card-title>
-                  Name
-                </v-card-title>
-                <v-card-text>
+                  Name:
                   {{ pod.name }}
-                </v-card-text>
               </v-col>
 
               <v-col>
-                <v-card-title>
-                  puid
-                </v-card-title>
+                  puid:
                   {{ pod.puid }}
                </v-col>
             </v-row>
+            <v-row class="detailRow">
+             <v-col>
+              host ip:
+              {{ pod.host_ip }}
+             </v-col>
+            </v-row>
 
-             <v-card-title>
-              container
-             </v-card-title>
-             <v-card-text>
-              <div
+            <v-card-title>Container</v-card-title>
+            <v-row class="detailRow">
+             <v-col
                 v-for="container in pod.containers"
                 :key="container"
               >
                 {{ container }}
-              </div>
-             </v-card-text>
+              </v-col>
+            </v-row>
 
-             <v-card-title>
-              phase
-             </v-card-title>
-             <v-card-text>
-              {{ pod.phase }}
-             </v-card-text>
+            <v-card-title>Images</v-card-title>
+            <v-row class="detailRow">
+             <v-col
+                v-for="image in pod.images"
+                :key="image"
+              >
+                {{ image }}
+              </v-col>
+            </v-row>
 
-             <v-card-title>
-              host ip
-             </v-card-title>
-             <v-card-text>
-              {{ pod.host_ip }}
-             </v-card-text>
-
+            <v-card-title>Volumes</v-card-title>
+            <v-row class="detailRow"
+              v-for="(volume, i) in pod.volumes"
+                :key="volume.name"
+              >
+                <v-col>name: {{ pod.volumes[i].volume.name }}</v-col>
+                <v-col>type: {{ pod.volumes[i].volume.type }}</v-col>
+                <v-col>mountpath: {{ pod.volumes[i].mount_path }}</v-col>
+            </v-row>
           </v-card>
         </div>
       </v-tab-item>
@@ -127,7 +125,13 @@ export default {
 <style scoped>
 .details {
   width: 100%;
-  height: 80vh;
+  height: 60vh;
   overflow-y: scroll;
+}
+.detailRow {
+  padding: 0 1em;
+}
+.backBtn {
+  margin-bottom: 1em;
 }
 </style>
