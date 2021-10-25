@@ -33,7 +33,9 @@ const pods_container = {
         state.pods.push(pod)
       },
       set_pod_logs (state, data) {
-        state.pod_logs[data.pod_name] = data.logs
+        let tmp = {}
+        tmp[data.pod_name] = data.logs
+        state.pod_logs = { ...state.logs, ...tmp }
       }
     },
 
@@ -76,6 +78,19 @@ const pods_container = {
           log['log'] = hit._source.log
           log['stream'] = hit._source.stream
           log['timestamp'] = moment(hit._source['@timestamp']).format('MMMM Do YYYY, h:mm:ss a')
+          return log
+        })
+        context.commit('set_pod_logs', { pod_name: data.pod_name, logs: result })
+      },
+      async request_test_logs (context, data) {
+        let link = 'http://localhost:5000/test/'
+        const response = await backend.post(link, { ns_name: data.namespace, pod_name: data.pod_name })
+        console.log('request logs', response)
+        let result = response.data.hits.map(hit => {
+          let log = {}
+          log['log'] = hit.log
+          log['stream'] = hit.stream
+          log['timestamp'] = moment(hit.time).format('MMMM Do YYYY, h:mm:ss a')
           return log
         })
         context.commit('set_pod_logs', { pod_name: data.pod_name, logs: result })

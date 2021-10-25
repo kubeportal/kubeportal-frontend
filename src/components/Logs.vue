@@ -1,5 +1,5 @@
 <template>
-  <div class="logs" ref="logs">
+  <div class="logs" id="logDiv" ref="logs">
     <div
       v-for="(log, index) in logs"
       :key="index"
@@ -13,17 +13,8 @@
 export default {
   name: 'Logs',
   props: ['logs'],
-  data () {
-    return {
-    }
-  },
-  watch: {
-    logs: function () {
-      this.$refs.logs.scrollTop = this.$refs.logs.scrollHeight
-    }
-  },
   mounted () {
-    console.log('logs', this.logs)
+    this.$refs.logs.scrollTop = this.$refs.logs.scrollHeight
   }
 }
 </script>

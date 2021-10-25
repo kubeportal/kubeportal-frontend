@@ -108,13 +108,13 @@ export default {
   },
   computed: {
     logs () {
-      let tmo = this.$store.getters['pods/get_pod_logs'][this.pod.name]
-      console.log(tmo)
-      return tmo
+      let tmo = this.$store.getters['pods/get_pod_logs']
+      console.log('logs, in pod detail', tmo)
+      return tmo[this.pod.name]
     }
   },
   async mounted () {
-    this.$store.dispatch('pods/request_logs', {
+    this.$store.dispatch('pods/request_test_logs', {
       namespace: this.namespace,
       pod_name: this.pod.name
     })
