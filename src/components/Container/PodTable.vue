@@ -13,7 +13,7 @@
       :search="search_pods"
     >
       <template v-slot:item="props">
-        <tr @click="show_details(props.item)">
+        <tr @click="show_details(props.item)" class="tableRow">
           <td>{{ props.item.name }}</td>
           <td>
             <div v-for="image in props.item.images" :key="image">
@@ -113,6 +113,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.tableRow {
+  cursor: pointer;
+}
 
 </style>

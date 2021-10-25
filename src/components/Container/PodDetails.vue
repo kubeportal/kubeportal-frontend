@@ -31,7 +31,7 @@
              </v-col>
             </v-row>
 
-            <v-card-title>phase</v-card-title>
+            <v-card-title>Phase</v-card-title>
             <v-row class="detailRow">
               <v-col>{{ pod.phase }}</v-col>
             </v-row>
@@ -88,7 +88,7 @@
         </div>
       </v-tab-item>
       <v-tab-item>
-        <Logs :logs="logs" />
+        <Logs :logs="logs" :identifier="pod.name" />
       </v-tab-item>
     </v-tabs>
   </div>
