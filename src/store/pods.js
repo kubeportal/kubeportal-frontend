@@ -7,7 +7,7 @@ const pods_container = {
     state: {
       pods_link: '',
       pods: [],
-      pod_logs: {}
+      pod_logs: {},
     },
 
     getters: {
@@ -59,6 +59,7 @@ const pods_container = {
               container.volume_mounts.map(volume => volume.volume.type)[0])
             data['mountpath'] = pod.containers.map(container => container.volume_mounts.map(volume => volume.mount_path))[0]
             data['volumes'] = pod.containers.map(container => container.volume_mounts)[0]
+            data['logs_url'] = pod.logs_url
             console.log('POD ', data)
             context.commit('push_pod', data)
           })
@@ -83,8 +84,8 @@ const pods_container = {
         context.commit('set_pod_logs', { pod_name: data.pod_name, logs: result })
       },
       async request_test_logs (context, data) {
-        let link = 'http://localhost:5000/test/'
-        const response = await backend.post(link, { ns_name: data.namespace, pod_name: data.pod_name })
+        let link = 'http://localhost:8000' + data.logs_url
+        const response = await backend.get(link, { ns_name: data.namespace, pod_name: data.pod_name })
         console.log('request logs', response)
         let result = response.data.hits.map(hit => {
           let log = {}

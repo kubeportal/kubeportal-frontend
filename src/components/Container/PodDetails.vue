@@ -9,7 +9,7 @@
         <v-icon class="mr-2">mdi-desktop-classic</v-icon>
         Details
       </v-tab>
-      <v-tab>
+      <v-tab v-if="use_elastic">
         <v-icon class="mr-2">mdi-hexagon-multiple-outline</v-icon>
         Logs
       </v-tab>
@@ -87,7 +87,7 @@
           </v-card>
         </div>
       </v-tab-item>
-      <v-tab-item>
+      <v-tab-item v-if="use_elastic">
         <Logs :logs="logs" :identifier="pod.name" />
       </v-tab-item>
     </v-tabs>
@@ -111,13 +111,19 @@ export default {
       let tmo = this.$store.getters['pods/get_pod_logs']
       console.log('logs, in pod detail', tmo)
       return tmo[this.pod.name]
+    },
+    use_elastic () {
+      return this.$store.getters['api/get_use_elastic']
     }
   },
   async mounted () {
-    this.$store.dispatch('pods/request_test_logs', {
-      namespace: this.namespace,
-      pod_name: this.pod.name
-    })
+    if (this.use_elastic) {
+      this.$store.dispatch('pods/request_test_logs', {
+        namespace: this.namespace,
+        pod_name: this.pod.name,
+        logs_url: this.pod.logs_url
+      })
+    }
   }
 }
 </script>
