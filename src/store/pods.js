@@ -8,7 +8,8 @@ const pods_container = {
       pods_link: '',
       pods: [],
       pod_logs: {},
-      scroll_id: false
+      scroll_id: false,
+      page_number: 0
     },
 
     getters: {
@@ -23,6 +24,9 @@ const pods_container = {
       },
       get_scroll_id (state) {
         return state.scroll_id
+      },
+      get_page_number (state) {
+        return state.page_number
       }
     },
 
@@ -39,10 +43,13 @@ const pods_container = {
       set_pod_logs (state, data) {
         let tmp = {}
         tmp[data.pod_name] = data.logs
-        state.pod_logs = { ...state.logs, ...tmp }
+        state.pod_logs = { ...state.pod_logs, ...tmp }
       },
       set_scroll_id (state, scroll_id) {
         state.scroll_id = scroll_id
+      },
+      set_page_number (state, page_number) {
+        state.page_number = page_number
       }
     },
 
@@ -95,9 +102,9 @@ const pods_container = {
       },
       async request_logs (context, data) {
         let link = 'http://localhost:5000/getpodlogs/'
-        const response = await backend.post(link, { ns_name: data.namespace, pod_name: data.pod_name })
+        const response = await backend.post(link, { ns_name: data.namespace, pod_name: data.pod_name, page_number: context.getters['get_page_number'] })
         console.log('request logs', response)
-        let result = response.data.hits.hits.map(hit => {
+        let result = response.data.hits.map(hit => {
           let log = {}
           log['log'] = hit._source.log
           log['stream'] = hit._source.stream
@@ -105,6 +112,7 @@ const pods_container = {
           return log
         })
         context.commit('set_pod_logs', { pod_name: data.pod_name, logs: result })
+        context.commit('set_page_number', response.data.page_number)
       },
       async request_test_logs (context, data) {
         let link = 'http://localhost:8000' + data.logs_url

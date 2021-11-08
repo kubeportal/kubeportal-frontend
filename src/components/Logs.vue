@@ -13,17 +13,17 @@
     </div>
   <div @scroll="is_in_view" class="logs" ref="logs">
     <div ref="scrollblock" :class="is_loading ? 'invisible' : 'scrollblock'"> </div>
-    <div v-for="(log, index) in logs"
-      :key="index"
-    >
-      <p v-if="log.stream == 'stderr'" class="stderr">
-        {{ log.log }}
-      </p>
-      <p v-else class="stdout">
-        {{ log.log }}
-      </p>
+      <div v-for="(log, index) in logs"
+        :key="index"
+      >
+        <p v-if="log.stream == 'stderr'" class="stderr">
+          {{ log.log }}
+        </p>
+        <p v-else class="stdout">
+          {{ log.log }}
+        </p>
+      </div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -71,16 +71,16 @@ export default {
       if (!this.is_loading && this.is_visible !== is_visible) {
         this.is_visible = is_visible
 
-        console.log(is_visible, 'test')
+        console.log(is_visible, 'is_visible')
         if (is_visible) {
           this.request_logs()
-          console.log('request')
         }
       }
     },
     async request_logs () {
       this.is_loading = true
-      await this.$store.dispatch('pods/request_scroll_logs', {
+      console.log('request')
+      await this.$store.dispatch('pods/request_logs', {
         namespace: this.namespace,
         pod_name: this.pod.name,
         logs_url: this.pod.logs_url
@@ -95,9 +95,10 @@ export default {
 
 <style scoped>
 .scrollblock {
+  opacity: 0;
   background-color: red;
-  width: 50px;
-  height: 250px;
+  width: 100%;
+  height: 10vh;
 }
 .invisible {
   display: none;
