@@ -88,7 +88,7 @@
         </div>
       </v-tab-item>
       <v-tab-item v-if="use_elastic">
-        <Logs :logs="logs" :identifier="pod.name" />
+        <Logs :pod="pod" :namespace="namespace" />
       </v-tab-item>
     </v-tabs>
   </div>
@@ -107,23 +107,9 @@ export default {
     }
   },
   computed: {
-    logs () {
-      let tmo = this.$store.getters['pods/get_pod_logs']
-      console.log('logs, in pod detail', tmo)
-      return tmo[this.pod.name]
-    },
     use_elastic () {
       /*return this.$store.getters['api/get_use_elastic']*/
       return true
-    }
-  },
-  async mounted () {
-    if (this.use_elastic) {
-      this.$store.dispatch('pods/request_logs', {
-        namespace: this.namespace,
-        pod_name: this.pod.name,
-        logs_url: this.pod.logs_url
-      })
     }
   }
 }

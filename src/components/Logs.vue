@@ -1,5 +1,6 @@
 <template>
   <div>
+  <v-btn @click="request_logs">schöner button</v-btn>
     <div class="download" @click="download">
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
@@ -7,13 +8,12 @@
             <v-icon color="white"> mdi-download </v-icon>
           </v-btn>
         </template>
-        <span>download {{new Date().toISOString()}}-{{this.identifier}}-logs.txt</span>
+        <span>download {{new Date().toISOString()}}-{{this.pod.name}}-logs.txt</span>
       </v-tooltip>
     </div>
   <div @scroll="is_in_view" class="logs" ref="logs">
-    <div ref="scrollblock" class="scrollblock"> </div>
-    <div
-      v-for="(log, index) in logs"
+    <div ref="scrollblock" :class="is_loading ? 'invisible' : 'scrollblock'"> </div>
+    <div v-for="(log, index) in logs"
       :key="index"
     >
       <p v-if="log.stream == 'stderr'" class="stderr">
@@ -30,13 +30,34 @@
 <script>
 export default {
   name: 'Logs',
-  props: ['logs', 'identifier'],
+  props: ['pod', 'namespace'],
+  data () {
+    return {
+      is_visible: false,
+      is_loading: false
+    }
+  },
+  watch: {
+    logs () {
+      console.log('logs changed')
+      this.$refs.logs.scrollTop = this.$refs.logs.scrollHeight
+      this.is_loading = false
+    }
+  },
+  computed: {
+    logs () {
+      let tmo = this.$store.getters['pods/get_pod_logs']
+      console.log('logs, in logs', tmo)
+      return tmo[this.pod.name]
+    }
+  },
   methods: {
     download () {
+      if (!this.logs) return
       const combinded_logs = this.logs.map(log => log.log).join('\n')
       const element = document.createElement('a')
       element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(combinded_logs))
-      element.setAttribute('download', `${new Date().toISOString()}-${this.identifier}-logs.txt`)
+      element.setAttribute('download', `${new Date().toISOString()}-${this.pod.name}-logs.txt`)
       element.style.display = 'none'
       document.body.appendChild(element)
       element.click()
@@ -44,14 +65,30 @@ export default {
     },
     is_in_view () {
       const rect = this.$refs.scrollblock.getBoundingClientRect()
-      const elemTop = rect.top
-      const elemBottom = rect.bottom
-      const isVisible = (elemTop >= 0) && (elemBottom <= window.innerHeight)
-      console.log(isVisible, 'plsssssssssssss')
+      const elem_top = rect.top
+      const elem_bottom = rect.bottom
+      const is_visible = (elem_top >= 0) && (elem_bottom <= window.innerHeight)
+      if (!this.is_loading && this.is_visible !== is_visible) {
+        this.is_visible = is_visible
+
+        console.log(is_visible, 'test')
+        if (is_visible) {
+          this.request_logs()
+          console.log('request')
+        }
+      }
+    },
+    async request_logs () {
+      this.is_loading = true
+      await this.$store.dispatch('pods/request_scroll_logs', {
+        namespace: this.namespace,
+        pod_name: this.pod.name,
+        logs_url: this.pod.logs_url
+      })
     }
   },
   mounted () {
-    this.$refs.logs.scrollTop = this.$refs.logs.scrollHeight
+    this.request_logs()
   }
 }
 </script>
@@ -60,7 +97,10 @@ export default {
 .scrollblock {
   background-color: red;
   width: 50px;
-  height: 50px;
+  height: 250px;
+}
+.invisible {
+  display: none;
 }
 .logs {
   width: 100%;

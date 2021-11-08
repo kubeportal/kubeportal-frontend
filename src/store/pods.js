@@ -7,7 +7,8 @@ const pods_container = {
     state: {
       pods_link: '',
       pods: [],
-      pod_logs: {}
+      pod_logs: {},
+      scroll_id: false
     },
 
     getters: {
@@ -19,6 +20,9 @@ const pods_container = {
       },
       get_pod_logs (state) {
         return state.pod_logs
+      },
+      get_scroll_id (state) {
+        return state.scroll_id
       }
     },
 
@@ -36,6 +40,9 @@ const pods_container = {
         let tmp = {}
         tmp[data.pod_name] = data.logs
         state.pod_logs = { ...state.logs, ...tmp }
+      },
+      set_scroll_id (state, scroll_id) {
+        state.scroll_id = scroll_id
       }
     },
 
@@ -69,6 +76,22 @@ const pods_container = {
         const pods_link = context.getters['get_pods_link']
         const response = await backend.post(pods_link, data)
         console.log('CREATE POD RESPONSE', response)
+      },
+      async request_scroll_logs (context, data) {
+        let link = 'http://localhost:5000/getscrolllogs/'
+        const response = await backend.post(link, { ns_name: data.namespace, pod_name: data.pod_name, scroll_id: context.getters['get_scroll_id'] })
+        console.log('request logs', response.data)
+        let result = response.data.hits.map(hit => {
+          let log = {}
+          log['log'] = hit._source.log
+          log['_id'] = hit._id
+          log['stream'] = hit._source.stream
+          //log['timestamp'] = moment(hit._source['@timestamp']).format('MMMM Do YYYY, h:mm:ss a')
+          return log
+        })
+        let scroll_id = response.data['scroll_id']
+        context.commit('set_pod_logs', { pod_name: data.pod_name, logs: result })
+        context.commit('set_scroll_id', scroll_id)
       },
       async request_logs (context, data) {
         let link = 'http://localhost:5000/getpodlogs/'

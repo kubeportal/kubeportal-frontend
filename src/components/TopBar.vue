@@ -90,6 +90,7 @@ export default {
       this.$store.commit('users/set_user', {})
       this.$store.commit('users/set_webapps', [])
       this.$store.commit('pods/set_pods', [])
+      this.$store.commit('pods/set_scroll_id', false)
       this.$store.commit('deployments/set_deployments', [])
       this.$store.commit('services/set_services', [])
       this.$store.commit('ingresses/set_ingresses', [])
