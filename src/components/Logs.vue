@@ -10,8 +10,8 @@
         <span>download {{new Date().toISOString()}}-{{this.identifier}}-logs.txt</span>
       </v-tooltip>
     </div>
-  <div class="logs" ref="logs">
-    <div class="scrollblock"> </div>
+  <div @scroll="is_in_view" class="logs" ref="logs">
+    <div ref="scrollblock" class="scrollblock"> </div>
     <div
       v-for="(log, index) in logs"
       :key="index"
@@ -41,6 +41,13 @@ export default {
       document.body.appendChild(element)
       element.click()
       document.body.removeChild(element)
+    },
+    is_in_view () {
+      const rect = this.$refs.scrollblock.getBoundingClientRect()
+      const elemTop = rect.top
+      const elemBottom = rect.bottom
+      const isVisible = (elemTop >= 0) && (elemBottom <= window.innerHeight)
+      console.log(isVisible, 'plsssssssssssss')
     }
   },
   mounted () {
