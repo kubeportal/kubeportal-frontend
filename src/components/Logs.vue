@@ -11,6 +11,7 @@
       </v-tooltip>
     </div>
   <div class="logs" ref="logs">
+    <div class="scrollblock"> </div>
     <div
       v-for="(log, index) in logs"
       :key="index"
@@ -49,6 +50,11 @@ export default {
 </script>
 
 <style scoped>
+.scrollblock {
+  background-color: red;
+  width: 50px;
+  height: 50px;
+}
 .logs {
   width: 100%;
   height: 60vh;
@@ -65,8 +71,10 @@ export default {
 }
 .stderr {
   color: red;
+  margin: 0;
 }
 .stdout {
   color: white;
+  margin: 0;
 }
 </style>

@@ -7,7 +7,7 @@ const pods_container = {
     state: {
       pods_link: '',
       pods: [],
-      pod_logs: {},
+      pod_logs: {}
     },
 
     getters: {

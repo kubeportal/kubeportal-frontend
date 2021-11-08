@@ -113,12 +113,13 @@ export default {
       return tmo[this.pod.name]
     },
     use_elastic () {
-      return this.$store.getters['api/get_use_elastic']
+      /*return this.$store.getters['api/get_use_elastic']*/
+      return true
     }
   },
   async mounted () {
     if (this.use_elastic) {
-      this.$store.dispatch('pods/request_test_logs', {
+      this.$store.dispatch('pods/request_logs', {
         namespace: this.namespace,
         pod_name: this.pod.name,
         logs_url: this.pod.logs_url
