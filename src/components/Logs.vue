@@ -1,6 +1,5 @@
 <template>
   <div>
-  <v-btn @click="request_logs">schöner button</v-btn>
     <div class="download" @click="download">
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
@@ -13,6 +12,7 @@
     </div>
   <div @scroll="is_in_view" class="logs" ref="logs">
     <div ref="scrollblock" :class="is_loading ? 'invisible' : 'scrollblock'"> </div>
+    <div class="logfiller">
       <div v-for="(log, index) in logs"
         :key="index"
       >
@@ -22,6 +22,7 @@
         <p v-else class="stdout">
           {{ log.log }}
         </p>
+      </div>
       </div>
     </div>
   </div>
@@ -33,7 +34,6 @@ export default {
   props: ['pod', 'namespace'],
   data () {
     return {
-      is_visible: false,
       is_loading: false
     }
   },
@@ -47,7 +47,7 @@ export default {
   computed: {
     logs () {
       let tmo = this.$store.getters['pods/get_pod_logs']
-      console.log('logs, in logs', tmo)
+      console.log('logs, in logs', tmo[this.pod.name])
       return tmo[this.pod.name]
     }
   },
@@ -68,17 +68,14 @@ export default {
       const elem_top = rect.top
       const elem_bottom = rect.bottom
       const is_visible = (elem_top >= 0) && (elem_bottom <= window.innerHeight)
-      if (!this.is_loading && this.is_visible !== is_visible) {
-        this.is_visible = is_visible
-
+      console.log('VISIBLE: ', !this.is_loading && is_visible)
+      if (!this.is_loading && is_visible) {
         console.log(is_visible, 'is_visible')
-        if (is_visible) {
-          this.request_logs()
-        }
+        this.is_loading = true
+        this.request_logs()
       }
     },
     async request_logs () {
-      this.is_loading = true
       console.log('request')
       await this.$store.dispatch('pods/request_logs', {
         namespace: this.namespace,
@@ -95,10 +92,10 @@ export default {
 
 <style scoped>
 .scrollblock {
-  opacity: 0;
+  opacity: 1;
   background-color: red;
   width: 100%;
-  height: 10vh;
+  height: 10em;
 }
 .invisible {
   display: none;
@@ -124,5 +121,9 @@ export default {
 .stdout {
   color: white;
   margin: 0;
+}
+.logfiller {
+ width: 100%;
+ height: 100%;
 }
 </style>

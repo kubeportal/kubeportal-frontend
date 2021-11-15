@@ -45,6 +45,13 @@ const pods_container = {
         tmp[data.pod_name] = data.logs
         state.pod_logs = { ...state.pod_logs, ...tmp }
       },
+      push_pod_logs (state, data) {
+        if (state.pod_logs[data.pod_name] === undefined) {
+          state.pod_logs[data.pod_name] = []
+        }
+        state.pod_logs[data.pod_name] = [...state.pod_logs[data.pod_name], ...data.logs]
+        state.pod_logs = { ...state.pod_logs }
+      },
       set_scroll_id (state, scroll_id) {
         state.scroll_id = scroll_id
       },
@@ -101,7 +108,7 @@ const pods_container = {
         context.commit('set_scroll_id', scroll_id)
       },
       async request_logs (context, data) {
-        let link = 'http://localhost:5000/getpodlogs/'
+        let link = 'http://127.0.0.1:5000/getpodlogstest/'
         const response = await backend.post(link, { ns_name: data.namespace, pod_name: data.pod_name, page_number: context.getters['get_page_number'] })
         console.log('request logs', response)
         let result = response.data.hits.map(hit => {
@@ -111,7 +118,7 @@ const pods_container = {
           log['timestamp'] = moment(hit._source['@timestamp']).format('MMMM Do YYYY, h:mm:ss a')
           return log
         })
-        context.commit('set_pod_logs', { pod_name: data.pod_name, logs: result })
+        context.commit('push_pod_logs', { pod_name: data.pod_name, logs: result })
         context.commit('set_page_number', response.data.page_number)
       },
       async request_test_logs (context, data) {
