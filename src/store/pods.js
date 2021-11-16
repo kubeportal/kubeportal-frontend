@@ -9,7 +9,7 @@ const pods_container = {
       pods: [],
       pod_logs: {},
       scroll_id: false,
-      page_number: 0
+      page_numbers: {}
     },
 
     getters: {
@@ -25,8 +25,8 @@ const pods_container = {
       get_scroll_id (state) {
         return state.scroll_id
       },
-      get_page_number (state) {
-        return state.page_number
+      get_page_numbers (state) {
+        return state.page_numbers
       }
     },
 
@@ -49,14 +49,14 @@ const pods_container = {
         if (state.pod_logs[data.pod_name] === undefined) {
           state.pod_logs[data.pod_name] = []
         }
-        state.pod_logs[data.pod_name] = [...state.pod_logs[data.pod_name], ...data.logs]
+        state.pod_logs[data.pod_name] = [...data.logs, ...state.pod_logs[data.pod_name]]
         state.pod_logs = { ...state.pod_logs }
       },
       set_scroll_id (state, scroll_id) {
         state.scroll_id = scroll_id
       },
-      set_page_number (state, page_number) {
-        state.page_number = page_number
+      set_page_number (state, data) {
+        state.page_numbers[data.pod_name] = data.page_number
       }
     },
 
@@ -108,8 +108,9 @@ const pods_container = {
         context.commit('set_scroll_id', scroll_id)
       },
       async request_logs (context, data) {
-        let link = 'http://127.0.0.1:5000/getpodlogstest/'
-        const response = await backend.post(link, { ns_name: data.namespace, pod_name: data.pod_name, page_number: context.getters['get_page_number'] })
+        let link = 'http://127.0.0.1:5000/getpodlogs/'
+        let current_page = context.getters['get_page_number'][data.pod_name]
+        const response = await backend.post(link, { ns_name: data.namespace, pod_name: data.pod_name, page_number: current_page })
         console.log('request logs', response)
         let result = response.data.hits.map(hit => {
           let log = {}
@@ -119,7 +120,7 @@ const pods_container = {
           return log
         })
         context.commit('push_pod_logs', { pod_name: data.pod_name, logs: result })
-        context.commit('set_page_number', response.data.page_number)
+        context.commit('set_page_number', { pod_name: data.pod_name, page_number: response.data.page_number })
       },
       async request_test_logs (context, data) {
         let link = 'http://localhost:8000' + data.logs_url

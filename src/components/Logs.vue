@@ -46,9 +46,7 @@ export default {
   },
   computed: {
     logs () {
-      let tmo = this.$store.getters['pods/get_pod_logs']
-      console.log('logs, in logs', tmo[this.pod.name])
-      return tmo[this.pod.name]
+      return this.$store.getters['pods/get_pod_logs'][this.pod.name]
     }
   },
   methods: {
