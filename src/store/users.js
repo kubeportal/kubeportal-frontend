@@ -13,7 +13,7 @@ const initial_state = () => {
     current_namespace: '',
     current_service_account: '',
     webapps: [],
-    groups: []  ,
+    groups: [],
     approval_url: '',
     dark_mode: false,
     approving_admins: []

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import * as backend from '@/utils/backend'
-  
+
 const initial_state = () => {
   return {
     deploymentname: '',

@@ -88,7 +88,7 @@ export default {
     logout () {
       this.$store.dispatch('users/log_out')
       this.$store.commit('users/reset')
-      this.$store.commit('api/reset',)
+      this.$store.commit('api/reset')
       this.$store.commit('deployments/reset')
       this.$store.commit('infos/reset')
       this.$store.commit('ingresses/reset')
