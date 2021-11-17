@@ -1,14 +1,17 @@
 import * as backend from '@/utils/backend'
 import moment from 'moment'
 
+const initial_state = () => {
+  return {
+    news_url: '',
+    news: []
+  }
+}
 const news_container = {
   module: {
     namespaced: true,
 
-    state: {
-      news_url: '',
-      news: []
-    },
+    state: initial_state,
     getters: {
       get_news_url (state) { return state.news_url },
       get_news (state) { return state.news }
@@ -20,6 +23,12 @@ const news_container = {
     },
 
     actions: {
+      reset (state) {
+        const s = initial_state()
+        Object.keys(s).forEach(key => {
+          state[key] = s[key]
+        })
+      },
       async request_news (context) {
         let response = await backend.get(context.state.news_url)
         let tmp = []

@@ -1,17 +1,21 @@
 import * as backend from '@/utils/backend'
 
+const initial_state = () => {
+  return {
+    branding: '',
+    csrf_token: '',
+    login_url: '',
+    login_google_url: '',
+    logout_url: '',
+    use_elastic: false
+  }
+}
+
 const api_container = {
   module: {
     namespaced: true,
 
-    state: {
-      branding: '',
-      csrf_token: '',
-      login_url: '',
-      login_google_url: '',
-      logout_url: '',
-      use_elastic: false
-    },
+    state: initial_state,
     getters: {
       get_branding (state) { return state.branding },
       get_csrf_token (state) { return state.csrf_token },
@@ -22,6 +26,12 @@ const api_container = {
     },
 
     mutations: {
+      reset (state) {
+        const s = initial_state()
+        Object.keys(s).forEach(key => {
+          state[key] = s[key]
+        })
+      },
       set_branding (state, branding) { state.branding = branding },
       set_csrf_token (state, csrf_token) { state.csrf_token = csrf_token },
       set_login_url (state, login_url) { state.login_url = login_url },

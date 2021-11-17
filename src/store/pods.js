@@ -1,16 +1,20 @@
 import * as backend from '@/utils/backend'
 import moment from 'moment'
 
+const initial_state = () => {
+  return {
+    pods_link: '',
+    pods: [],
+    pod_logs: {},
+    scroll_id: false,
+    page_numbers: {}
+  }
+}
+
 const pods_container = {
   module: {
     namespaced: true,
-    state: {
-      pods_link: '',
-      pods: [],
-      pod_logs: {},
-      scroll_id: false,
-      page_numbers: {}
-    },
+    state: initial_state,
 
     getters: {
       get_pods_link (state) {
@@ -31,6 +35,12 @@ const pods_container = {
     },
 
     mutations: {
+      reset (state) {
+        const s = initial_state()
+        Object.keys(s).forEach(key => {
+          state[key] = s[key]
+        })
+      },
       set_pods_link (state, pods_link) {
         state.pods_link = pods_link
       },
@@ -56,9 +66,6 @@ const pods_container = {
         state.scroll_id = scroll_id
       },
       set_page_number (state, data) {
-        state.page_numbers[data.pod_name] = data.page_number
-      },
-      reset (state, data) {
         state.page_numbers[data.pod_name] = data.page_number
       }
     },

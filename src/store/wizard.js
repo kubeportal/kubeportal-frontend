@@ -1,25 +1,28 @@
 import Vue from 'vue'
 import * as backend from '@/utils/backend'
-
+  
+const initial_state = () => {
+  return {
+    deploymentname: '',
+    imagename: '',
+    containername: '',
+    containerport: '',
+    targetport: '',
+    serviceport: '',
+    namespace: '',
+    servicename: '',
+    ingressname: '',
+    domainname: '',
+    subdomain: '',
+    hostname_valid: '',
+    current_wizard_tab: 'Deployment'
+  }
+}
 const wizard = {
   module: {
     namespaced: true,
 
-    state: {
-      deploymentname: '',
-      imagename: '',
-      containername: '',
-      containerport: '',
-      targetport: '',
-      serviceport: '',
-      namespace: '',
-      servicename: '',
-      ingressname: '',
-      domainname: '',
-      subdomain: '',
-      hostname_valid: '',
-      current_wizard_tab: 'Deployment'
-    },
+    state: initial_state,
 
     getters: {
       get_deploymentname (state) { return state.deploymentname },
@@ -37,6 +40,12 @@ const wizard = {
     },
 
     mutations: {
+      reset (state) {
+        const s = initial_state()
+        Object.keys(s).forEach(key => {
+          state[key] = s[key]
+        })
+      },
       set_deployment_name (state, name) { state.deploymentname = name },
       setTargetPort (state, port) { state.targetport = port },
       set_service_port (state, port) { state.serviceport = port },

@@ -1,26 +1,30 @@
 import * as backend from '@/utils/backend'
 import store from './store.js'
 
+const initial_state = () => {
+  return {
+    access_token: '',
+    refresh_token: '',
+    access_token_refresh_url: '',
+    url: '',
+    user: {
+      webapp_ids: []
+    },
+    current_namespace: '',
+    current_service_account: '',
+    webapps: [],
+    groups: []  ,
+    approval_url: '',
+    dark_mode: false,
+    approving_admins: []
+  }
+}
+
 const users_container = {
   module: {
     namespaced: true,
 
-    state: {
-      access_token: '',
-      refresh_token: '',
-      access_token_refresh_url: '',
-      url: '',
-      user: {
-        webapp_ids: []
-      },
-      current_namespace: '',
-      current_service_account: '',
-      webapps: [],
-      groups: [],
-      approval_url: '',
-      dark_mode: false,
-      approving_admins: []
-    },
+    state: initial_state,
 
     getters: {
       get_access_token (state) { return state.access_token },
@@ -38,6 +42,12 @@ const users_container = {
     },
 
     mutations: {
+      reset (state) {
+        const s = initial_state()
+        Object.keys(s).forEach(key => {
+          state[key] = s[key]
+        })
+      },
       set_access_token (state, token) { state.access_token = token },
       set_refresh_token (state, token) { state.refresh_token = token },
       set_access_token_refresh_url (state, url) { state.access_token_refresh_url = url },

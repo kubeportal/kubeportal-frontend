@@ -1,13 +1,16 @@
 import * as backend from '@/utils/backend'
 import moment from 'moment'
 
+const initial_state = () => {
+  return {
+    services_link: '',
+    services: []
+  }
+}
 const services_container = {
   module: {
     namespaced: true,
-    state: {
-      services_link: '',
-      services: []
-    },
+    state: initial_state,
 
     getters: {
       get_services_link (state) { return state.services_link },
@@ -21,6 +24,12 @@ const services_container = {
     },
 
     actions: {
+      reset (state) {
+        const s = initial_state()
+        Object.keys(s).forEach(key => {
+          state[key] = s[key]
+        })
+      },
       async request_services (context) {
         context.commit('set_services', [])
         const services_link = context.getters['get_services_link']
