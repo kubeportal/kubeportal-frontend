@@ -57,6 +57,9 @@ const pods_container = {
       },
       set_page_number (state, data) {
         state.page_numbers[data.pod_name] = data.page_number
+      },
+      reset (state, data) {
+        state.page_numbers[data.pod_name] = data.page_number
       }
     },
 
@@ -109,7 +112,9 @@ const pods_container = {
       },
       async request_logs (context, data) {
         let link = 'http://127.0.0.1:5000/getpodlogs/'
-        let current_page = context.getters['get_page_number'][data.pod_name]
+        let current_page = context.getters['get_page_numbers']
+        console.log('current_page', current_page[data.pod_name])
+        current_page = current_page[data.pod_name] ? current_page[data.pod_name] : 0
         const response = await backend.post(link, { ns_name: data.namespace, pod_name: data.pod_name, page_number: current_page })
         console.log('request logs', response)
         let result = response.data.hits.map(hit => {
@@ -121,19 +126,6 @@ const pods_container = {
         })
         context.commit('push_pod_logs', { pod_name: data.pod_name, logs: result })
         context.commit('set_page_number', { pod_name: data.pod_name, page_number: response.data.page_number })
-      },
-      async request_test_logs (context, data) {
-        let link = 'http://localhost:8000' + data.logs_url
-        const response = await backend.get(link, { ns_name: data.namespace, pod_name: data.pod_name })
-        console.log('request logs', response)
-        let result = response.data.hits.map(hit => {
-          let log = {}
-          log['log'] = hit.log
-          log['stream'] = hit.stream
-          log['timestamp'] = moment(hit.time).format('MMMM Do YYYY, h:mm:ss a')
-          return log
-        })
-        context.commit('set_pod_logs', { pod_name: data.pod_name, logs: result })
       }
     }
   }
