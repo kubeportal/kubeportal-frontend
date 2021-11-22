@@ -18,6 +18,11 @@
         <div>
           <v-card class="details">
 
+            <v-card-title>Pod Name</v-card-title>
+            <v-row class="detailRow">
+              <v-col>{{ pod.name }}</v-col>
+            </v-row>
+
             <v-card-title>Timestamps</v-card-title>
             <v-row class="detailRow">
               <v-col>
@@ -36,23 +41,14 @@
               <v-col>{{ pod.phase }}</v-col>
             </v-row>
 
-            <v-card-title>Meta</v-card-title>
+            <v-card-title>Pod UID</v-card-title>
             <v-row class="detailRow">
-              <v-col>
-                  Name:
-                  {{ pod.name }}
-              </v-col>
-
-              <v-col>
-                  puid:
-                  {{ pod.puid }}
-               </v-col>
+              <v-col>{{ pod.puid }}</v-col>
             </v-row>
+
+            <v-card-title>Host IP</v-card-title>
             <v-row class="detailRow">
-             <v-col>
-              host ip:
-              {{ pod.host_ip }}
-             </v-col>
+             <v-col>{{ pod.host_ip }}</v-col>
             </v-row>
 
             <v-card-title>Container</v-card-title>

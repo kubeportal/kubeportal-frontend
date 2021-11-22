@@ -20,16 +20,16 @@ const services_container = {
     mutations: {
       set_services_link (state, services_link) { state.services_link = services_link },
       set_services (state, services) { state.services = services },
-      push_service (state, service) { state.services.push(service) }
-    },
-
-    actions: {
+      push_service (state, service) { state.services.push(service) },
       reset (state) {
         const s = initial_state()
         Object.keys(s).forEach(key => {
           state[key] = s[key]
         })
-      },
+      }
+    },
+
+    actions: {
       async request_services (context) {
         context.commit('set_services', [])
         const services_link = context.getters['get_services_link']

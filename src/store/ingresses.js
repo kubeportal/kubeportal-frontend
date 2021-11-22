@@ -24,16 +24,16 @@ const ingresses_container = {
         state.ingresses[data.index].status = data.status
         state.ingresses[data.index].time = data.time
       },
-      push_ingress (state, ingress) { state.ingresses.push(ingress) }
-    },
-
-    actions: {
+      push_ingress (state, ingress) { state.ingresses.push(ingress) },
       reset (state) {
         const s = initial_state()
         Object.keys(s).forEach(key => {
           state[key] = s[key]
         })
-      },
+      }
+    },
+
+    actions: {
       async request_ingresses (context) {
         context.commit('set_ingresses', [])
         const ingresses_link = context.getters['get_ingresses_link']

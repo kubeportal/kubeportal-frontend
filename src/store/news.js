@@ -19,16 +19,16 @@ const news_container = {
 
     mutations: {
       set_news_url (state, news_url) { state.news_url = news_url },
-      set_news (state, news) { state.news = news }
-    },
-
-    actions: {
+      set_news (state, news) { state.news = news },
       reset (state) {
         const s = initial_state()
         Object.keys(s).forEach(key => {
           state[key] = s[key]
         })
-      },
+      }
+    },
+
+    actions: {
       async request_news (context) {
         let response = await backend.get(context.state.news_url)
         let tmp = []

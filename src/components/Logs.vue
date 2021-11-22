@@ -11,7 +11,10 @@
       </v-tooltip>
     </div>
   <div @scroll="is_in_view" class="logs" ref="logs">
+
     <div ref="scrollblock" :class="is_loading ? 'invisible' : 'scrollblock'"> </div>
+    <!--div ref="scrollblock" class="scrollblock" v-if="!is_loading"> </div-->
+    <RequestSpinner v-if="is_loading" />
     <div class="logfiller">
       <div v-for="(log, index) in logs"
         :key="index"
@@ -29,8 +32,11 @@
 </template>
 
 <script>
+
+import RequestSpinner from '@/components/RequestSpinner'
 export default {
   name: 'Logs',
+  components: { RequestSpinner },
   props: ['pod', 'namespace'],
   data () {
     return {
@@ -40,7 +46,7 @@ export default {
   watch: {
     logs () {
       console.log('logs changed')
-      this.$refs.logs.scrollTop = this.$refs.logs.scrollHeight
+      this.$refs.logs.scrollTop = 2200
       this.is_loading = false
     }
   },
@@ -90,7 +96,7 @@ export default {
 
 <style scoped>
 .scrollblock {
-  opacity: 1;
+  opacity: 0;
   background-color: red;
   width: 100%;
   height: 10em;
