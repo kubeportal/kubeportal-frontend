@@ -75,12 +75,12 @@ export default {
       console.log('VISIBLE: ', !this.is_loading && is_visible)
       if (!this.is_loading && is_visible) {
         console.log(is_visible, 'is_visible')
-        this.is_loading = true
         this.request_logs()
       }
     },
     async request_logs () {
       console.log('request')
+      this.is_loading = true
       await this.$store.dispatch('pods/request_logs', {
         namespace: this.namespace,
         pod_name: this.pod.name,
