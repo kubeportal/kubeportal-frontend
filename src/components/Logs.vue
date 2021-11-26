@@ -1,12 +1,21 @@
 <template>
   <div>
   <div>
-    <v-text-field
-      v-model="search_logs"
-      label="Search"
-      append-outer-icon="mdi-chevron-right"
-      @click:append-outer="next_log"
-    ></v-text-field>
+    <v-row>
+      <v-col cols=10>
+        <v-text-field
+          v-model="search_logs"
+          label="Search"
+          append-outer-icon="mdi-chevron-right"
+          @click:append-outer="next_log"
+        ></v-text-field>
+      </v-col>
+      <v-col cols=2 v-if="search_logs !== ''">
+        <div class="occurances">
+          Found {{ search_indexe.length }} occurances. Currently: {{ current_idx + 1 }}
+        </div>
+      </v-col>
+    </v-row>
   </div>
     <div class="download" @click="download">
       <v-tooltip bottom>
@@ -65,7 +74,7 @@ export default {
         let indexe = []
         let idx = 0
         for (const entry of this.logs) {
-          if (entry.log.indexOf(value) !== -1) {
+          if (entry.log.toLowerCase().indexOf(value.toLowerCase()) !== -1) {
             indexe.push(idx)
           }
           idx++
@@ -164,6 +173,7 @@ export default {
   overflow-y: scroll;
   background-color: black;
   position: relative;
+  opacity: 0.85;
 }
 .download {
   color: white;
@@ -190,9 +200,12 @@ export default {
   color: white;
 }
 .focused {
-  border: 1px solid;
-  border-color: yellow;
+  background-color: rgba(255, 255, 255, .3);
   padding-bottom: 5px;
   padding-top: 5px;
+}
+.occurances {
+  text-align: center;
+  padding-top: 10%;
 }
 </style>
