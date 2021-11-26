@@ -2,13 +2,29 @@
   <div>
   <div>
     <v-row>
-      <v-col cols=10>
+      <v-col cols=8>
         <v-text-field
           v-model="search_logs"
           label="Search"
-          append-outer-icon="mdi-chevron-right"
-          @click:append-outer="next_log"
+          append-outer-icon="mdi-close"
+          @click:append-outer="search_logs = ''"
         ></v-text-field>
+      </v-col>
+      <v-col cols=2 v-if="search_logs !== ''">
+        <v-btn
+          icon
+          @click="next_log('previous')"
+          x-large
+        >
+          <v-icon>mdi-chevron-left</v-icon>
+        </v-btn>
+        <v-btn
+          icon
+          @click="next_log('next')"
+          x-large
+        >
+          <v-icon>mdi-chevron-right</v-icon>
+        </v-btn>
       </v-col>
       <v-col cols=2 v-if="search_logs !== ''">
         <div class="occurances">
@@ -99,12 +115,23 @@ export default {
     }
   },
   methods: {
-    next_log () {
+    next_log (direction) {
       if (this.prev_idx) {
         let elem = document.getElementById('log_entry_' + this.prev_idx)
         elem.classList.remove('focused')
       }
-      console.log('in NEXT LOG', this.current_idx)
+
+      if (direction === 'next' && this.current_idx < this.search_indexe.length - 1) {
+        this.current_idx = this.current_idx + 1
+      } else if (direction === 'next') {
+        this.current_idx = 0
+      } else if (direction === 'previous' && this.current_idx > 0) {
+        this.current_idx = this.current_idx - 1
+      } else {
+        this.current_idx = this.search_indexe.length - 1
+      }
+
+      console.log('in NEXT LOG', this.current_idx, direction)
       let idx = this.search_indexe[this.current_idx]
       let elem = document.getElementById('log_entry_' + idx)
       let elem_rect = elem.getBoundingClientRect()
@@ -113,11 +140,6 @@ export default {
       this.$refs.logs.scrollTop = this.$refs.logs.scrollTop + elem_rect.top - 300
 
       this.prev_idx = idx
-      if (this.current_idx < this.search_indexe.length - 1) {
-        this.current_idx = this.current_idx + 1
-      } else {
-        this.current_idx = 0
-      }
     },
     download () {
       if (!this.logs) return
