@@ -104,7 +104,7 @@ export default {
       this.$refs.logs.scrollTop = this.$refs.logs.scrollTop + elem_rect.top - 300
 
       this.prev_idx = idx
-      if (this.current_idx < this.search_indexe.length -1) {
+      if (this.current_idx < this.search_indexe.length - 1) {
         this.current_idx = this.current_idx + 1
       } else {
         this.current_idx = 0
