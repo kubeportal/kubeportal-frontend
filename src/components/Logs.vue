@@ -85,6 +85,10 @@ export default {
   },
   watch: {
     search_logs (value) {
+      if (this.prev_idx) {
+        let elem = document.getElementById('log_entry_' + this.prev_idx)
+        elem.classList.remove('focused')
+      }
       if (value !== '') {
         this.current_idx = 0
         let indexe = []
