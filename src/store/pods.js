@@ -118,11 +118,12 @@ const pods_container = {
         context.commit('set_scroll_id', scroll_id)
       },
       async request_logs (context, data) {
-        let link = 'http://127.0.0.1:5000/getpodlogs/'
         let current_page = context.getters['get_page_numbers']
-        console.log('current_page', current_page[data.pod_name])
         current_page = current_page[data.pod_name] ? current_page[data.pod_name] : 0
-        const response = await backend.post(link, { ns_name: data.namespace, pod_name: data.pod_name, page_number: current_page })
+        let link = 'http://localhost:8000' + data.logs_url.replace('{page}', current_page)
+        console.log(link, current_page)
+        console.log('current_page', current_page)
+        const response = await backend.get(link)
         console.log('request logs', response)
         let result = response.data.hits.map(hit => {
           let log = {}

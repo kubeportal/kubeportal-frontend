@@ -1,48 +1,86 @@
 <template>
   <div>
   <div>
-    <v-row>
-      <v-col cols=8>
-        <v-text-field
-          v-model="search_logs"
-          label="Search"
-          append-outer-icon="mdi-close"
-          @click:append-outer="search_logs = ''"
-        ></v-text-field>
-      </v-col>
-      <v-col cols=2 v-if="search_logs !== ''">
+    <v-row justify="space-between">
+      <v-col cols="2">
         <v-btn
           icon
-          @click="next_log('previous')"
+          @click="show_menu = !show_menu"
           x-large
         >
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
-        <v-btn
-          icon
-          @click="next_log('next')"
-          x-large
-        >
-          <v-icon>mdi-chevron-right</v-icon>
+          <v-icon>mdi-menu</v-icon>
         </v-btn>
       </v-col>
-      <v-col cols=2 v-if="search_logs !== ''">
-        <div class="occurances">
-          Found {{ search_indexe.length }} occurances. Currently: {{ current_idx + 1 }}
-        </div>
+      <v-col class="download" @click="download" cols="1">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn type="button" icon v-bind="attrs" x-large v-on="on">
+              <v-icon> mdi-download </v-icon>
+            </v-btn>
+          </template>
+          <span>download {{new Date().toISOString()}}-{{this.pod.name}}-logs.txt</span>
+        </v-tooltip>
       </v-col>
     </v-row>
-  </div>
-    <div class="download" @click="download">
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn color="white" type="button" icon v-bind="attrs" v-on="on">
-            <v-icon color="white"> mdi-download </v-icon>
+    <div v-if="show_menu" class="menu">
+      <v-row>
+        <v-col cols=8>
+          <v-text-field
+            v-model="search_logs"
+            label="Search"
+            append-outer-icon="mdi-close"
+            @click:append-outer="search_logs = ''"
+          ></v-text-field>
+        </v-col>
+        <v-col cols=2 v-if="search_logs !== ''">
+          <v-btn
+            icon
+            @click="next_log('previous')"
+            x-large
+          >
+            <v-icon>mdi-arrow-left</v-icon>
           </v-btn>
-        </template>
-        <span>download {{new Date().toISOString()}}-{{this.pod.name}}-logs.txt</span>
-      </v-tooltip>
+          <v-btn
+            icon
+            @click="next_log('next')"
+            x-large
+          >
+            <v-icon>mdi-arrow-right</v-icon>
+          </v-btn>
+        </v-col>
+        <v-col cols=2 v-if="search_logs !== ''">
+          <div class="occurances">
+            Found {{ search_indexe.length }} occurances.
+            <span v-if="search_indexe.length > 0">
+              Currently: {{ current_idx + 1 }}
+            </span>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="1">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn type="button" icon v-bind="attrs" x-large v-on="on" @click="jump('up')">
+                <v-icon> mdi-chevron-double-up </v-icon>
+              </v-btn>
+            </template>
+            <span>Jump to top</span>
+          </v-tooltip>
+        </v-col>
+        <v-col cols="1">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn type="button" icon v-bind="attrs" x-large v-on="on" @click="jump('down')">
+                <v-icon> mdi-chevron-double-down </v-icon>
+              </v-btn>
+            </template>
+            <span>Jump to bottom</span>
+          </v-tooltip>
+        </v-col>
+      </v-row>
     </div>
+  </div>
   <div @scroll="is_in_view" class="logs" ref="logs">
 
     <div ref="scrollblock" :class="is_loading ? 'invisible' : 'scrollblock'"> </div>
@@ -80,7 +118,8 @@ export default {
       search_logs: '',
       search_indexe: [],
       current_idx: 0,
-      prev_idx: undefined
+      prev_idx: undefined,
+      show_menu: false
     }
   },
   watch: {
@@ -119,6 +158,13 @@ export default {
     }
   },
   methods: {
+    jump (direction) {
+      if (direction === 'up') {
+        this.$refs.logs.scrollTop = 2200
+      } else {
+        this.$refs.logs.scrollTop = this.$refs.logs.scrollHeight
+      }
+    },
     next_log (direction) {
       if (this.prev_idx) {
         let elem = document.getElementById('log_entry_' + this.prev_idx)
@@ -203,10 +249,6 @@ export default {
 }
 .download {
   color: white;
-  position: absolute;
-  top: 14%;
-  right: 1%;
-  z-index: 1000;
 }
 .stderr {
   color: red;
@@ -233,5 +275,9 @@ export default {
 .occurances {
   text-align: center;
   padding-top: 10%;
+}
+.menu {
+  background-color: white;
+  padding: 0 1em;
 }
 </style>
