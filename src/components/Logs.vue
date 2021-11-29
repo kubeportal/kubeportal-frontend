@@ -78,13 +78,18 @@
             <span>Jump to bottom</span>
           </v-tooltip>
         </v-col>
+        <v-col cols="8">
+          <v-switch
+            v-model="live_refresh"
+            label="live refresh"
+          ></v-switch>
+        </v-col>
       </v-row>
     </div>
   </div>
   <div @scroll="is_in_view" class="logs" ref="logs">
 
     <div ref="scrollblock" :class="is_loading ? 'invisible' : 'scrollblock'"> </div>
-    <!--div ref="scrollblock" class="scrollblock" v-if="!is_loading"> </div-->
     <div class="endoflogs" v-if="end_of_logs" > ... </div>
     <RequestSpinner v-if="is_loading && !end_of_logs" />
     <div class="logfiller">
@@ -119,7 +124,9 @@ export default {
       search_indexe: [],
       current_idx: 0,
       prev_idx: undefined,
-      show_menu: false
+      show_menu: false,
+      live_refresh: false,
+      interval_id: undefined
     }
   },
   watch: {
@@ -158,6 +165,15 @@ export default {
     }
   },
   methods: {
+    set_refresh () {
+      this.intervalid1 = setInterval(async function () {
+        await this.$store.dispatch('pods/request_logs', {
+          namespace: this.namespace,
+          pod_name: this.pod.name,
+          logs_url: this.pod.logs_url
+        })
+      }, 1000)
+    },
     jump (direction) {
       if (direction === 'up') {
         this.$refs.logs.scrollTop = 2200

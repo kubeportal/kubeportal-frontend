@@ -134,7 +134,29 @@ const pods_container = {
         })
         context.commit('push_pod_logs', { pod_name: data.pod_name, logs: result })
         context.commit('set_page_number', { pod_name: data.pod_name, page_number: response.data.page_number })
+      },
+      async request_live_logs (context, data) {
+        let link = 'http://localhost:8000' + data.logs_url.replace('{page}', 0)
+        const response = await backend.get(link)
+        console.log('request logs', response)
+        let result = response.data.hits.map(hit => {
+          let log = {}
+          log['log'] = hit._source.log
+          log['stream'] = hit._source.stream
+          log['timestamp'] = moment(hit._source['@timestamp']).format('MMMM Do YYYY, h:mm:ss a')
+          return log
+        })
+        let pod_logs = context.getters['get_pod_logs'][data.pod_name]
+        for (let i = 0; i < result.length; i++) {
+          // TODO: compare ids? between two log results
+          if (result[i] !== pod_logs[i]) {
+            break
+          }
+        }
+        context.commit('push_pod_logs', { pod_name: data.pod_name, logs: result })
+        context.commit('set_page_number', { pod_name: data.pod_name, page_number: response.data.page_number })
       }
+
     }
   }
 }
