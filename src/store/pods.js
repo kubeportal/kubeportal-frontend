@@ -6,7 +6,6 @@ const initial_state = () => {
     pods_link: '',
     pods: [],
     pod_logs: {},
-    scroll_id: false,
     page_numbers: {}
   }
 }
@@ -25,9 +24,6 @@ const pods_container = {
       },
       get_pod_logs (state) {
         return state.pod_logs
-      },
-      get_scroll_id (state) {
-        return state.scroll_id
       },
       get_page_numbers (state) {
         return state.page_numbers
@@ -50,11 +46,6 @@ const pods_container = {
       push_pod (state, pod) {
         state.pods.push(pod)
       },
-      set_pod_logs (state, data) {
-        let tmp = {}
-        tmp[data.pod_name] = data.logs
-        state.pod_logs = { ...state.pod_logs, ...tmp }
-      },
       push_pod_logs (state, data) {
         if (state.pod_logs[data.pod_name] === undefined) {
           state.pod_logs[data.pod_name] = []
@@ -62,8 +53,12 @@ const pods_container = {
         state.pod_logs[data.pod_name] = [...data.logs, ...state.pod_logs[data.pod_name]]
         state.pod_logs = { ...state.pod_logs }
       },
-      set_scroll_id (state, scroll_id) {
-        state.scroll_id = scroll_id
+      append_pod_logs (state, data) {
+        if (state.pod_logs[data.pod_name] === undefined) {
+          state.pod_logs[data.pod_name] = []
+        }
+        state.pod_logs[data.pod_name] = [...state.pod_logs[data.pod_name], ...data.logs]
+        state.pod_logs = { ...state.pod_logs }
       },
       set_page_number (state, data) {
         state.page_numbers[data.pod_name] = data.page_number
@@ -101,22 +96,6 @@ const pods_container = {
         const response = await backend.post(pods_link, data)
         console.log('CREATE POD RESPONSE', response)
       },
-      async request_scroll_logs (context, data) {
-        let link = 'http://localhost:5000/getscrolllogs/'
-        const response = await backend.post(link, { ns_name: data.namespace, pod_name: data.pod_name, scroll_id: context.getters['get_scroll_id'] })
-        console.log('request logs', response.data)
-        let result = response.data.hits.map(hit => {
-          let log = {}
-          log['log'] = hit._source.log
-          log['_id'] = hit._id
-          log['stream'] = hit._source.stream
-          //log['timestamp'] = moment(hit._source['@timestamp']).format('MMMM Do YYYY, h:mm:ss a')
-          return log
-        })
-        let scroll_id = response.data['scroll_id']
-        context.commit('set_pod_logs', { pod_name: data.pod_name, logs: result })
-        context.commit('set_scroll_id', scroll_id)
-      },
       async request_logs (context, data) {
         let current_page = context.getters['get_page_numbers']
         current_page = current_page[data.pod_name] ? current_page[data.pod_name] : 0
@@ -130,6 +109,7 @@ const pods_container = {
           log['log'] = hit._source.log
           log['stream'] = hit._source.stream
           log['timestamp'] = moment(hit._source['@timestamp']).format('MMMM Do YYYY, h:mm:ss a')
+          log['_id'] = hit._id
           return log
         })
         context.commit('push_pod_logs', { pod_name: data.pod_name, logs: result })
@@ -138,23 +118,54 @@ const pods_container = {
       async request_live_logs (context, data) {
         let link = 'http://localhost:8000' + data.logs_url.replace('{page}', 0)
         const response = await backend.get(link)
-        console.log('request logs', response)
+        console.log('IN REQUEST LIVE LOGS', response)
         let result = response.data.hits.map(hit => {
           let log = {}
           log['log'] = hit._source.log
           log['stream'] = hit._source.stream
           log['timestamp'] = moment(hit._source['@timestamp']).format('MMMM Do YYYY, h:mm:ss a')
+          log['_id'] = hit._id
           return log
         })
         let pod_logs = context.getters['get_pod_logs'][data.pod_name]
-        for (let i = 0; i < result.length; i++) {
-          // TODO: compare ids? between two log results
-          if (result[i] !== pod_logs[i]) {
-            break
+        let new_logs = []
+        console.log(pod_logs, result)
+
+        const isSameUser = (a, b) => a._id == b._id
+        const onlyInLeft = (left, right, compareFunction) => 
+          left.filter(leftValue =>
+            !right.some(rightValue => 
+              compareFunction(leftValue, rightValue)))
+
+        //const onlyInA = onlyInLeft(pod_logs, result, isSameUser)
+        new_logs = onlyInLeft(result, pod_logs, isSameUser)
+
+        /*
+        if (result.length > pod_logs.length) {
+
+          console.log('INSIDE IF', result, pod_logs)
+          for (let i = 0; i < result.length - pod_logs.length; i++) {
+            console.log('INDEX', result[result.length - 1 - i], pod_logs[ pod_logs.length - 1 - i], i)
+            if (result[result.length - 1 - i]._id !== pod_logs[ pod_logs.length - 1 - i]) {
+              new_logs.push(result[i])
+            } else {
+              break
+            }
+          }
+        } else {
+          console.log('OUTSIDE IF', result, pod_logs)
+          for (let i = result.length - 1; i > 0; i--) {
+            if (result[i]._id !== pod_logs[i + pod_logs.length - result.length]._id) {
+              console.log('INDEX', result[i], pod_logs[i+ pod_logs.length - result.length], i, i+ pod_logs.length - result.length)
+              new_logs.push(result[i])
+            } else {
+              break
+            }
           }
         }
-        context.commit('push_pod_logs', { pod_name: data.pod_name, logs: result })
-        context.commit('set_page_number', { pod_name: data.pod_name, page_number: response.data.page_number })
+        */
+        console.log('NEW LOGS', new_logs)
+        context.commit('append_pod_logs', { pod_name: data.pod_name, logs: new_logs })
       }
 
     }

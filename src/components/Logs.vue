@@ -23,7 +23,7 @@
       </v-col>
     </v-row>
     <div v-if="show_menu" class="menu">
-      <v-row>
+      <v-row no-gutters>
         <v-col cols=8>
           <v-text-field
             v-model="search_logs"
@@ -57,7 +57,7 @@
           </div>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="1">
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
@@ -78,7 +78,7 @@
             <span>Jump to bottom</span>
           </v-tooltip>
         </v-col>
-        <v-col cols="8">
+        <v-col cols="10">
           <v-switch
             v-model="live_refresh"
             label="live refresh"
@@ -125,11 +125,19 @@ export default {
       current_idx: 0,
       prev_idx: undefined,
       show_menu: false,
-      live_refresh: false,
+      live_refresh: true,
       interval_id: undefined
     }
   },
   watch: {
+    live_refresh (value) {
+      console.log(value)
+      if (value) {
+        this.set_refresh()
+      } else {
+        clearInterval(this.interval_id)
+      }
+    },
     search_logs (value) {
       if (this.prev_idx) {
         let elem = document.getElementById('log_entry_' + this.prev_idx)
@@ -154,7 +162,7 @@ export default {
       if (old_value && new_value.length === old_value.length) {
         this.end_of_logs = true
       } else {
-        this.$refs.logs.scrollTop = 2200
+        /*this.$refs.logs.scrollTop = 2200*/
         this.is_loading = false
       }
     }
@@ -166,13 +174,14 @@ export default {
   },
   methods: {
     set_refresh () {
-      this.intervalid1 = setInterval(async function () {
-        await this.$store.dispatch('pods/request_logs', {
-          namespace: this.namespace,
-          pod_name: this.pod.name,
-          logs_url: this.pod.logs_url
+      let self = this
+      this.interval_id = setInterval(async function () {
+        await self.$store.dispatch('pods/request_live_logs', {
+          namespace: self.namespace,
+          pod_name: self.pod.name,
+          logs_url: self.pod.logs_url
         })
-      }, 1000)
+      }, 3000)
     },
     jump (direction) {
       if (direction === 'up') {
@@ -295,5 +304,8 @@ export default {
 .menu {
   background-color: white;
   padding: 0 1em;
+  position: absolute;
+  z-index: 1000;
+  width: 100%;
 }
 </style>
