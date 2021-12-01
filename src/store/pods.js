@@ -46,20 +46,6 @@ const pods_container = {
       push_pod (state, pod) {
         state.pods.push(pod)
       },
-      push_pod_logs (state, data) {
-        if (state.pod_logs[data.pod_name] === undefined) {
-          state.pod_logs[data.pod_name] = []
-        }
-        state.pod_logs[data.pod_name] = [...data.logs, ...state.pod_logs[data.pod_name]]
-        state.pod_logs = { ...state.pod_logs }
-      },
-      append_pod_logs (state, data) {
-        if (state.pod_logs[data.pod_name] === undefined) {
-          state.pod_logs[data.pod_name] = []
-        }
-        state.pod_logs[data.pod_name] = [...state.pod_logs[data.pod_name], ...data.logs]
-        state.pod_logs = { ...state.pod_logs }
-      },
       set_page_number (state, data) {
         state.page_numbers[data.pod_name] = data.page_number
       }
@@ -86,24 +72,17 @@ const pods_container = {
             data['mountpath'] = pod.containers.map(container => container.volume_mounts.map(volume => volume.mount_path))[0]
             data['volumes'] = pod.containers.map(container => container.volume_mounts)[0]
             data['logs_url'] = pod.logs_url
-            console.log('POD ', data)
             context.commit('push_pod', data)
           })
         })
       },
       async create_pod (context, data) {
         const pods_link = context.getters['get_pods_link']
-        const response = await backend.post(pods_link, data)
-        console.log('CREATE POD RESPONSE', response)
+        backend.post(pods_link, data)
       },
-      async request_logs (context, data) {
-        let current_page = context.getters['get_page_numbers']
-        current_page = current_page[data.pod_name] ? current_page[data.pod_name] : 0
-        let link = data.logs_url.replace('{page}', current_page)
-        console.log(link, current_page)
-        console.log('current_page', current_page)
+      async request_logs (_, data) {
+        let link = data.logs_url.replace('{page}', data.page_number)
         const response = await backend.get(link)
-        console.log('request logs', response)
         let result = response.data.hits.map(hit => {
           let log = {}
           log['log'] = hit._source.log
@@ -112,34 +91,8 @@ const pods_container = {
           log['_id'] = hit._id
           return log
         })
-        context.commit('push_pod_logs', { pod_name: data.pod_name, logs: result })
-        context.commit('set_page_number', { pod_name: data.pod_name, page_number: response.data.page_number })
-      },
-      async request_live_logs (context, data) {
-        let link = data.logs_url.replace('{page}', 0)
-        const response = await backend.get(link)
-        console.log('IN REQUEST LIVE LOGS', response)
-        let result = response.data.hits.map(hit => {
-          let log = {}
-          log['log'] = hit._source.log
-          log['stream'] = hit._source.stream
-          log['timestamp'] = moment(hit._source['@timestamp']).format('MMMM Do YYYY, h:mm:ss a')
-          log['_id'] = hit._id
-          return log
-        })
-        let pod_logs = context.getters['get_pod_logs'][data.pod_name]
-
-        const is_same_log = (a, b) => a._id === b._id
-        const compare_logs = (left, right, compare_function) =>
-          left.filter(left_value =>
-            !right.some(right_value =>
-              compare_function(left_value, right_value)))
-
-        let new_logs = compare_logs(result, pod_logs, is_same_log)
-        console.log('NEW LOGS', new_logs)
-        context.commit('append_pod_logs', { pod_name: data.pod_name, logs: new_logs })
+        return [result, response.data.page_number]
       }
-
     }
   }
 }

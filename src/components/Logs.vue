@@ -12,10 +12,26 @@
         </v-btn>
       </v-col>
         <v-col cols="2">
+          <div class="live-refresh-container">
           <v-switch
             v-model="live_refresh"
             label="live refresh"
           ></v-switch>
+          <v-progress-circular
+            v-if="live_refresh && !refresh_loading"
+            size="20"
+            color="primary"
+            value="0"
+            class="progress-spinner"
+          />
+          <v-progress-circular
+            v-if="live_refresh && refresh_loading"
+            size="20"
+            color="primary"
+            indeterminate
+            class="progress-spinner"
+          />
+          </div>
         </v-col>
       <v-col class="download" @click="download" cols="1">
         <v-tooltip bottom>
@@ -113,6 +129,7 @@
       </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -137,7 +154,10 @@ export default {
       interval_id: undefined,
       rules: {
         refresh_rate: value => value > 499 || 'refresh rate has to be atleast 500ms'
-      }
+      },
+      logs: [],
+      page_number: 0,
+      refresh_loading: false
     }
   },
   watch: {
@@ -148,7 +168,6 @@ export default {
       }
     },
     live_refresh (value) {
-      console.log(value)
       if (value) {
         this.set_refresh()
       } else {
@@ -170,24 +189,18 @@ export default {
           }
           idx++
         }
-        console.log(indexe)
         this.search_indexe = indexe
       }
     },
     logs (new_value, old_value) {
-      console.log(new_value.length, old_value ? old_value.length : 0)
       if (old_value && new_value.length === old_value.length) {
         this.end_of_logs = true
-      } else {
+      } else if (this.live_refresh) {
         this.$refs.logs.scrollTop = this.$refs.logs.scrollHeight + 1000
-        /*this.$refs.logs.scrollTop = 2200*/
+      }else {
+        this.$refs.logs.scrollTop = 2200
         this.is_loading = false
       }
-    }
-  },
-  computed: {
-    logs () {
-      return this.$store.getters['pods/get_pod_logs'][this.pod.name]
     }
   },
   methods: {
@@ -197,12 +210,23 @@ export default {
     },
     set_refresh () {
       if (this.refresh_rate > 499) {
-        this.interval_id = setInterval(() => {
-          this.$store.dispatch('pods/request_live_logs', {
+        this.interval_id = setInterval(async () => {
+          this.refresh_loading = true
+          const [result, _] = await this.$store.dispatch('pods/request_logs', {
             namespace: this.namespace,
             pod_name: this.pod.name,
-            logs_url: this.pod.logs_url
+            logs_url: this.pod.logs_url,
+            page_number: 0
           })
+          const is_same_log = (a, b) => a._id === b._id
+          const compare_logs = (left, right, compare_function) =>
+            left.filter(left_value =>
+              !right.some(right_value =>
+                compare_function(left_value, right_value)))
+
+          let new_logs = compare_logs(result, this.logs, is_same_log)
+          this.logs = [...this.logs, ...new_logs]
+          this.refresh_loading = false
         }, this.refresh_rate)
       }
     },
@@ -229,12 +253,10 @@ export default {
         this.current_idx = this.search_indexe.length - 1
       }
 
-      console.log('in NEXT LOG', this.current_idx, direction)
       let idx = this.search_indexe[this.current_idx]
       let elem = document.getElementById('log_entry_' + idx)
       let elem_rect = elem.getBoundingClientRect()
       elem.classList.add('focused')
-      console.log(elem_rect.top, this.$refs.logs.scrollTop)
       this.$refs.logs.scrollTop = this.$refs.logs.scrollTop + elem_rect.top - 300
 
       this.prev_idx = idx
@@ -255,20 +277,20 @@ export default {
       const elem_top = rect.top
       const elem_bottom = rect.bottom
       const is_visible = (elem_top >= 0) && (elem_bottom <= window.innerHeight)
-      console.log('VISIBLE: ', !this.is_loading && is_visible)
       if (!this.is_loading && is_visible) {
-        console.log(is_visible, 'is_visible')
         this.request_logs()
       }
     },
     async request_logs () {
-      console.log('request')
       this.is_loading = true
-      await this.$store.dispatch('pods/request_logs', {
+      const [result, page_number] = await this.$store.dispatch('pods/request_logs', {
         namespace: this.namespace,
         pod_name: this.pod.name,
-        logs_url: this.pod.logs_url
+        logs_url: this.pod.logs_url,
+        page_number: this.page_number
       })
+      this.logs = [...result, ...this.logs]
+      this.page_number = page_number
     }
   },
   mounted () {
@@ -331,5 +353,13 @@ export default {
   width: 60%;
   right: 0.5%;
   text-align: center;
+}
+.live-refresh-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.progress-spinner {
+  margin: 0 1em;
 }
 </style>
