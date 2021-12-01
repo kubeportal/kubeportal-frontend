@@ -99,7 +99,7 @@ const pods_container = {
       async request_logs (context, data) {
         let current_page = context.getters['get_page_numbers']
         current_page = current_page[data.pod_name] ? current_page[data.pod_name] : 0
-        let link = 'http://localhost:8000' + data.logs_url.replace('{page}', current_page)
+        let link = data.logs_url.replace('{page}', current_page)
         console.log(link, current_page)
         console.log('current_page', current_page)
         const response = await backend.get(link)
@@ -116,7 +116,7 @@ const pods_container = {
         context.commit('set_page_number', { pod_name: data.pod_name, page_number: response.data.page_number })
       },
       async request_live_logs (context, data) {
-        let link = 'http://localhost:8000' + data.logs_url.replace('{page}', 0)
+        let link = data.logs_url.replace('{page}', 0)
         const response = await backend.get(link)
         console.log('IN REQUEST LIVE LOGS', response)
         let result = response.data.hits.map(hit => {
@@ -128,42 +128,14 @@ const pods_container = {
           return log
         })
         let pod_logs = context.getters['get_pod_logs'][data.pod_name]
-        let new_logs = []
-        console.log(pod_logs, result)
 
-        const isSameUser = (a, b) => a._id == b._id
-        const onlyInLeft = (left, right, compareFunction) => 
-          left.filter(leftValue =>
-            !right.some(rightValue => 
-              compareFunction(leftValue, rightValue)))
+        const is_same_log = (a, b) => a._id === b._id
+        const compare_logs = (left, right, compare_function) =>
+          left.filter(left_value =>
+            !right.some(right_value =>
+              compare_function(left_value, right_value)))
 
-        //const onlyInA = onlyInLeft(pod_logs, result, isSameUser)
-        new_logs = onlyInLeft(result, pod_logs, isSameUser)
-
-        /*
-        if (result.length > pod_logs.length) {
-
-          console.log('INSIDE IF', result, pod_logs)
-          for (let i = 0; i < result.length - pod_logs.length; i++) {
-            console.log('INDEX', result[result.length - 1 - i], pod_logs[ pod_logs.length - 1 - i], i)
-            if (result[result.length - 1 - i]._id !== pod_logs[ pod_logs.length - 1 - i]) {
-              new_logs.push(result[i])
-            } else {
-              break
-            }
-          }
-        } else {
-          console.log('OUTSIDE IF', result, pod_logs)
-          for (let i = result.length - 1; i > 0; i--) {
-            if (result[i]._id !== pod_logs[i + pod_logs.length - result.length]._id) {
-              console.log('INDEX', result[i], pod_logs[i+ pod_logs.length - result.length], i, i+ pod_logs.length - result.length)
-              new_logs.push(result[i])
-            } else {
-              break
-            }
-          }
-        }
-        */
+        let new_logs = compare_logs(result, pod_logs, is_same_log)
         console.log('NEW LOGS', new_logs)
         context.commit('append_pod_logs', { pod_name: data.pod_name, logs: new_logs })
       }

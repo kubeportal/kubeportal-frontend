@@ -1,7 +1,7 @@
 <template>
   <div>
   <div>
-    <v-row justify="space-between">
+    <v-row justify="space-between" no-gutters class="white">
       <v-col cols="2">
         <v-btn
           icon
@@ -11,6 +11,12 @@
           <v-icon>mdi-menu</v-icon>
         </v-btn>
       </v-col>
+        <v-col cols="2">
+          <v-switch
+            v-model="live_refresh"
+            label="live refresh"
+          ></v-switch>
+        </v-col>
       <v-col class="download" @click="download" cols="1">
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
@@ -22,17 +28,20 @@
         </v-tooltip>
       </v-col>
     </v-row>
-    <div v-if="show_menu" class="menu">
-      <v-row no-gutters>
-        <v-col cols=8>
-          <v-text-field
-            v-model="search_logs"
-            label="Search"
-            append-outer-icon="mdi-close"
-            @click:append-outer="search_logs = ''"
-          ></v-text-field>
+    <v-card v-if="show_menu" class="menu" outlined raised>
+      <v-row justify="space-between" align="center">
+
+        <v-col cols="6">
+          <v-form @submit="search_submit">
+            <v-text-field
+              v-model="search_logs"
+              label="Search"
+              append-outer-icon="mdi-close"
+              @click:append-outer="search_logs = ''"
+            ></v-text-field>
+          </v-form>
         </v-col>
-        <v-col cols=2 v-if="search_logs !== ''">
+        <v-col cols="2" v-if="search_logs !== ''">
           <v-btn
             icon
             @click="next_log('previous')"
@@ -48,17 +57,12 @@
             <v-icon>mdi-arrow-right</v-icon>
           </v-btn>
         </v-col>
-        <v-col cols=2 v-if="search_logs !== ''">
+        <v-col cols="2" v-if="search_logs !== ''">
           <div class="occurances">
-            Found {{ search_indexe.length }} occurances.
-            <span v-if="search_indexe.length > 0">
-              Currently: {{ current_idx + 1 }}
-            </span>
+             {{ current_idx + 1 }} of {{ search_indexe.length }}
           </div>
         </v-col>
-      </v-row>
-      <v-row no-gutters>
-        <v-col cols="1">
+        <v-col cols="2">
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
               <v-btn type="button" icon v-bind="attrs" x-large v-on="on" @click="jump('up')">
@@ -67,8 +71,6 @@
             </template>
             <span>Jump to top</span>
           </v-tooltip>
-        </v-col>
-        <v-col cols="1">
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
               <v-btn type="button" icon v-bind="attrs" x-large v-on="on" @click="jump('down')">
@@ -78,14 +80,19 @@
             <span>Jump to bottom</span>
           </v-tooltip>
         </v-col>
-        <v-col cols="10">
-          <v-switch
-            v-model="live_refresh"
-            label="live refresh"
-          ></v-switch>
+      </v-row>
+      <v-row >
+        <v-col cols="2">
+          <v-text-field
+           label="refresh rate"
+           type="number"
+           v-model="refresh_rate"
+           suffix="ms"
+           :rules="[rules.refresh_rate]"
+          />
         </v-col>
       </v-row>
-    </div>
+    </v-card>
   </div>
   <div @scroll="is_in_view" class="logs" ref="logs">
 
@@ -125,11 +132,21 @@ export default {
       current_idx: 0,
       prev_idx: undefined,
       show_menu: false,
-      live_refresh: true,
-      interval_id: undefined
+      live_refresh: false,
+      refresh_rate: 1000,
+      interval_id: undefined,
+      rules: {
+        refresh_rate: value => value > 499 || 'refresh rate has to be atleast 500ms'
+      }
     }
   },
   watch: {
+    refresh_rate () {
+      if (this.refresh_rate > 499 && this.live_refresh) {
+        if (this.interval_id) clearInterval(this.interval_id)
+        this.set_refresh()
+      }
+    },
     live_refresh (value) {
       console.log(value)
       if (value) {
@@ -162,6 +179,7 @@ export default {
       if (old_value && new_value.length === old_value.length) {
         this.end_of_logs = true
       } else {
+        this.$refs.logs.scrollTop = this.$refs.logs.scrollHeight + 1000
         /*this.$refs.logs.scrollTop = 2200*/
         this.is_loading = false
       }
@@ -173,19 +191,24 @@ export default {
     }
   },
   methods: {
+    search_submit (e) {
+      e.preventDefault()
+      this.next_log('next')
+    },
     set_refresh () {
-      let self = this
-      this.interval_id = setInterval(async function () {
-        await self.$store.dispatch('pods/request_live_logs', {
-          namespace: self.namespace,
-          pod_name: self.pod.name,
-          logs_url: self.pod.logs_url
-        })
-      }, 3000)
+      if (this.refresh_rate > 499) {
+        this.interval_id = setInterval(() => {
+          this.$store.dispatch('pods/request_live_logs', {
+            namespace: this.namespace,
+            pod_name: this.pod.name,
+            logs_url: this.pod.logs_url
+          })
+        }, this.refresh_rate)
+      }
     },
     jump (direction) {
       if (direction === 'up') {
-        this.$refs.logs.scrollTop = 2200
+        this.$refs.logs.scrollTop = 0
       } else {
         this.$refs.logs.scrollTop = this.$refs.logs.scrollHeight
       }
@@ -302,10 +325,11 @@ export default {
   padding-top: 10%;
 }
 .menu {
-  background-color: white;
   padding: 0 1em;
   position: absolute;
   z-index: 1000;
-  width: 100%;
+  width: 60%;
+  right: 0.5%;
+  text-align: center;
 }
 </style>
