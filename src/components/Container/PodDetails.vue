@@ -104,8 +104,7 @@ export default {
   },
   computed: {
     use_elastic () {
-      /*return this.$store.getters['api/get_use_elastic']*/
-      return true
+      return this.$store.getters['api/get_use_elastic']
     }
   }
 }
