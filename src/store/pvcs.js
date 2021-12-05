@@ -1,14 +1,19 @@
 import * as backend from '@/utils/backend'
 import moment from 'moment'
+
+const initial_state = () => {
+  return {
+    pvc_link: '',
+    persistentvolumeclaims: [],
+    storageclasses_url: '',
+    storageclasses: []
+  }
+}
+
 const persistentvolumeclaims_container = {
   module: {
     namespaced: true,
-    state: {
-      pvc_link: '',
-      persistentvolumeclaims: [],
-      storageclasses_url: '',
-      storageclasses: []
-    },
+    state: initial_state,
 
     getters: {
       get_pvc_link (state) { return state.pvc_link },
@@ -18,6 +23,12 @@ const persistentvolumeclaims_container = {
     },
 
     mutations: {
+      reset (state) {
+        const s = initial_state()
+        Object.keys(s).forEach(key => {
+          state[key] = s[key]
+        })
+      },
       set_pvc_link (state, pvc_link) { state.pvc_link = pvc_link },
       set_persistentvolumeclaims (state, persistentvolumeclaims) { state.persistentvolumeclaims = persistentvolumeclaims },
       push_persistentvolumeclaim (state, persistentvolumeclaim) { state.persistentvolumeclaims.push(persistentvolumeclaim) },

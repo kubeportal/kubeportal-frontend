@@ -1,14 +1,17 @@
 import * as backend from '@/utils/backend'
 import moment from 'moment'
 
+const initial_state = () => {
+  return {
+    news_url: '',
+    news: []
+  }
+}
 const news_container = {
   module: {
     namespaced: true,
 
-    state: {
-      news_url: '',
-      news: []
-    },
+    state: initial_state,
     getters: {
       get_news_url (state) { return state.news_url },
       get_news (state) { return state.news }
@@ -16,7 +19,13 @@ const news_container = {
 
     mutations: {
       set_news_url (state, news_url) { state.news_url = news_url },
-      set_news (state, news) { state.news = news }
+      set_news (state, news) { state.news = news },
+      reset (state) {
+        const s = initial_state()
+        Object.keys(s).forEach(key => {
+          state[key] = s[key]
+        })
+      }
     },
 
     actions: {

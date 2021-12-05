@@ -1,13 +1,16 @@
 import * as backend from '@/utils/backend'
 import moment from 'moment'
 
+const initial_state = () => {
+  return {
+    ingresses_link: [],
+    ingresses: []
+  }
+}
 const ingresses_container = {
   module: {
     namespaced: true,
-    state: {
-      ingresses_link: [],
-      ingresses: []
-    },
+    state: initial_state,
 
     getters: {
       get_ingresses_link (state) { return state.ingresses_link },
@@ -21,7 +24,13 @@ const ingresses_container = {
         state.ingresses[data.index].status = data.status
         state.ingresses[data.index].time = data.time
       },
-      push_ingress (state, ingress) { state.ingresses.push(ingress) }
+      push_ingress (state, ingress) { state.ingresses.push(ingress) },
+      reset (state) {
+        const s = initial_state()
+        Object.keys(s).forEach(key => {
+          state[key] = s[key]
+        })
+      }
     },
 
     actions: {

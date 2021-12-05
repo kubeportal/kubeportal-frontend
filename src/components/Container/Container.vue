@@ -1,6 +1,7 @@
 <template>
   <div>
-    <v-tabs fixed-tabs>
+    <PodDetails @close_details="close_details" v-if="is_show_details" :pod="pod" :namespace="namespace"/>
+    <v-tabs fixed-tabs v-if="!is_show_details">
       <v-tab>
         <v-icon class="mr-2">mdi-desktop-classic</v-icon>
         Pods
@@ -11,7 +12,7 @@
       </v-tab>
 
       <v-tab-item>
-        <PodTable :pods_data="pods_data" :namespace="namespace"/>
+        <PodTable @show_details="show_details" :pods_data="pods_data" :namespace="namespace"/>
       </v-tab-item>
       <v-tab-item>
         <DeploymentTable :deployments_data="deployments_data" :namespace="namespace" />
@@ -26,10 +27,17 @@ import DeploymentModal from './DeploymentModal'
 import DeploymentTable from './DeploymentTable'
 import PodModal from './PodModal'
 import PodTable from './PodTable'
+import PodDetails from './PodDetails'
 
 export default {
   name: 'Container',
-  components: { TopBar, DeploymentModal, DeploymentTable, PodModal, PodTable },
+  components: { TopBar, DeploymentModal, DeploymentTable, PodModal, PodTable, PodDetails },
+  data () {
+    return {
+      is_show_details: false,
+      pod: {}
+    }
+  },
   computed: {
     namespace () {
       return this.$store.getters['users/get_current_namespace']
@@ -39,6 +47,15 @@ export default {
     },
     deployments_data () {
       return this.$store.getters['deployments/get_deployments']
+    }
+  },
+  methods: {
+    show_details (pod) {
+      this.is_show_details = true
+      this.pod = pod
+    },
+    close_details () {
+      this.is_show_details = false
     }
   },
   mounted () {

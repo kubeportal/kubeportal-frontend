@@ -1,12 +1,17 @@
 import * as backend from '@/utils/backend'
 import moment from 'moment'
+
+const initial_state = () => {
+  return {
+    deployments_link: '',
+    deployments: []
+  }
+}
+
 const deployments_container = {
   module: {
     namespaced: true,
-    state: {
-      deployments_link: '',
-      deployments: []
-    },
+    state: initial_state,
 
     getters: {
       get_deployments_link (state) { return state.deployments_link },
@@ -14,6 +19,12 @@ const deployments_container = {
     },
 
     mutations: {
+      reset (state) {
+        const s = initial_state()
+        Object.keys(s).forEach(key => {
+          state[key] = s[key]
+        })
+      },
       set_deployments_link (state, deployments_link) { state.deployments_link = deployments_link },
       set_deployments (state, deployments) { state.deployments = deployments },
       push_deployment (state, deployment) { state.deployments.push(deployment) }

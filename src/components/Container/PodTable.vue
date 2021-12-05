@@ -14,7 +14,7 @@
       :sort-by.sync="sortBy"
     >
       <template v-slot:item="props">
-        <tr>
+        <tr @click="show_details(props.item)" class="tableRow">
           <td>{{ props.item.name }}</td>
           <td>
             <div v-for="image in props.item.images" :key="image">
@@ -29,74 +29,8 @@
               {{ container }}
             </div>
           </td>
-          <v-tooltip color="#2e2e2e" nudge-left="10" left>
-            <template v-slot:activator="{ on, attrs }">
-              <td>
-                <div
-                  v-bind="attrs"
-                  v-on="on"
-                  v-for="volume in props.item.volume_names"
-                  :key="volume"
-                >
-                  {{ volume }}
-                </div>
-              </td>
-            </template>
-            <span>
-              <div
-                class="tooltip"
-                v-for="volume_mount in props.item.volumes"
-                :key="volume_mount.volume.name"
-              >
-                <h3>{{ volume_mount.volume.name }}</h3>
-                <hr />
-                <p>type: {{ volume_mount.volume.type }}</p>
-                <p>mountpath: {{ volume_mount.mount_path }}</p>
-              </div>
-            </span>
-          </v-tooltip>
+          <td>{{ props.item.phase }}</td>
           <td>{{ props.item.creation_timestamp }}</td>
-          <td>
-            <v-menu offset-y left>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="primary"
-                  dark
-                  v-bind="attrs"
-                  v-on="on"
-                  icon
-                >
-                  <v-icon>mdi-cog</v-icon>
-                </v-btn>
-              </template>
-              <v-list flat>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon>mdi-transit-connection</v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-title>Create Service</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon>mdi-desktop-classic</v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-title>Create PVC</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon>mdi-delete</v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-title>Delete</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </td>
         </tr>
       </template>
       <template v-slot:top>
@@ -159,8 +93,8 @@ export default {
           value: 'containers'
         },
         {
-          text: 'Volumes',
-          value: 'volume_names'
+          text: 'Phase',
+          value: 'phase'
         },
         {
           text: 'Created',
@@ -172,11 +106,17 @@ export default {
   methods: {
     refresh_pods () {
       this.$store.dispatch('pods/request_pods')
+    },
+    show_details (pod) {
+      this.$emit('show_details', pod)
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
+.tableRow {
+  cursor: pointer;
+}
 
 </style>

@@ -1,13 +1,16 @@
 import * as backend from '@/utils/backend'
 
+const initial_state = () => {
+  return {
+    infos_url: '',
+    cluster_links: [],
+    cluster_info: []
+  }
+}
 const infos = {
   module: {
     namespaced: true,
-    state: {
-      infos_url: '',
-      cluster_links: [],
-      cluster_info: []
-    },
+    state: initial_state,
 
     getters: {
       get_infos_url (state) { return state.infos_url },
@@ -17,6 +20,12 @@ const infos = {
     },
 
     mutations: {
+      reset (state) {
+        const s = initial_state()
+        Object.keys(s).forEach(key => {
+          state[key] = s[key]
+        })
+      },
       set_infos_url (state, infos_url) { state.infos_url = infos_url },
       set_cluster_links (state, links) { state.cluster_links = links },
       set_cluster_info (state, info) { state.cluster_info = info },

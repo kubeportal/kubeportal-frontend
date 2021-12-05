@@ -1,8 +1,8 @@
 <template>
   <v-app >
     <v-main>
-      <v-img class="background" src="./assets/mountain.jpeg">
-        <router-view />
+      <v-img max-height="100vh" class="background" src="./assets/mountain.jpeg">
+        <router-view/>
       </v-img>
     </v-main>
   </v-app>

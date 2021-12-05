@@ -1,13 +1,16 @@
 import * as backend from '@/utils/backend'
 import moment from 'moment'
 
+const initial_state = () => {
+  return {
+    services_link: '',
+    services: []
+  }
+}
 const services_container = {
   module: {
     namespaced: true,
-    state: {
-      services_link: '',
-      services: []
-    },
+    state: initial_state,
 
     getters: {
       get_services_link (state) { return state.services_link },
@@ -17,7 +20,13 @@ const services_container = {
     mutations: {
       set_services_link (state, services_link) { state.services_link = services_link },
       set_services (state, services) { state.services = services },
-      push_service (state, service) { state.services.push(service) }
+      push_service (state, service) { state.services.push(service) },
+      reset (state) {
+        const s = initial_state()
+        Object.keys(s).forEach(key => {
+          state[key] = s[key]
+        })
+      }
     },
 
     actions: {

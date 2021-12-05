@@ -87,7 +87,7 @@ clusters:
 contexts:
 - context:
     cluster: data_science_cluster
-    namespace: ${this.current_user['k8s_namespace']}
+    namespace: ${this.current_namespace}
     user: ${this.current_user['username']}
   name: ${this.current_user['username']}
 current-context: ${this.current_user['username']}

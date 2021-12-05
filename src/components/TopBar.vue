@@ -87,17 +87,15 @@ export default {
     },
     logout () {
       this.$store.dispatch('users/log_out')
-      this.$store.commit('users/set_user', {})
-      this.$store.commit('users/set_webapps', [])
-      this.$store.commit('pods/set_pods', [])
-      this.$store.commit('deployments/set_deployments', [])
-      this.$store.commit('services/set_services', [])
-      this.$store.commit('ingresses/set_ingresses', [])
-      this.$store.commit('pvcs/set_persistentvolumeclaims', [])
-      this.$store.commit('pvcs/set_storageclasses', [])
-      this.$store.commit('infos/set_cluster_info', [])
-      this.$store.commit('api/set_csrf_token', '')
-      this.$store.commit('users/set_access_token', '')
+      this.$store.commit('users/reset')
+      this.$store.commit('api/reset')
+      this.$store.commit('deployments/reset')
+      this.$store.commit('infos/reset')
+      this.$store.commit('ingresses/reset')
+      this.$store.commit('news/reset')
+      this.$store.commit('pods/reset')
+      this.$store.commit('pvcs/reset')
+      this.$store.commit('services/reset')
       this.$router.push({ name: 'Home' })
     },
     open_admin () {
