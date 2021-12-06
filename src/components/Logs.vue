@@ -1,6 +1,14 @@
 <template>
   <div>
   <div>
+  <div>
+        <v-btn
+          @click="tmp"
+          x-large
+        >
+        CLICK ME
+        </v-btn>
+  </div>
     <v-row justify="space-between" no-gutters class="white">
       <v-col cols="2">
         <v-btn
@@ -204,6 +212,13 @@ export default {
     }
   },
   methods: {
+    async tmp () {
+      console.log(this.pod.logs_url)
+      let link = this.pod.logs_url.replace('/{page}', '')
+      await this.$store.dispatch('pods/request_logs_test', {
+        logs_url: link,
+      })
+    },
     search_submit (e) {
       e.preventDefault()
       this.next_log('next')

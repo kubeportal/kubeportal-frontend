@@ -71,3 +71,18 @@ export async function patch (absolute_url, payload) {
     return undefined
   }
 }
+
+export async function get2 (absolute_url) {
+  try {
+    if (absolute_url === '') {
+      let response = await axiosInstance.get(base_url + '/api/' + API_VERSION + '/')
+      return response
+    }
+    let response = await axiosInstance.get(absolute_url, {
+      responseType: 'blob'
+    })
+    return response
+  } catch {
+    return undefined
+  }
+}

@@ -92,6 +92,17 @@ const pods_container = {
           return log
         })
         return [result, response.data.page_number]
+      },
+      //TODO: filename, better function names, button placement, warnings
+      async request_logs_test (_, data) {
+        const response = await backend.get2(data.logs_url)
+        console.log(response)
+        const url = window.URL.createObjectURL(new Blob([response.data]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', 'file.zip')
+        document.body.appendChild(link)
+        link.click()
       }
     }
   }
