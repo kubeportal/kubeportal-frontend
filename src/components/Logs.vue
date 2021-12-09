@@ -1,15 +1,7 @@
 <template>
   <div>
   <div>
-  <div>
-        <v-btn
-          @click="tmp"
-          x-large
-        >
-        CLICK ME
-        </v-btn>
-  </div>
-    <v-row justify="space-between" no-gutters class="white">
+    <v-row justify="space-between" align="center" no-gutters class="white">
       <v-col cols="2">
         <v-btn
           icon
@@ -19,28 +11,39 @@
           <v-icon>mdi-menu</v-icon>
         </v-btn>
       </v-col>
-        <v-col cols="2">
-          <div class="live-refresh-container">
-          <v-switch
-            v-model="live_refresh"
-            label="live refresh"
-          ></v-switch>
-          <v-progress-circular
-            v-if="live_refresh && !refresh_loading"
-            size="20"
-            color="primary"
-            value="0"
-            class="progress-spinner"
-          />
-          <v-progress-circular
-            v-if="live_refresh && refresh_loading"
-            size="20"
-            color="primary"
-            indeterminate
-            class="progress-spinner"
-          />
-          </div>
-        </v-col>
+      <v-col cols="2">
+        <div class="live-refresh-container">
+        <v-switch
+          v-model="live_refresh"
+          label="live refresh"
+        ></v-switch>
+        <v-progress-circular
+          v-if="live_refresh && !refresh_loading"
+          size="20"
+          color="primary"
+          value="0"
+          class="progress-spinner"
+        />
+        <v-progress-circular
+          v-if="live_refresh && refresh_loading"
+          size="20"
+          color="primary"
+          indeterminate
+          class="progress-spinner"
+        />
+        </div>
+      </v-col>
+      <v-col cols="2">
+        <span class="total">
+          {{ total }}
+        </span>
+        <v-tooltip bottom v-if="more_than_tenthousand">
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon color="orange" v-bind="attrs" v-on="on"> mdi-alert </v-icon>
+          </template>
+          <span> Only a maximum of 10000 log entries can be displayed. To access all entries, please download them as a zip. </span>
+        </v-tooltip>
+      </v-col>
       <v-col class="download" @click="download" cols="1">
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
@@ -116,6 +119,24 @@
           />
         </v-col>
       </v-row>
+      <v-row>
+        <v-col cols="2">
+          <RequestSpinner v-if="is_zip_loading" />
+          <div v-if="!is_zip_loading">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  @click="download_zip_logs"
+                  v-bind="attrs" v-on="on"
+                >
+                  download all logs as zip <v-icon> mdi-download </v-icon>
+                </v-btn>
+              </template>
+              <span> Download all logs as a zip file. Fetching and zipping the logs may take up to a couple of minutes depending on the amount of log entries.</span>
+            </v-tooltip>
+          </div>
+        </v-col>
+      </v-row>
     </v-card>
   </div>
   <div @scroll="is_in_view" class="logs" ref="logs">
@@ -165,7 +186,10 @@ export default {
       },
       logs: [],
       page_number: 0,
-      refresh_loading: false
+      total: '',
+      refresh_loading: false,
+      more_than_tenthousand: false,
+      is_zip_loading: false
     }
   },
   watch: {
@@ -212,12 +236,15 @@ export default {
     }
   },
   methods: {
-    async tmp () {
+    async download_zip_logs () {
       console.log(this.pod.logs_url)
+      this.is_zip_loading = true
       let link = this.pod.logs_url.replace('/{page}', '')
-      await this.$store.dispatch('pods/request_logs_test', {
+      await this.$store.dispatch('pods/request_zip_logs_download', {
         logs_url: link,
+        file_name: `${new Date().toISOString()}-${this.pod.name}-logs.zip`
       })
+      this.is_zip_loading = false
     },
     search_submit (e) {
       e.preventDefault()
@@ -298,7 +325,7 @@ export default {
     },
     async request_logs () {
       this.is_loading = true
-      const [result, page_number] = await this.$store.dispatch('pods/request_logs', {
+      const [result, page_number, total] = await this.$store.dispatch('pods/request_logs', {
         namespace: this.namespace,
         pod_name: this.pod.name,
         logs_url: this.pod.logs_url,
@@ -306,6 +333,15 @@ export default {
       })
       this.logs = [...result, ...this.logs]
       this.page_number = page_number
+      console.log(total)
+      if (total['relation'] === 'eq') {
+        this.total = `Found ${total['value']} entries`
+      } else if (total['relation'] === 'gte') {
+        if (total['value'] === 10000) {
+          this.more_than_tenthousand = true
+        }
+        this.total = `Found more than ${total['value']} entries`
+      }
     }
   },
   mounted () {
@@ -376,5 +412,8 @@ export default {
 }
 .progress-spinner {
   margin: 0 1em;
+}
+.total {
+ text-align: center;
 }
 </style>
