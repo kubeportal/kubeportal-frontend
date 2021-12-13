@@ -80,9 +80,8 @@ const pods_container = {
         const pods_link = context.getters['get_pods_link']
         backend.post(pods_link, data)
       },
-      // TODO: spinner for zip
       async request_logs (_, data) {
-        let link = data.logs_url.replace('{page}', data.page_number)
+        let link = data.logs_url + '?page=' + data.page_number
         const response = await backend.get(link)
         let result = response.data.hits.map(hit => {
           let log = {}
@@ -93,7 +92,7 @@ const pods_container = {
           return log
         })
         let total = response.data.total
-        return [result, response.data.page_number, total]
+        return [result, total]
       },
       async request_zip_logs_download (_, data) {
         const response = await backend.get(data.logs_url, { responseType: 'blob' })

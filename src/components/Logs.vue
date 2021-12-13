@@ -236,16 +236,6 @@ export default {
     }
   },
   methods: {
-    async download_zip_logs () {
-      console.log(this.pod.logs_url)
-      this.is_zip_loading = true
-      let link = this.pod.logs_url.replace('/{page}', '')
-      await this.$store.dispatch('pods/request_zip_logs_download', {
-        logs_url: link,
-        file_name: `${new Date().toISOString()}-${this.pod.name}-logs.zip`
-      })
-      this.is_zip_loading = false
-    },
     search_submit (e) {
       e.preventDefault()
       this.next_log('next')
@@ -323,16 +313,24 @@ export default {
         this.request_logs()
       }
     },
+    async download_zip_logs () {
+      this.is_zip_loading = true
+      await this.$store.dispatch('pods/request_zip_logs_download', {
+        logs_url: this.link,
+        file_name: `${new Date().toISOString()}-${this.pod.name}-logs.zip`
+      })
+      this.is_zip_loading = false
+    },
     async request_logs () {
       this.is_loading = true
-      const [result, page_number, total] = await this.$store.dispatch('pods/request_logs', {
+      const [result, total] = await this.$store.dispatch('pods/request_logs', {
         namespace: this.namespace,
         pod_name: this.pod.name,
         logs_url: this.pod.logs_url,
         page_number: this.page_number
       })
       this.logs = [...result, ...this.logs]
-      this.page_number = page_number
+      this.page_number = this.page_number + 1
       console.log(total)
       if (total['relation'] === 'eq') {
         this.total = `Found ${total['value']} entries`
