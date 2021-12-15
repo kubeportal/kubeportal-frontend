@@ -316,7 +316,7 @@ export default {
     async download_zip_logs () {
       this.is_zip_loading = true
       await this.$store.dispatch('pods/request_zip_logs_download', {
-        logs_url: this.link,
+        logs_url: this.pod.logs_url,
         file_name: `${new Date().toISOString()}-${this.pod.name}-logs.zip`
       })
       this.is_zip_loading = false
@@ -331,7 +331,6 @@ export default {
       })
       this.logs = [...result, ...this.logs]
       this.page_number = this.page_number + 1
-      console.log(total)
       if (total['relation'] === 'eq') {
         this.total = `Found ${total['value']} entries`
       } else if (total['relation'] === 'gte') {

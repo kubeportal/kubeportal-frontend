@@ -96,7 +96,6 @@ const pods_container = {
       },
       async request_zip_logs_download (_, data) {
         const response = await backend.get(data.logs_url, { responseType: 'blob' })
-        console.log(response)
         const url = window.URL.createObjectURL(new Blob([response.data]))
         const link = document.createElement('a')
         link.href = url
