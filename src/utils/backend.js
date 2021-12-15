@@ -37,14 +37,14 @@ axiosInstance.interceptors.request.use(request => {
 
 createAuthRefreshInterceptor(axiosInstance, refresh_auth_logic)
 
-export async function get (absolute_url) {
+export async function get (absolute_url, options = {}) {
   try {
     if (absolute_url === '') {
-      let response = await axiosInstance.get(base_url + '/api/' + API_VERSION + '/')
+      let response = await axiosInstance.get(base_url + '/api/' + API_VERSION + '/', options)
       // console.log('GET ' + absolute_url, response)
       return response
     }
-    let response = await axiosInstance.get(absolute_url)
+    let response = await axiosInstance.get(absolute_url, options)
     // console.log('GET' + absolute_url, response)
     return response
   } catch {
@@ -71,3 +71,20 @@ export async function patch (absolute_url, payload) {
     return undefined
   }
 }
+
+/*
+export async function get2 (absolute_url) {
+  try {
+    if (absolute_url === '') {
+      let response = await axiosInstance.get(base_url + '/api/' + API_VERSION + '/')
+      return response
+    }
+    let response = await axiosInstance.get(absolute_url, {
+      responseType: 'blob'
+    })
+    return response
+  } catch {
+    return undefined
+  }
+}
+  */

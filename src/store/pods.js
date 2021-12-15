@@ -81,7 +81,7 @@ const pods_container = {
         backend.post(pods_link, data)
       },
       async request_logs (_, data) {
-        let link = data.logs_url.replace('{page}', data.page_number)
+        let link = data.logs_url + '?page=' + data.page_number
         const response = await backend.get(link)
         let result = response.data.hits.map(hit => {
           let log = {}
@@ -91,7 +91,17 @@ const pods_container = {
           log['_id'] = hit._id
           return log
         })
-        return [result, response.data.page_number]
+        let total = response.data.total
+        return [result, total]
+      },
+      async request_zip_logs_download (_, data) {
+        const response = await backend.get(data.logs_url, { responseType: 'blob' })
+        const url = window.URL.createObjectURL(new Blob([response.data]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', data.file_name)
+        document.body.appendChild(link)
+        link.click()
       }
     }
   }
